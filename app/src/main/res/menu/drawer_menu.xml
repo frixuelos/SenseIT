@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+        <item  android:title="@string/menuGroupGeneral"
+               android:id="@+id/menuGroupGeneral">
+            <menu>
+            <item
+                android:id="@+id/home"
+                android:icon="@android:drawable/ic_input_get"
+                android:title="@string/menu_home"/>
+            <item
+                android:id="@+id/map"
+                android:icon="@android:drawable/ic_menu_mapmode"
+                android:title="@string/menu_map" />
+            </menu>
+        </item>
+</menu>
