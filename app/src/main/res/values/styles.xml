@@ -5,7 +5,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">#1C4F6B</item>
         <item name="android:textColorSecondary">@color/colorText</item> <!-- Icono toolbar + categorias menu -->
         <item name="android:textColorPrimary">@color/colorText</item> <!-- Texto -->
     </style>
