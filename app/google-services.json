@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "253661101620",
+    "firebase_url": "https://sigfox-tfg.firebaseio.com",
+    "project_id": "sigfox-tfg",
+    "storage_bucket": "sigfox-tfg.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:253661101620:android:680de525ba1b01cc28d461",
+        "android_client_info": {
+          "package_name": "com.android.tfg"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "253661101620-umm2hss7rj4res0ic9fa42g4j6tjk5if.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.android.tfg",
+            "certificate_hash": "5f5201af527b07eae3c96ed88b4df49c343bd3b7"
+          }
+        },
+        {
+          "client_id": "253661101620-7v74u57uun1kobd1o209jt9o0118uk9o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDL9uoEGZvZ_GaJdJnwu89MHF44slvtOuw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "253661101620-7v74u57uun1kobd1o209jt9o0118uk9o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
