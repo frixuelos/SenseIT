@@ -1,7 +1,5 @@
 package com.android.tfg.model;
 
-import android.util.Patterns;
-
 import java.io.Serializable;
 
 public class LoginUserModel implements Serializable {

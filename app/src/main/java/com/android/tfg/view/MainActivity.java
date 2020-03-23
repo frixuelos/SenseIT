@@ -16,6 +16,7 @@ import android.text.style.TextAppearanceSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
     LoginUserModel currentUser;
+    View headerView;
 
     public void goHome(){
         fragmentManager = getSupportFragmentManager();
@@ -54,20 +56,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        /*************
-        * LOGIN DATA *
-        **************/
-        currentUser = (LoginUserModel) getIntent().getSerializableExtra("currentUser");
-        Log.v("LOL", "LLEGAAAA");
-        Toast.makeText(getApplicationContext(), getResources().getString(R.string.welcomeMessage).format(currentUser.getName()), Toast.LENGTH_LONG).show();
-        TextView tHeaderMail = (TextView) findViewById(R.id.tHeaderMail);
-        tHeaderMail.setText(currentUser.getMail());
 
-        // TOOLBAR
+        /***********
+         * TOOLBAR *
+         ***********/
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // NAVIGATION
+        /**************
+         * NAVIGATION *
+         **************/
         drawerLayout = findViewById(R.id.drawer);
         navigationView = findViewById(R.id.navigationView);
         navigationView.setNavigationItemSelectedListener(this);
@@ -76,14 +74,30 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         actionBarDrawerToggle.setDrawerIndicatorEnabled(true);
         actionBarDrawerToggle.syncState();
 
-        // COLOR CATEGORIAS MENU
+        /*******************
+         * MENU CAT. COLOR *
+         *******************/
         Menu menu = navigationView.getMenu();
         MenuItem mGeneral = menu.findItem(R.id.menuGroupGeneral);
         SpannableString s = new SpannableString(mGeneral.getTitle());
         s.setSpan(new TextAppearanceSpan(this, R.style.MenuText), 0, s.length(), 0);
         mGeneral.setTitle(s);
 
-        // HOME FRAGMENT
+        /*************
+        * LOGIN DATA *
+        **************/
+        Intent i = getIntent();
+        currentUser = (LoginUserModel) i.getSerializableExtra("currentUser");
+        Log.v("LOL", currentUser.getMail());
+        if(currentUser==null)   Log.v("LOL", "NULL");
+        Toast.makeText(getApplicationContext(), getResources().getString(R.string.welcomeMessage), Toast.LENGTH_LONG).show();
+        headerView = navigationView.getHeaderView(0);
+        TextView tHeaderMail = headerView.findViewById(R.id.tHeaderMail);
+        tHeaderMail.setText(currentUser.getMail());
+
+        /***********************
+         * HOME FRAGMENT START *
+         ***********************/
         goHome();
 
     }

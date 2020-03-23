@@ -1,15 +1,27 @@
 <resources>
+    <!-- APP -->
     <string name="app_name">AndroidTFG</string>
     <string name="open">open</string>
     <string name="close">close</string>
+    <string name="title_activity_login">LoginActivity</string>
+
+    <!-- MAIN -->
     <string name="menu_map">Map</string>
     <string name="menu_home">Home</string>
     <string name="menuGroupGeneral">General</string>
     <string name="menuGroupAdmin">Admin</string>
-    <string name="title_activity_login">LoginActivity</string>
+    <string name="welcomeMessage">Welcome !</string>
+
+    <!-- LOGIN -->
     <string name="btnLogin">Login</string>
-    <string name="errorLoginEmail">Invalid e-mail or empty</string>
-    <string name="errorLoginPasswd">Password too short or empty</string>
-    <string name="errorInvalidUser">Invalid user e-maily</string>
-    <string name="welcomeMessage">Welcome %s !</string>
+
+
+    <!-- ERRORES -->
+    <!-- LOGIN -->
+    <string name="errorTextEmail">Invalid e-mail or empty</string>
+    <string name="errorTextPasswd">Password too short or empty</string>
+    <string name="errorLoginInvalidUser">Invalid e-mail</string>
+    <string name="errorLoginInvalidPassword">Wrong password</string>
+    <string name="errorLogin">ERROR: Can\'t login, please try again later</string>
+
 </resources>
