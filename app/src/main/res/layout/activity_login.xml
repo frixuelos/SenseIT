@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity"
+    tools:context=".view.LoginActivity"
     android:background="@drawable/background"
     android:id="@+id/login_layout">
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/etEmail"
         android:layout_width="280dp"
         android:layout_height="40dp"
         android:layout_marginTop="80dp"
@@ -24,7 +24,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/etPasswd"
         android:layout_width="280dp"
         android:layout_height="40dp"
         android:layout_marginTop="32dp"
@@ -37,7 +37,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText" />
+        app:layout_constraintTop_toBottomOf="@+id/etEmail" />
 
     <Button
         android:id="@+id/btnLogin"
@@ -49,7 +49,7 @@
         android:textColor="@color/colorText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText2"
+        app:layout_constraintTop_toBottomOf="@+id/etPasswd"
         tools:visibility="invisible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,7 +6,10 @@
     <string name="menu_home">Home</string>
     <string name="menuGroupGeneral">General</string>
     <string name="menuGroupAdmin">Admin</string>
-
     <string name="title_activity_login">LoginActivity</string>
     <string name="btnLogin">Login</string>
+    <string name="errorLoginEmail">Invalid e-mail or empty</string>
+    <string name="errorLoginPasswd">Password too short or empty</string>
+    <string name="errorInvalidUser">Invalid user e-maily</string>
+    <string name="welcomeMessage">Welcome %s !</string>
 </resources>
