@@ -18,6 +18,12 @@
     <!-- LOGIN -->
     <string name="btnLogin">Login</string>
     <string name="txtRegister">Create an account</string>
+    <string name="hintEmail">E-mail</string>
+    <string name="hintPasswd">Password</string>
+
+    <!-- REGISTER -->
+    <string name="hintRePasswd">Confirm password</string>
+    <string name="btnRegister">Sign up</string>
 
 
     <!-- ERRORES -->
@@ -29,5 +35,11 @@
     <string name="errorLogin">ERROR: Can\'t login, please try again later</string>
     <string name="errorEmptyLogin">E-mail or password empty</string>
 
+    <!-- REGISTER -->
+    <string name="errEqualPasswd">Password must be the same</string>
+    <string name="errorEmptyEmail">E-mail is empty</string>
+    <string name="errorEmptyPasswd">E-mail is empty</string>
+    <string name="errorWeakPasswd">Password too weak</string>
+    <string name="errorRegister">ERROR: Can\'t sign up, please try again later</string>
 
 </resources>

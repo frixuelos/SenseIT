@@ -2,43 +2,36 @@ package com.android.tfg.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.view.KeyEventDispatcher;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.method.KeyListener;
 import android.util.Log;
 import android.util.Patterns;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.tfg.R;
-import com.android.tfg.viewmodel.LoginUserViewModel;
-import com.google.firebase.auth.AuthResult;
+import com.android.tfg.viewmodel.UserViewModel;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
-
-import java.security.Key;
 
 
 public class LoginActivity extends AppCompatActivity {
 
     ConstraintLayout constraintLayout;
-    LoginUserViewModel userViewModel;
+    UserViewModel userViewModel;
     Button btnLogin;
     EditText etEmail, etPasswd;
     ProgressBar pbLogin;
+    TextView txtRegister;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +91,6 @@ public class LoginActivity extends AppCompatActivity {
         }
         if(!(passwd.length()>5)){
             // Contraseña demasiado corta
-            etEmail.setText("");
             etPasswd.setError(getResources().getString(R.string.errorTextPasswd));
             etPasswd.setText("");
             etPasswd.requestFocus();
@@ -131,6 +123,7 @@ public class LoginActivity extends AppCompatActivity {
                         // Mostramos error de inicio de sesion
                         Toast.makeText(getApplicationContext(), getResources().getString(R.string.errorLogin), Toast.LENGTH_LONG);
                     }
+                    e=null;
                 }
             }
         };
@@ -138,7 +131,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void initLoginUserViewModel(){
-        userViewModel = new ViewModelProvider(this).get(LoginUserViewModel.class);
+        userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
     }
 
     private void configView(){
@@ -187,6 +180,16 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
+
+        txtRegister=findViewById(R.id.txtRegister);
+
+        txtRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                userViewModel.goRegister(etEmail.getText().toString(), etPasswd.getText().toString());
+            }
+        });
+
     }
 
 }

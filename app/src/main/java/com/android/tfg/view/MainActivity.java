@@ -20,17 +20,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.tfg.R;
 import com.android.tfg.model.LoginUserModel;
-import com.android.tfg.viewmodel.LoginUserViewModel;
+import com.android.tfg.viewmodel.UserViewModel;
 import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.auth.FirebaseUser;
-
-import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -42,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     FragmentTransaction fragmentTransaction;
     LoginUserModel currentUser;
     View headerView;
-    LoginUserViewModel userViewModel;
+    UserViewModel userViewModel;
 
     public void goHome(){
         fragmentManager = getSupportFragmentManager();
@@ -114,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void initLoginUserViewModel(){
-        userViewModel = new ViewModelProvider(this).get(LoginUserViewModel.class);
+        userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
     }
 
     @Override
