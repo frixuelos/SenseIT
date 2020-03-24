@@ -21,6 +21,7 @@ import com.android.tfg.R;
 import com.android.tfg.viewmodel.UserViewModel;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 
 
@@ -109,12 +110,6 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
-        /************
-         * REGISTER *
-         ************/
-        pbRegister.setVisibility(View.VISIBLE); // ProgressBar
-        userViewModel.register(etEmailRegister.getText().toString(), etPasswdRegister.getText().toString());
-
         /**************************
          * OBSERVER DE EXCEPCIONES *
          ***************************/
@@ -129,21 +124,36 @@ public class RegisterActivity extends AppCompatActivity {
                         etEmailRegister.requestFocus();
                         etPasswdRegister.setText("");
                         etRePasswdRegister.setText("");
+                        pbRegister.setVisibility(View.INVISIBLE);
                     } else if (e instanceof FirebaseAuthWeakPasswordException) { // Password debil
                         // Requerimos atencion a los campos
                         etPasswdRegister.setText("");
                         etRePasswdRegister.setText("");
                         etPasswdRegister.setError(getResources().getString(R.string.errorWeakPasswd));
                         etPasswdRegister.requestFocus();
-                    } else {
+                        pbRegister.setVisibility(View.INVISIBLE);
+                    } else if(e instanceof FirebaseAuthUserCollisionException){ // Ya existe el usuario
+                        etEmailRegister.setError(getResources().getString(R.string.errorRegisterCollision));
+                        etEmailRegister.requestFocus();
+                        etPasswdRegister.setText("");
+                        etRePasswdRegister.setText("");
+                        pbRegister.setVisibility(View.INVISIBLE);
+                    }else{
                         // Mostramos error de inicio de sesion
                         Toast.makeText(getApplicationContext(), getResources().getString(R.string.errorRegister), Toast.LENGTH_LONG);
+                        pbRegister.setVisibility(View.INVISIBLE);
                     }
                     e=null;
                 }
             }
         };
         userViewModel.getException().observe(owner, obs);
+
+        /************
+         * REGISTER *
+         ************/
+        pbRegister.setVisibility(View.VISIBLE); // ProgressBar
+        userViewModel.register(etEmailRegister.getText().toString(), etPasswdRegister.getText().toString());
     }
 
     private void initUserViewModel(){
@@ -155,12 +165,11 @@ public class RegisterActivity extends AppCompatActivity {
          * INICIALIZACIONES *
          ********************/
         constraintLayout = findViewById(R.id.login_layout);
-        final Drawable drw = constraintLayout.getBackground();
         etEmailRegister = findViewById(R.id.etEmailRegister);
         etPasswdRegister = findViewById(R.id.etPasswdRegister);
         etRePasswdRegister = findViewById(R.id.etRePasswdRegister);
         btnRegister = findViewById(R.id.btnRegister);
-        pbRegister=findViewById(R.id.pbRegister);
+        pbRegister = findViewById(R.id.pbRegister);
         pbRegister.setIndeterminate(true);
 
         /**********
@@ -172,7 +181,6 @@ public class RegisterActivity extends AppCompatActivity {
         etPasswdRegister.setAlpha(0.5F);
         etRePasswdRegister.setBackgroundColor(Color.BLACK);
         etRePasswdRegister.setAlpha(0.5F);
-        drw.setAlpha(50);
 
         /**************************************************
          * OBTENER EMAIL/PASSORD DE LA PANTALLA DE INICIO *
@@ -190,6 +198,7 @@ public class RegisterActivity extends AppCompatActivity {
         }else{ // No se introdujo nada
             etEmailRegister.requestFocus();
         }
+
     }
 
 }

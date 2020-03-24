@@ -40,6 +40,7 @@
     <string name="errorEmptyEmail">E-mail is empty</string>
     <string name="errorEmptyPasswd">E-mail is empty</string>
     <string name="errorWeakPasswd">Password too weak</string>
+    <string name="errorRegisterCollision">This user already exists</string>
     <string name="errorRegister">ERROR: Can\'t sign up, please try again later</string>
 
 </resources>

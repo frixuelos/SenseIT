@@ -1,5 +1,7 @@
 package com.android.tfg.model;
 
+import com.google.firebase.auth.FirebaseUser;
+
 import java.io.Serializable;
 
 public class LoginUserModel implements Serializable {
@@ -13,8 +15,10 @@ public class LoginUserModel implements Serializable {
 
     }
 
-    public LoginUserModel(String email, String passwd){
-        this.mail=email;
+    public LoginUserModel(FirebaseUser user){
+        this.UID=user.getUid();
+        this.name=user.getDisplayName();
+        this.mail=user.getEmail();
     }
 
     public LoginUserModel(String UID, String name, String mail) {
@@ -45,6 +49,10 @@ public class LoginUserModel implements Serializable {
 
     public void setMail(String mail) {
         this.mail = mail;
+    }
+
+    public boolean equals(LoginUserModel user){
+        return this.UID.equals(user.getUID()) && this.mail.equals(user.getMail()) && this.name.equals(user.getName());
     }
 
 }

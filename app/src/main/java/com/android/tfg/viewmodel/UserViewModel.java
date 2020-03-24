@@ -12,11 +12,14 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
 import com.android.tfg.R;
+import com.android.tfg.UserAlreadyExistsException;
 import com.android.tfg.firebase.FirebaseSource;
 import com.android.tfg.model.LoginUserModel;
+import com.android.tfg.repository.UserRepository;
 import com.android.tfg.view.LoginActivity;
 import com.android.tfg.view.MainActivity;
 import com.android.tfg.view.RegisterActivity;
+import com.google.android.gms.common.UserRecoverableException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -30,8 +33,11 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Logger;
+import com.google.firebase.firestore.auth.User;
 
 import java.io.Serializable;
+
+import kotlin.sequences.USequencesKt;
 
 
 public class UserViewModel extends AndroidViewModel {
@@ -40,7 +46,7 @@ public class UserViewModel extends AndroidViewModel {
         super(application);
     }
     private FirebaseAuth firebaseAuth;
-    private DatabaseReference mDatabase;
+    private UserRepository userRepository;
     private MutableLiveData<Exception> exception=new MutableLiveData<>();
 
     public void login(String email, String passwd){
@@ -71,30 +77,29 @@ public class UserViewModel extends AndroidViewModel {
         goLogin();
     }
 
-    public void register(String email, String passwd){
-        FirebaseDatabase.getInstance().setLogLevel(Logger.Level.DEBUG);
+    public void register(String email, final String passwd){
         if(firebaseAuth==null){
-            firebaseAuth=firebaseAuth.getInstance();
+            firebaseAuth=FirebaseAuth.getInstance();
         }
-        if(mDatabase==null){
-            mDatabase= FirebaseDatabase.getInstance().getReference();
+        if(userRepository==null){
+            userRepository=new UserRepository();
         }
 
         firebaseAuth.createUserWithEmailAndPassword(email, passwd).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()) {
-                    FirebaseUser user = firebaseAuth.getCurrentUser(); // Usuario registrado.
-                    LoginUserModel userModel = new LoginUserModel(user.getUid(), user.getDisplayName(), user.getEmail());
-                    // Registrar en la BBDD
-                    mDatabase.child("users").child(userModel.getUID()).setValue(userModel);
-
-                    goMain(userModel);
-                }else{
-                    setException(task.getException());
+                if (task.isSuccessful()) {
+                    // Usuario registrado
+                    LoginUserModel user = new LoginUserModel(firebaseAuth.getCurrentUser());
+                    //Se registra en la BBDD
+                    userRepository.registerUser(user);
+                    goMain(user);
+                } else {
+                    setException(task.getException()); // Excepcion (puede que ya exista el usuario)
                 }
             }
         });
+
     }
 
     public void goRegister(String email, String passwd){

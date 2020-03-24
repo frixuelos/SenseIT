@@ -1,10 +1,12 @@
 package com.android.tfg.view;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.graphics.BlendMode;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -39,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         configView(); // Configurar la vista
-        initLoginUserViewModel(); // Configurar VM
+        initUserViewModel(); // Configurar VM
         initLoginButton(); // Configurar boton login
     }
 
@@ -130,13 +132,12 @@ public class LoginActivity extends AppCompatActivity {
         userViewModel.getException().observe(owner, obs);
     }
 
-    private void initLoginUserViewModel(){
+    private void initUserViewModel(){
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
     }
 
     private void configView(){
         constraintLayout = findViewById(R.id.login_layout);
-        final Drawable drw = constraintLayout.getBackground();
         etEmail = findViewById(R.id.etEmail);
         etPasswd = findViewById(R.id.etPasswd);
         btnLogin = findViewById(R.id.btnLogin);
@@ -153,10 +154,9 @@ public class LoginActivity extends AppCompatActivity {
                     etEmail.setAlpha(0.5F);
                     etPasswd.setBackgroundColor(Color.BLACK);
                     etPasswd.setAlpha(0.5F);
-                    drw.setAlpha(50);
                     btnLogin.setVisibility(View.VISIBLE);
                 }else{
-                    drw.setAlpha(100);
+
                     btnLogin.setVisibility(View.INVISIBLE);
                 }
 
@@ -171,10 +171,8 @@ public class LoginActivity extends AppCompatActivity {
                     etPasswd.setAlpha(0.5F);
                     etEmail.setBackgroundColor(Color.BLACK);
                     etEmail.setAlpha(0.5F);
-                    drw.setAlpha(50);
                     btnLogin.setVisibility(View.VISIBLE);
                 }else{
-                    drw.setAlpha(100);
                     btnLogin.setVisibility(View.INVISIBLE);
                 }
 
