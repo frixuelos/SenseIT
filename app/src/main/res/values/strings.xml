@@ -5,6 +5,9 @@
     <string name="close">close</string>
     <string name="title_activity_login">LoginActivity</string>
 
+    <!-- OPTIONS -->
+    <string name="optLogout">Logout</string>
+
     <!-- MAIN -->
     <string name="menu_map">Map</string>
     <string name="menu_home">Home</string>
@@ -14,6 +17,7 @@
 
     <!-- LOGIN -->
     <string name="btnLogin">Login</string>
+    <string name="txtRegister">Create an account</string>
 
 
     <!-- ERRORES -->
@@ -23,5 +27,7 @@
     <string name="errorLoginInvalidUser">Invalid e-mail</string>
     <string name="errorLoginInvalidPassword">Wrong password</string>
     <string name="errorLogin">ERROR: Can\'t login, please try again later</string>
+    <string name="errorEmptyLogin">E-mail or password empty</string>
+
 
 </resources>

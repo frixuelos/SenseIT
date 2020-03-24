@@ -14,6 +14,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.android.tfg.R;
 import com.android.tfg.firebase.FirebaseSource;
 import com.android.tfg.model.LoginUserModel;
+import com.android.tfg.view.LoginActivity;
 import com.android.tfg.view.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -38,11 +39,6 @@ public class LoginUserViewModel extends AndroidViewModel {
     private MutableLiveData<Exception> exception=new MutableLiveData<>();
 
     public void login(String email, String passwd){
-        /*******************
-        * COMPROBAR CAMPOS *
-        ********************/
-
-
         /*********
          * LOGIN *
          *********/
@@ -58,6 +54,20 @@ public class LoginUserViewModel extends AndroidViewModel {
                 }
             }
         });
+    }
+
+    public void logout(){
+        if(firebaseAuth==null){
+            firebaseAuth=FirebaseAuth.getInstance();
+        }
+        firebaseAuth.signOut();
+        goLogin();
+    }
+
+    public void goLogin(){
+        Intent i = new Intent(getApplication().getApplicationContext(), LoginActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        getApplication().getApplicationContext().startActivity(i);
     }
 
     public void goMain(LoginUserModel currentUser){

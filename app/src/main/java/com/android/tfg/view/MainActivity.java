@@ -8,20 +8,25 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.text.style.TextAppearanceSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.tfg.R;
 import com.android.tfg.model.LoginUserModel;
+import com.android.tfg.viewmodel.LoginUserViewModel;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -37,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     FragmentTransaction fragmentTransaction;
     LoginUserModel currentUser;
     View headerView;
+    LoginUserViewModel userViewModel;
 
     public void goHome(){
         fragmentManager = getSupportFragmentManager();
@@ -56,6 +62,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        /**************
+         * VIEW MODEL *
+         **************/
+        initLoginUserViewModel();
 
         /***********
          * TOOLBAR *
@@ -102,6 +113,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
+    private void initLoginUserViewModel(){
+        userViewModel = new ViewModelProvider(this).get(LoginUserViewModel.class);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.option_menu, menu);
+        /******************************
+         * FIX COLOR (WHITE -> BLACK) *
+         ******************************/
+        for(int i=0; i<menu.size(); i++){
+            MenuItem item = menu.getItem(i);
+            SpannableString spanString = new SpannableString(menu.getItem(i).getTitle().toString());
+            spanString.setSpan(new ForegroundColorSpan(Color.BLACK), 0, spanString.length(), 0); //fix the color to white
+            item.setTitle(spanString);
+        }
+        return true;
+    }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         // NAVEGACION
@@ -110,6 +140,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.map: goMap(); break;
         }
         drawerLayout.closeDrawers(); // Cierra el menu lateral
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()){
+            case R.id.optLogout:    userViewModel.logout();
+                                    break;
+        }
         return true;
     }
 }

@@ -8,6 +8,7 @@
         <item name="colorAccent">#1C4F6B</item>
         <item name="android:textColorSecondary">@color/colorText</item> <!-- Icono toolbar + categorias menu -->
         <item name="android:textColorPrimary">@color/colorText</item> <!-- Texto -->
+        <item name="android:itemTextAppearance">@style/optionMenu</item>
     </style>
 
     <!-- Para las categorias del menu -->
@@ -21,4 +22,8 @@
         <item name="android:textSize">18dp</item>
     </style>
 
+    <style name="optionMenu" parent="@style/Theme.AppCompat.Light">
+        <item name="actionMenuTextColor">@color/Black</item>
+        <item name="android:actionMenuTextColor">@color/Black</item>
+    </style>
 </resources>
