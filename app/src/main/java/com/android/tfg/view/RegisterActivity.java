@@ -124,14 +124,14 @@ public class RegisterActivity extends AppCompatActivity {
                         etPasswdRegister.setError(getResources().getString(R.string.errorWeakPasswd));
                         etPasswdRegister.requestFocus();
                         pbRegister.setVisibility(View.INVISIBLE);
-
+                        userViewModel.setException(null);
                     } else if(e instanceof FirebaseAuthUserCollisionException){ // Ya existe el usuario
                         etEmailRegister.setError(getResources().getString(R.string.errorRegisterCollision));
                         etEmailRegister.requestFocus();
                         etPasswdRegister.setText("");
                         etRePasswdRegister.setText("");
                         pbRegister.setVisibility(View.INVISIBLE);
-
+                        userViewModel.setException(null);
                     }else{ // Credenciales no validas (email malformed) FirebaseAuthInvalidCredentialsException
                         // Requerimos atencion a los campos
                         etEmailRegister.setText("");
@@ -140,8 +140,8 @@ public class RegisterActivity extends AppCompatActivity {
                         etPasswdRegister.setText("");
                         etRePasswdRegister.setText("");
                         pbRegister.setVisibility(View.INVISIBLE);
+                        userViewModel.setException(null);
                     }
-                    e=null;
                 }
             }
         };
