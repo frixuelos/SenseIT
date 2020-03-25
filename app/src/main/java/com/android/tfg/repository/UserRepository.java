@@ -1,22 +1,15 @@
 package com.android.tfg.repository;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
-import androidx.lifecycle.MutableLiveData;
 
-import com.android.tfg.UserAlreadyExistsException;
 import com.android.tfg.model.LoginUserModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Map;
 
 public class UserRepository {
 
