@@ -117,30 +117,28 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onChanged(Exception e) {
                 if (e != null){
-                    if (e instanceof FirebaseAuthInvalidCredentialsException) { // Credenciales no validas (email malformed)
-                        // Requerimos atencion a los campos
-                        etEmailRegister.setText("");
-                        etEmailRegister.setError(getResources().getString(R.string.errorLoginInvalidUser));
-                        etEmailRegister.requestFocus();
-                        etPasswdRegister.setText("");
-                        etRePasswdRegister.setText("");
-                        pbRegister.setVisibility(View.INVISIBLE);
-                    } else if (e instanceof FirebaseAuthWeakPasswordException) { // Password debil
+                    if (e instanceof FirebaseAuthWeakPasswordException) { // Password debil
                         // Requerimos atencion a los campos
                         etPasswdRegister.setText("");
                         etRePasswdRegister.setText("");
                         etPasswdRegister.setError(getResources().getString(R.string.errorWeakPasswd));
                         etPasswdRegister.requestFocus();
                         pbRegister.setVisibility(View.INVISIBLE);
+
                     } else if(e instanceof FirebaseAuthUserCollisionException){ // Ya existe el usuario
                         etEmailRegister.setError(getResources().getString(R.string.errorRegisterCollision));
                         etEmailRegister.requestFocus();
                         etPasswdRegister.setText("");
                         etRePasswdRegister.setText("");
                         pbRegister.setVisibility(View.INVISIBLE);
-                    }else{
-                        // Mostramos error de inicio de sesion
-                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.errorRegister), Toast.LENGTH_LONG);
+
+                    }else{ // Credenciales no validas (email malformed) FirebaseAuthInvalidCredentialsException
+                        // Requerimos atencion a los campos
+                        etEmailRegister.setText("");
+                        etEmailRegister.setError(getResources().getString(R.string.errorLoginInvalidUser));
+                        etEmailRegister.requestFocus();
+                        etPasswdRegister.setText("");
+                        etRePasswdRegister.setText("");
                         pbRegister.setVisibility(View.INVISIBLE);
                     }
                     e=null;
