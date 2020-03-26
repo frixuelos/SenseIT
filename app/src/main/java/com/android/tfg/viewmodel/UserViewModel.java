@@ -14,10 +14,16 @@ import com.android.tfg.view.LoginActivity;
 import com.android.tfg.view.MainActivity;
 import com.android.tfg.view.RegisterActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 
 public class UserViewModel extends AndroidViewModel {
@@ -29,13 +35,14 @@ public class UserViewModel extends AndroidViewModel {
     private UserRepository userRepository;
     private MutableLiveData<Exception> exception=new MutableLiveData<>();
 
-    public void login(String email, String passwd){
+    public void login(String email, String passwd) {
         /*********
          * LOGIN *
          *********/
         if(firebaseAuth==null){
             firebaseAuth=FirebaseAuth.getInstance();
         }
+
         Task<AuthResult> task = firebaseAuth.signInWithEmailAndPassword(email, passwd).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {

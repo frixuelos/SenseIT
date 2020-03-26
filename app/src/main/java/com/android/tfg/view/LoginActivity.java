@@ -22,8 +22,13 @@ import android.widget.Toast;
 
 import com.android.tfg.R;
 import com.android.tfg.viewmodel.UserViewModel;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
+
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -59,6 +64,12 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void login(LoginActivity owner){
+        /*******************
+         * LIMPIAR ERRORES *
+         *******************/
+        etEmail.setError(null);
+        etPasswd.setError(null);
+
         /**************
          * VALIDACION *
          **************/
@@ -99,13 +110,7 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        /*********
-         * LOGIN *
-         *********/
-        pbLogin.setVisibility(View.VISIBLE); // ProgressBar
-        userViewModel.login(etEmail.getText().toString(), etPasswd.getText().toString());
-
-        /**************************
+        /***************************
          * OBSERVER DE EXCEPCIONES *
          ***************************/
         final Observer<Exception> obs = new Observer<Exception>() {
@@ -114,22 +119,32 @@ public class LoginActivity extends AppCompatActivity {
                 if (e != null){
                     if (e instanceof FirebaseAuthInvalidUserException) { // Usuario no valido
                         // Requerimos atencion a los campos
-                        etEmail.setText("");
                         etEmail.setError(getResources().getString(R.string.errorLoginInvalidUser));
-                        etPasswd.setText("");
+                        etEmail.requestFocus();
+                        pbLogin.setVisibility(View.INVISIBLE);
+                        userViewModel.setException(null);
                     } else if (e instanceof FirebaseAuthInvalidCredentialsException) { // Password no es correcto
                         // Requerimos atencion a los campos
-                        etPasswd.setText("");
                         etPasswd.setError(getResources().getString(R.string.errorLoginInvalidPassword));
+                        etPasswd.requestFocus();
+                        pbLogin.setVisibility(View.INVISIBLE);
+                        userViewModel.setException(null);
                     } else {
                         // Mostramos error de inicio de sesion
                         Toast.makeText(getApplicationContext(), getResources().getString(R.string.errorLogin), Toast.LENGTH_LONG);
+                        pbLogin.setVisibility(View.INVISIBLE);
+                        userViewModel.setException(null);
                     }
-                    e=null;
                 }
             }
         };
         userViewModel.getException().observe(owner, obs);
+
+        /*********
+         * LOGIN *
+         *********/
+        pbLogin.setVisibility(View.VISIBLE); // ProgressBar
+        userViewModel.login(etEmail.getText().toString(), etPasswd.getText().toString());
     }
 
     private void initUserViewModel(){
