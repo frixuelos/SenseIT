@@ -10,20 +10,12 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.android.tfg.model.LoginUserModel;
 import com.android.tfg.repository.UserRepository;
-import com.android.tfg.view.LoginActivity;
 import com.android.tfg.view.MainActivity;
-import com.android.tfg.view.RegisterActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 
 public class UserViewModel extends AndroidViewModel {
@@ -34,11 +26,11 @@ public class UserViewModel extends AndroidViewModel {
     private FirebaseAuth firebaseAuth;
     private UserRepository userRepository;
     private MutableLiveData<Exception> exception=new MutableLiveData<>();
-
+/*
     public void login(String email, String passwd) {
         /*********
          * LOGIN *
-         *********/
+         *********
         if(firebaseAuth==null){
             firebaseAuth=FirebaseAuth.getInstance();
         }
@@ -119,5 +111,5 @@ public class UserViewModel extends AndroidViewModel {
     public MutableLiveData<Exception> getException(){
         return this.exception;
     }
-
+*/
 }
