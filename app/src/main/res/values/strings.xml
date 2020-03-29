@@ -1,12 +1,47 @@
 <resources>
-    <string name="app_name">AndroidTFG</string>
+    <!-- APP -->
+    <string name="app_name">We@there</string>
     <string name="open">open</string>
     <string name="close">close</string>
-    <string name="menu_map">Map</string>
-    <string name="menu_home">Home</string>
+    <string name="title_activity_login">LoginActivity</string>
+
+    <!-- OPTIONS -->
+    <string name="optLogout">Logout</string>
+
+    <!-- MAIN -->
+    <string name="nav_home">Home</string>
+    <string name="nav_config">Settings</string>
     <string name="menuGroupGeneral">General</string>
     <string name="menuGroupAdmin">Admin</string>
+    <string name="welcomeMessage">Welcome !</string>
 
-    <string name="title_activity_login">LoginActivity</string>
+    <!-- LOGIN -->
     <string name="btnLogin">Login</string>
+    <string name="txtRegister">Create an account</string>
+    <string name="hintEmail">E-mail</string>
+    <string name="hintPasswd">Password</string>
+
+    <!-- REGISTER -->
+    <string name="hintRePasswd">Confirm password</string>
+    <string name="btnRegister">Sign up</string>
+
+
+    <!-- ERRORES -->
+    <!-- LOGIN -->
+    <string name="errorTextEmail">Invalid e-mail or empty</string>
+    <string name="errorTextPasswd">Password too short or empty</string>
+    <string name="errorLoginInvalidUser">Invalid e-mail</string>
+    <string name="errorLoginInvalidPassword">Wrong password</string>
+    <string name="errorLogin">ERROR: Can\'t login, please try again later</string>
+    <string name="errorEmptyLogin">E-mail or password empty</string>
+
+    <!-- REGISTER -->
+    <string name="errEqualPasswd">Password must be the same</string>
+    <string name="errorEmptyEmail">E-mail is empty</string>
+    <string name="errorEmptyPasswd">E-mail is empty</string>
+    <string name="errorWeakPasswd">Password too weak</string>
+    <string name="errorRegisterCollision">This user already exists</string>
+    <string name="errorRegister">ERROR: Can\'t sign up, please try again later</string>
+    <string name="nav_search">Search</string>
+
 </resources>

@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#2F9A90</color>
-    <color name="colorPrimaryDark">#005AA1</color>
-    <color name="colorAccent">#1C4F6B</color>
-    <color name="colorText">#FFFFFF</color>
-    <color name="colorMenuText">#000000</color>
-    <color name="colorMenuCatText">#838383</color>
-    <color name="loginBackground">#66191919</color>
-    <color name="Black">#000000</color>
-    <color name="White">#FFFFFF</color>
+    <color name="colorPrimary">#232323</color>
+    <color name="colorPrimaryDark">#232323</color>
+    <color name="colorAccent">#4CAF50</color>
+    <color name="colorBottomChecked">#FFFFFF</color>
+    <color name="colorBottomNotChecked">#858585</color>
+    <color name="titleColor">#FFFFFF</color>
 </resources>

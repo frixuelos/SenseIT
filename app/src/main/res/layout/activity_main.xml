@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
+    tools:context=".view.MainActivity"
     android:id="@+id/drawer">
 
     <!-- Toolbar -->
@@ -19,16 +19,11 @@
         android:layout_height="wrap_content"
         layout="@layout/content_main"/>
 
-    <!-- Navigation view -->
-    <com.google.android.material.navigation.NavigationView
+    <!-- Bottom navigation view -->
+    <include
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/navigationView"
-        app:menu="@menu/drawer_menu"
-        app:headerLayout="@layout/drawer_header"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        app:itemTextColor="@color/colorMenuText"
-        app:itemIconTint="@color/colorMenuText" />
+        android:layout_height="wrap_content"
+        layout="@layout/bottom_bar"/>
+
 
 </androidx.drawerlayout.widget.DrawerLayout>
