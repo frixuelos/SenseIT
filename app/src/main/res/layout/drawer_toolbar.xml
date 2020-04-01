@@ -9,6 +9,7 @@
         android:layout_height="?attr/actionBarSize"
         android:id="@+id/toolbar"
         android:theme="@style/ToolbarTheme"
+        android:elevation="60dp"
         app:titleTextAppearance="@style/ToolbarTheme.Title"/>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

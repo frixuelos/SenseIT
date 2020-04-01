@@ -10,7 +10,8 @@
 
     <!-- MAIN -->
     <string name="nav_home">Home</string>
-    <string name="nav_config">Settings</string>
+    <string name="nav_fav">Favourites</string>
+    <string name="nav_search">Search</string>
     <string name="menuGroupGeneral">General</string>
     <string name="menuGroupAdmin">Admin</string>
     <string name="welcomeMessage">Welcome !</string>
@@ -42,6 +43,6 @@
     <string name="errorWeakPasswd">Password too weak</string>
     <string name="errorRegisterCollision">This user already exists</string>
     <string name="errorRegister">ERROR: Can\'t sign up, please try again later</string>
-    <string name="nav_search">Search</string>
+
 
 </resources>

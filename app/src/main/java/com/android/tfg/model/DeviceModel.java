@@ -6,12 +6,14 @@ public class DeviceModel {
 
     private String deviceID, deviceType, name;
     private LatLng site;
+    private DataModel lastMessage;
 
     public DeviceModel(){
         this.deviceID="";
         this.deviceType="";
         this.name="";
         this.site=new LatLng(0,0);
+        this.lastMessage=new DataModel();
     }
 
     public DeviceModel(String deviceID, String deviceType, String name, LatLng site){

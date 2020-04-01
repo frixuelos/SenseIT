@@ -1,21 +1,13 @@
 package com.android.tfg.viewmodel;
 
 import android.app.Application;
-import android.content.Intent;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
-import com.android.tfg.model.LoginUserModel;
-import com.android.tfg.repository.UserRepository;
-import com.android.tfg.view.MainActivity;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
+import com.android.tfg.uc.UserRepository;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 
 public class UserViewModel extends AndroidViewModel {

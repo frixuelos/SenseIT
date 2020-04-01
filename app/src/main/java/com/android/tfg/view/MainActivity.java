@@ -2,15 +2,11 @@ package com.android.tfg.view;
 
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.graphics.Color;
 import android.os.Bundle;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
 import android.view.Menu;
 
 import android.view.MenuItem;
@@ -18,8 +14,6 @@ import android.view.Window;
 
 import com.android.tfg.R;
 import com.android.tfg.viewmodel.UserViewModel;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -40,14 +34,14 @@ public class MainActivity extends AppCompatActivity{
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.container_fragment, new SupportMapFragment())
-                .commit();
+                .commitNow();
     }
 
     public void goSearch(){
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.container_fragment, new SearchFragment())
-                .commit();
+                .commitNow();
     }
 
 
@@ -83,7 +77,7 @@ public class MainActivity extends AppCompatActivity{
                     case R.id.nav_search: goSearch();
                                         return true;
 
-                    case R.id.nav_config: goConfig();
+                    case R.id.nav_fav: goConfig();
                         return true;
                 }
                 return false;
