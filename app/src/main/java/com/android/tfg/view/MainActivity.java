@@ -10,7 +10,9 @@ import android.os.Bundle;
 import android.view.Menu;
 
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
+import android.widget.ProgressBar;
 
 import com.android.tfg.R;
 import com.android.tfg.viewmodel.UserViewModel;
@@ -74,8 +76,8 @@ public class MainActivity extends AppCompatActivity{
                     case R.id.nav_home: goHome();
                                         return true;
 
-                    case R.id.nav_search: goSearch();
-                                        return true;
+                    case R.id.nav_search:   goSearch();
+                                            return true;
 
                     case R.id.nav_fav: goConfig();
                         return true;
@@ -112,10 +114,10 @@ public class MainActivity extends AppCompatActivity{
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
-        switch (item.getItemId()){
+        /*switch (item.getItemId()){
             case R.id.optLogout:    //userViewModel.logout();
                                     break;
-        }
+        }*/
         return true;
     }
 

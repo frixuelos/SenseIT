@@ -16,6 +16,9 @@
     <string name="menuGroupAdmin">Admin</string>
     <string name="welcomeMessage">Welcome !</string>
 
+    <!-- SEARCH -->
+    <string name="searchHint">Search...</string>
+
     <!-- LOGIN -->
     <string name="btnLogin">Login</string>
     <string name="txtRegister">Create an account</string>

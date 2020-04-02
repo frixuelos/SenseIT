@@ -5,22 +5,17 @@ import com.google.android.gms.maps.model.LatLng;
 public class DeviceModel {
 
     private String deviceID, deviceType, name;
-    private LatLng site;
-    private DataModel lastMessage;
+    private MessageModel lastMessage;
 
-    public DeviceModel(){
-        this.deviceID="";
-        this.deviceType="";
-        this.name="";
-        this.site=new LatLng(0,0);
-        this.lastMessage=new DataModel();
-    }
-
-    public DeviceModel(String deviceID, String deviceType, String name, LatLng site){
+    public DeviceModel(String deviceID, String deviceType, String name, MessageModel lastMessage){
         this.deviceID=deviceID;
         this.deviceType=deviceType;
         this.name=name;
-        this.site=site;
+        this.lastMessage=lastMessage;
+    }
+
+    public LatLng getSite(){
+        return new LatLng(this.lastMessage.getComputedLocation().getLat(), this.lastMessage.getComputedLocation().getLng());
     }
 
     public String getDeviceID() {
@@ -40,18 +35,23 @@ public class DeviceModel {
     }
 
     public String getName() {
-        return name;
+        if(name!=null){
+            return name;
+        }
+        return deviceID;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public LatLng getSite() {
-        return site;
+    public MessageModel getLastMessage() {
+        return lastMessage;
     }
 
-    public void setSite(LatLng site) {
-        this.site = site;
+    public void setLastMessage(MessageModel lastMessage) {
+        this.lastMessage = lastMessage;
     }
+
+
 }

@@ -18,10 +18,18 @@
     <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.ActionBar">
         <item name="android:background">@color/colorPrimary</item>
         <item name="titleTextColor">@color/titleColor</item>
+        <item name="android:actionOverflowButtonStyle">@style/ToolbarTheme.actionOverflowButton</item>
+        <item name="colorControlNormal">@color/titleColor</item>
+        <item name="android:textColorHint">@color/titleColor</item>
+        <item name="android:textColorSecondary">@color/titleColor</item>
     </style>
 
     <style name="ToolbarTheme.Title" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
         <item name="fontFamily">monospace</item>
+    </style>
+
+    <style name="ToolbarTheme.actionOverflowButton" parent="Widget.AppCompat.Light.ActionButton.Overflow">
+        <item name="tint">@color/titleColor</item>
     </style>
 
 </resources>

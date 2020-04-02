@@ -1,13 +1,17 @@
 package com.android.tfg.viewmodel;
 
 import android.app.Application;
+import android.bluetooth.BluetoothClass;
+import android.os.Message;
 import android.provider.ContactsContract;
 import android.util.Log;
+import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 import com.android.tfg.model.DeviceModel;
+import com.android.tfg.model.MessageModel;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.firebase.database.DataSnapshot;
@@ -29,30 +33,28 @@ public class SearchViewModel extends AndroidViewModel {
     private static DatabaseReference databaseReference = database.getReference("sigfox");
     private MutableLiveData<LinkedList<DeviceModel>> devices;
 
+    public SearchViewModel(@NonNull Application application) {
+        super(application);
+        devices=new MutableLiveData<>();
+    }
+
     private ValueEventListener allDevicesListener = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
             LinkedList<DeviceModel> query = new LinkedList<>();
-            double lat=0.0, lng=0.0;
             for (DataSnapshot type : dataSnapshot.getChildren()) { // Itera los tipos
                 for (DataSnapshot id : type.getChildren()) { // Itera los IDs
-                    String deviceID = id.getKey(); // Obtiene el ID
-                    for(DataSnapshot message : id.getChildren()){ // Itera mensajes
-                        for(DataSnapshot info : message.getChildren()){ // Itera info mensaje
-                            if(info.getKey().equals("computedLocation")){
-                                for(DataSnapshot computedLocation : info.getChildren()){ // Itera computedLocation
-                                    if(computedLocation.getKey().equals("lat")){
-                                        lat=computedLocation.getValue(Float.class);
-                                    }
-                                    if(computedLocation.getKey().equals("lng")){
-                                        lng=computedLocation.getValue(Float.class);
-                                        break;
-                                    }
-                                }
-                            }
+                    final String deviceID = id.getKey(); // Obtiene el ID
+                    for (DataSnapshot deviceInfo : id.getChildren()){
+                        /********************************
+                         * SE OBTIENE EL ULTIMO MENSAJE *
+                         ********************************/
+                        if(deviceInfo.getKey().equals("lastMessage")){
+                            query.add(new DeviceModel(deviceID, null, null, deviceInfo.getValue(MessageModel.class))); // Añade el resultado
+                            break;
                         }
+
                     }
-                    query.add(new DeviceModel(deviceID, null, null, new LatLng(lat, lng))); // Añade el resultado
                 }
             }
             devices.setValue(query); // Actualiza el MutableLiveData
@@ -64,54 +66,12 @@ public class SearchViewModel extends AndroidViewModel {
         }
     };
 
-    private ValueEventListener searchDevicesListener = null;
-
-
-    public SearchViewModel(@NonNull Application application) {
-        super(application);
-        devices=new MutableLiveData<>();
-    }
-
     public MutableLiveData<LinkedList<DeviceModel>> getDevices() {
         return devices;
     }
 
-    public void setDevices(MutableLiveData<LinkedList<DeviceModel>> devices) {
-        this.devices = devices;
+    public void setDevicesListener() {
+        this.databaseReference.addValueEventListener(this.allDevicesListener);
     }
 
-    public void showDevices(final String search) {
-        if (search.isEmpty()) {
-            if(this.searchDevicesListener!=null){
-                databaseReference.removeEventListener(this.searchDevicesListener);
-                this.searchDevicesListener=null;
-            }
-            databaseReference.addValueEventListener(this.allDevicesListener); // Establecemos
-        }else{
-            databaseReference.removeEventListener(this.allDevicesListener);
-            if(this.searchDevicesListener!=null){
-                databaseReference.removeEventListener(this.searchDevicesListener);
-            }
-            this.searchDevicesListener = new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    LinkedList<DeviceModel> query = new LinkedList<>();
-                    for (DataSnapshot type : dataSnapshot.getChildren()) { // Itera los tipos
-                        for (DataSnapshot id : type.getChildren()) { // Itera los IDs
-                            String deviceID = id.getKey(); // Obtiene el ID
-                            if(deviceID.contains(search)){
-                                query.add(new DeviceModel(deviceID, null, null, null)); // Añade el resultado
-                            }
-                        }
-                    }
-                    devices.setValue(query); // Actualiza el MutableLiveData
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            };
-        }
-    }
 }

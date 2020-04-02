@@ -25,5 +25,4 @@
         android:layout_height="wrap_content"
         layout="@layout/bottom_bar"/>
 
-
 </androidx.drawerlayout.widget.DrawerLayout>

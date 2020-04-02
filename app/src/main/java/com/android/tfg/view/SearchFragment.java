@@ -3,12 +3,20 @@ package com.android.tfg.view;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import android.widget.SearchView;
+import android.widget.TextView;
+
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -20,27 +28,32 @@ import com.android.tfg.model.DeviceModel;
 import com.android.tfg.viewmodel.SearchViewModel;
 import java.util.LinkedList;
 
-public class SearchFragment extends Fragment {
+public class SearchFragment extends Fragment implements SearchView.OnQueryTextListener{
 
     private RecyclerView recyclerView;
     private SearchViewModel searchViewModel;
-    private LinearLayoutManager layoutManager;
     private ActionBar toolbar;
+    private SearchAdapter searchAdapter;
 
     // Necesario para actualizar la vista conforme a los datos de la BBDD
     public void configRecyclerView(LinkedList<DeviceModel> devices){
-        //recyclerView.setHasFixedSize(true); // no varia tamaño
-        layoutManager=new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        //recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.HORIZONTAL));
-        recyclerView.setAdapter(new SearchAdapter(devices));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        searchAdapter = new SearchAdapter(devices);
+        recyclerView.setAdapter(searchAdapter);
         recyclerView.setLayoutManager(layoutManager);
     }
 
     public void configView(View view){
-        /************
-         * TOOLBAR  *
-         ************/
+        final View vw = view;
+        /****************
+         * PROGRESS BAR *
+         ****************/
+        view.findViewById(R.id.progressBarSearch).setVisibility(View.VISIBLE);
 
+        /******************
+         * SEARCH TOOLBAR *
+         ******************/
+        setHasOptionsMenu(true);
 
         /*****************
          * RECYCLER VIEW *
@@ -51,11 +64,14 @@ public class SearchFragment extends Fragment {
         * MODEL VIEW *
         **************/
         searchViewModel = new ViewModelProvider(this).get(SearchViewModel.class);
-        searchViewModel.showDevices(""); // primera llamada para todos los dispositivos
+        searchViewModel.setDevicesListener(); // primera llamada para todos los dispositivos
         final Observer<LinkedList<DeviceModel>> obs = new Observer<LinkedList<DeviceModel>>() {
             @Override
             public void onChanged(LinkedList<DeviceModel> deviceModels) {
-                // actualizar recycler view
+                // Ocultar barra de carga cuando se muestran datos
+                vw.findViewById(R.id.progressBarSearch).setVisibility(View.INVISIBLE);
+                Log.v("ESTA EN EL OBSERVER", String.valueOf(deviceModels.getFirst().getLastMessage().getTemp()));
+                // configurar recycler view con los datos
                 configRecyclerView(deviceModels);
             }
         };
@@ -64,7 +80,7 @@ public class SearchFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(@NonNull Context context) {
+    public void onAttach(@NonNull Context context) { // Es necesario para recuperar la actividad sin nullpointer
         super.onAttach(context);
         toolbar=((AppCompatActivity)getActivity()).getSupportActionBar();
         toolbar.setTitle(getResources().getString(R.string.nav_search));
@@ -81,10 +97,32 @@ public class SearchFragment extends Fragment {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) { // Inflar menu busqueda
+        inflater.inflate(R.menu.option_menu, menu);
+        MenuItem menuItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) menuItem.getActionView();
+        searchView.setQueryHint(getResources().getString(R.string.searchHint));
+        int id = searchView.getContext().getResources().getIdentifier("android:id/search_src_text", null,null);
+        TextView textView = (TextView) searchView.findViewById(id);
+        textView.setTextColor(Color.WHITE); // color texto
+        searchView.setIconifiedByDefault(false);
 
+        /*******************
+         * SEARCH LISTENER *
+         *******************/
+        searchView.setOnQueryTextListener(this);
+
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
 
+    @Override
+    public boolean onQueryTextChange(String newText) { // Filtra con cada cambio de texto
+        searchAdapter.filter(newText);
+        return false;
+    }
 }
