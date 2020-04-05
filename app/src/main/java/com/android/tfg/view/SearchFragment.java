@@ -2,21 +2,22 @@ package com.android.tfg.view;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import android.widget.SearchView;
-import android.widget.TextView;
-
+import android.view.inputmethod.InputMethodManager;
+import androidx.appcompat.widget.SearchView;
+import android.widget.EditText;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -77,11 +78,25 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         };
         searchViewModel.getDevices().observe(getViewLifecycleOwner(), obs); // TEST dispositivos
 
+        /*****************
+         * HIDE KEYBOARD *
+         *****************/
+        view.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                ((InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(getView().getWindowToken(), 0);
+                return true;
+            }
+        });
+
     }
 
     @Override
     public void onAttach(@NonNull Context context) { // Es necesario para recuperar la actividad sin nullpointer
         super.onAttach(context);
+        /***********
+         * TOOLBAR *
+         ***********/
         toolbar=((AppCompatActivity)getActivity()).getSupportActionBar();
         toolbar.setTitle(getResources().getString(R.string.nav_search));
     }
@@ -96,15 +111,15 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         return view;
     }
 
-    @Override
+   @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) { // Inflar menu busqueda
         inflater.inflate(R.menu.option_menu, menu);
         MenuItem menuItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) menuItem.getActionView();
         searchView.setQueryHint(getResources().getString(R.string.searchHint));
-        int id = searchView.getContext().getResources().getIdentifier("android:id/search_src_text", null,null);
-        TextView textView = (TextView) searchView.findViewById(id);
-        textView.setTextColor(Color.WHITE); // color texto
+        EditText editText = (EditText) searchView.findViewById(androidx.appcompat.R.id.search_src_text);
+        editText.setHighlightColor(getResources().getColor(R.color.colorAccent));
+       editText.setTextColor(getResources().getColor(R.color.titleColor));
         searchView.setIconifiedByDefault(false);
 
         /*******************
