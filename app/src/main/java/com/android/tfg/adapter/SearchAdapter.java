@@ -64,12 +64,11 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> {
     }
 
     public void filter(String text){
-        if(text.isEmpty()){
-            this.filteredDevices.clear();
-            this.filteredDevices.addAll(devices);
-        }else{
+        this.filteredDevices.clear();
+        this.filteredDevices.addAll(devices);
+        if(!text.isEmpty()){ // Texto a filtrar
             for(DeviceModel deviceModel: this.filteredDevices){
-                if(!deviceModel.getDeviceID().contains(text)){
+                if(!deviceModel.getName().contains(text)){
                     this.filteredDevices.remove(deviceModel);
                 }
             }

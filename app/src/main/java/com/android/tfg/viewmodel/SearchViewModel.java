@@ -42,20 +42,12 @@ public class SearchViewModel extends AndroidViewModel {
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
             LinkedList<DeviceModel> query = new LinkedList<>();
-            for (DataSnapshot type : dataSnapshot.getChildren()) { // Itera los tipos
-                for (DataSnapshot id : type.getChildren()) { // Itera los IDs
-                    final String deviceID = id.getKey(); // Obtiene el ID
-                    for (DataSnapshot deviceInfo : id.getChildren()){
-                        /********************************
-                         * SE OBTIENE EL ULTIMO MENSAJE *
-                         ********************************/
-                        if(deviceInfo.getKey().equals("lastMessage")){
-                            query.add(new DeviceModel(deviceID, null, null, deviceInfo.getValue(MessageModel.class))); // Añade el resultado
-                            break;
-                        }
-
-                    }
-                }
+            for (DataSnapshot id : dataSnapshot.getChildren()) { // Itera los IDs
+                final String deviceID = id.getKey(); // Obtiene el ID
+                /********************************
+                 * SE OBTIENE EL ULTIMO MENSAJE *
+                 ********************************/
+                query.add(new DeviceModel(deviceID, null, null, id.getValue(MessageModel.class))); // Añade el resultado
             }
             devices.setValue(query); // Actualiza el MutableLiveData
         }
@@ -71,7 +63,7 @@ public class SearchViewModel extends AndroidViewModel {
     }
 
     public void setDevicesListener() {
-        this.databaseReference.addValueEventListener(this.allDevicesListener);
+        this.databaseReference.child("last").addValueEventListener(this.allDevicesListener);
     }
 
 }
