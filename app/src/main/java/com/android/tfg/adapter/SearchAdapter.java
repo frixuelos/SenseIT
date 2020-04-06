@@ -1,5 +1,6 @@
 package com.android.tfg.adapter;
 
+import android.content.Intent;
 import android.transition.AutoTransition;
 import android.transition.TransitionManager;
 import android.util.Log;
@@ -8,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
+import androidx.appcompat.widget.LinearLayoutCompat;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.tfg.R;
 import com.android.tfg.model.DeviceModel;
+import com.android.tfg.view.MoreActivity;
 import com.android.tfg.viewholder.SearchViewHolder;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -28,8 +30,9 @@ import java.util.LinkedList;
 public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> {
 
     // EXPAND VIEW
-    LinearLayout expandView;
+    LinearLayoutCompat expandView;
     Button expandButton;
+    Button moreButton;
     CardView cardView;
 
     private LinkedList<DeviceModel> devices;
@@ -57,7 +60,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> {
          ***************/
         expandView = holder.itemView.findViewById(R.id.expandView);
         expandButton = holder.itemView.findViewById(R.id.expandButton);
-        cardView = holder.itemView.findViewById(R.id.cardViewSearch);
         expandButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,12 +74,25 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> {
                 }
             }
         });
+        moreButton = holder.itemView.findViewById(R.id.moreButton);
+        moreButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.v("BOTON", "DONE");
+                Intent i = new Intent(v.getContext(), MoreActivity.class);
+                v.getContext().startActivity(i);
+            }
+        });
+        cardView = holder.itemView.findViewById(R.id.cardViewSearch);
+
 
         /****************
          * DEFAULT VIEW *
          ****************/
         holder.item_title.setText(filteredDevices.get(position).getName());
-        holder.item_description.setText(filteredDevices.get(position).getLastMessage().toString());
+        holder.item_temp.setText(String.valueOf(filteredDevices.get(position).getLastMessage().getTemp())+" ºC");
+        holder.item_hum.setText(String.valueOf(filteredDevices.get(position).getLastMessage().getHum())+" %");
+        holder.item_press.setText(String.valueOf(filteredDevices.get(position).getLastMessage().getPres())+" hPa");
         holder.item_map.onCreate(null);
         holder.item_map.onResume();
         holder.item_map.getMapAsync(new OnMapReadyCallback() {

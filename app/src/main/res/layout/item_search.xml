@@ -28,7 +28,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="bottom"
-            app:layout_constraintTop_toBottomOf="@+id/item_map">
+            app:layout_constraintTop_toBottomOf="@+id/item_map"
+            android:layout_marginTop="5dp">
 
             <TextView
                 android:id="@+id/item_title"
@@ -49,27 +50,46 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
 
-            <LinearLayout
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/expandView"
                 android:orientation="vertical"
                 app:layout_constraintTop_toBottomOf="@id/expandButton"
-                android:visibility="gone">
+                android:visibility="visible">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="?android:attr/listDivider"
+                    android:id="@+id/dividerTitle"/>
 
                 <TextView
-                    android:id="@+id/item_description"
+                    android:id="@+id/item_temp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="21.6 ºC"
                     android:textSize="24sp"/>
+                <TextView
+                    android:id="@+id/item_hum"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="50 %"
+                    android:textSize="24sp"/>
+
+                <TextView
+                    android:id="@+id/item_press"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="1010.25 hPa"
+                    android:textSize="24sp"/>
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="2dp"
+                    android:layout_height="1dp"
                     android:layout_marginTop="20dp"
-                    android:background="#333"
-                    android:alpha="0.2"
+                    android:background="?android:attr/listDivider"
                     android:id="@+id/divider"/>
 
                 <Button
@@ -77,9 +97,10 @@
                     android:layout_height="wrap_content"
                     style="@style/Widget.AppCompat.Button.Borderless"
                     android:text="@string/itemMoreButton"
-                    android:textColor="@color/colorAccent"/>
+                    android:textColor="@color/colorAccent"
+                    android:id="@+id/moreButton"/>
 
-            </LinearLayout>
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
