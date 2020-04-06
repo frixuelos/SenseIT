@@ -100,6 +100,6 @@ public class MessageModel {
     @NonNull
     @Override
     public String toString() {
-        return this.temp + "\n" + this.pres + "\n" + this.hum;
+        return this.temp + " ºC\t\t" + this.pres + " hPa\t\t" + this.hum+" %";
     }
 }

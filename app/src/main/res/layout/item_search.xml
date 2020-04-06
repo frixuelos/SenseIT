@@ -8,42 +8,81 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:layout_margin="5dp"
-    app:cardCornerRadius="5dp">
+    app:cardCornerRadius="5dp"
+    android:elevation="4dp"
+    style="@style/CardView.Light"
+    android:id="@+id/cardViewSearch">
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_margin="5dp">
 
-        <com.google.android.gms.maps.MapView
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_margin="5dp"
-            android:id="@+id/item_map"/>
+    <com.google.android.gms.maps.MapView
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:id="@+id/item_map"
+        app:layout_constraintTop_toTopOf="parent"/>
 
-        <androidx.appcompat.widget.LinearLayoutCompat
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_margin="5dp">
+            android:gravity="bottom"
+            app:layout_constraintTop_toBottomOf="@+id/item_map">
 
             <TextView
-                android:layout_width="match_parent"
+                android:id="@+id/item_title"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/rubik"
                 android:text="Title"
-                android:textSize="24dp"
-                android:id="@+id/item_title"/>
+                android:textSize="24sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
+            <Button
+                android:id="@+id/expandButton"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:background="@drawable/ic_keyboard_arrow_down_24dp"
+                android:backgroundTint="@color/colorAccent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:textSize="32dp"
-                android:text="21.6 ºC"
-                android:id="@+id/item_description" />
+                android:id="@+id/expandView"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@id/expandButton"
+                android:visibility="gone">
 
-        </androidx.appcompat.widget.LinearLayoutCompat>
+                <TextView
+                    android:id="@+id/item_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="21.6 ºC"
+                    android:textSize="24sp"/>
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="20dp"
+                    android:background="#333"
+                    android:alpha="0.2"
+                    android:id="@+id/divider"/>
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:text="@string/itemMoreButton"
+                    android:textColor="@color/colorAccent"/>
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

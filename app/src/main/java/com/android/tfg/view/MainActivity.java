@@ -16,7 +16,6 @@ import android.view.Window;
 import android.widget.ProgressBar;
 
 import com.android.tfg.R;
-import com.android.tfg.viewmodel.UserViewModel;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -24,7 +23,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity{
 
-    UserViewModel userViewModel;
     BottomNavigationView bottomNavigationView;
 
     public void goHome(){
@@ -54,11 +52,6 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY); // para ocultar con scroll
         setContentView(R.layout.activity_main);
-
-        /**************
-         * VIEW MODEL *
-         **************/
-        initLoginUserViewModel();
 
         /***********
          * TOOLBAR *
@@ -93,10 +86,6 @@ public class MainActivity extends AppCompatActivity{
          ***********************/
         goHome();
 
-    }
-
-    private void initLoginUserViewModel(){
-        userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
     }
 
     @Override

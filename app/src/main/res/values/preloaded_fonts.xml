@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="preloaded_fonts" translatable="false">
+        <item>@font/cambay</item>
+        <item>@font/julius_sans_one</item>
+        <item>@font/lato_light</item>
+        <item>@font/lato_thin</item>
+        <item>@font/rubik</item>
+        <item>@font/sintony</item>
+    </array>
+</resources>

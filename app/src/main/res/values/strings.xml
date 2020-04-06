@@ -18,6 +18,7 @@
 
     <!-- SEARCH -->
     <string name="searchHint">Search...</string>
+    <string name="itemMoreButton">MORE</string>
 
     <!-- LOGIN -->
     <string name="btnLogin">Login</string>
