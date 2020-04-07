@@ -55,6 +55,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull SearchViewHolder holder, final int position) {
+        final int pos = position;
         /***************
          * EXPAND VIEW *
          ***************/
@@ -78,8 +79,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> {
         moreButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.v("BOTON", "DONE");
                 Intent i = new Intent(v.getContext(), MoreActivity.class);
+                i.putExtra("device", filteredDevices.get(pos).getDeviceID());
                 v.getContext().startActivity(i);
             }
         });

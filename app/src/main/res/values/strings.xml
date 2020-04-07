@@ -10,7 +10,7 @@
 
     <!-- MAIN -->
     <string name="nav_home">Home</string>
-    <string name="nav_fav">Favourites</string>
+    <string name="nav_fav">Favorites</string>
     <string name="nav_search">Search</string>
     <string name="menuGroupGeneral">General</string>
     <string name="menuGroupAdmin">Admin</string>
@@ -19,6 +19,11 @@
     <!-- SEARCH -->
     <string name="searchHint">Search...</string>
     <string name="itemMoreButton">MORE</string>
+
+    <!-- MORE -->
+    <string name="tempTitle">Temperature</string>
+    <string name="humTitle">Humidity</string>
+    <string name="presTitle">Pressure</string>
 
     <!-- LOGIN -->
     <string name="btnLogin">Login</string>
@@ -29,6 +34,9 @@
     <!-- REGISTER -->
     <string name="hintRePasswd">Confirm password</string>
     <string name="btnRegister">Sign up</string>
+
+    <!-- MORE -->
+    <string name="moreNoData">No data.</string>
 
 
     <!-- ERRORES -->

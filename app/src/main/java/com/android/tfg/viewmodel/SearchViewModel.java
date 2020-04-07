@@ -38,32 +38,30 @@ public class SearchViewModel extends AndroidViewModel {
         devices=new MutableLiveData<>();
     }
 
-    private ValueEventListener allDevicesListener = new ValueEventListener() {
-        @Override
-        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-            LinkedList<DeviceModel> query = new LinkedList<>();
-            for (DataSnapshot id : dataSnapshot.getChildren()) { // Itera los IDs
-                final String deviceID = id.getKey(); // Obtiene el ID
-                /********************************
-                 * SE OBTIENE EL ULTIMO MENSAJE *
-                 ********************************/
-                query.add(new DeviceModel(deviceID, null, null, id.getValue(MessageModel.class))); // Añade el resultado
-            }
-            devices.setValue(query); // Actualiza el MutableLiveData
-        }
-
-        @Override
-        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-        }
-    };
-
     public MutableLiveData<LinkedList<DeviceModel>> getDevices() {
         return devices;
     }
 
     public void setDevicesListener() {
-        this.databaseReference.child("last").addValueEventListener(this.allDevicesListener);
+        databaseReference.child("last").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                LinkedList<DeviceModel> query = new LinkedList<>();
+                for (DataSnapshot id : dataSnapshot.getChildren()) { // Itera los IDs
+                    final String deviceID = id.getKey(); // Obtiene el ID
+                    /********************************
+                     * SE OBTIENE EL ULTIMO MENSAJE *
+                     ********************************/
+                    query.add(new DeviceModel(deviceID, null, null, id.getValue(MessageModel.class))); // Añade el resultado
+                }
+                devices.setValue(query); // Actualiza el MutableLiveData
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
 }

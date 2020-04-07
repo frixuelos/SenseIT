@@ -71,7 +71,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
             public void onChanged(LinkedList<DeviceModel> deviceModels) {
                 // Ocultar barra de carga cuando se muestran datos
                 vw.findViewById(R.id.progressBarSearch).setVisibility(View.INVISIBLE);
-                Log.v("ESTA EN EL OBSERVER", String.valueOf(deviceModels.getFirst().getLastMessage().getTemp()));
+
                 // configurar recycler view con los datos
                 configRecyclerView(deviceModels);
             }
@@ -119,7 +119,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         searchView.setQueryHint(getResources().getString(R.string.searchHint));
         EditText editText = (EditText) searchView.findViewById(androidx.appcompat.R.id.search_src_text);
         editText.setHighlightColor(getResources().getColor(R.color.colorAccent));
-       editText.setTextColor(getResources().getColor(R.color.titleColor));
+        editText.setTextColor(getResources().getColor(R.color.titleColor));
         searchView.setIconifiedByDefault(false);
 
         /*******************

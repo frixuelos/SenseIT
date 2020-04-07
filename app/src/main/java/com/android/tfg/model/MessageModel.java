@@ -5,7 +5,8 @@ import androidx.annotation.NonNull;
 public class MessageModel {
 
     private double temp, pres, hum, batt, fixedLat, fixedLng;
-    private int date, countryCode;
+    private long date;
+    private int countryCode;
     private String operatorName, lqi;
     private ComputedLocationModel computedLocation;
 
@@ -57,11 +58,11 @@ public class MessageModel {
         this.fixedLng = fixedLng;
     }
 
-    public int getDate() {
+    public long getDate() {
         return date;
     }
 
-    public void setDate(int date) {
+    public void setDate(long date) {
         this.date = date;
     }
 

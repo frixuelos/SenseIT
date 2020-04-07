@@ -74,4 +74,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
 
+    // MPAndroidCHart
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
 }
