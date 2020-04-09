@@ -6,4 +6,6 @@
     <color name="colorBottomChecked">#FFFFFF</color>
     <color name="colorBottomNotChecked">#858585</color>
     <color name="titleColor">#FFFFFF</color>
+    <color name="tempColor">#A6FF0000</color>
+    <color name="transparent">#00FFFFFF</color>
 </resources>

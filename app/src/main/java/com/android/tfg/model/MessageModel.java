@@ -4,11 +4,26 @@ import androidx.annotation.NonNull;
 
 public class MessageModel {
 
-    private double temp, pres, hum, batt, fixedLat, fixedLng;
+    private double temp;
+    private double pres;
+    private double hum;
+    private double batt;
+    private double fixedLat;
+    private double fixedLng;
+    private double uv;
     private long date;
     private int countryCode;
     private String operatorName, lqi;
     private ComputedLocationModel computedLocation;
+
+
+    public double getUv() {
+        return uv;
+    }
+
+    public void setUv(double uv) {
+        this.uv = uv;
+    }
 
     public double getTemp() {
         return temp;

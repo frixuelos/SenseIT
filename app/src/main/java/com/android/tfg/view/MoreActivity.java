@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class MoreActivity extends AppCompatActivity {
@@ -49,6 +50,7 @@ public class MoreActivity extends AppCompatActivity {
         // escalado y arrastre
         chart.setDragEnabled(true);
         chart.setScaleEnabled(true);
+        chart.setScaleYEnabled(true);
         chart.setHorizontalScrollBarEnabled(true);
         chart.setDrawGridBackground(true);
         chart.setHighlightPerDragEnabled(true);
@@ -68,10 +70,11 @@ public class MoreActivity extends AppCompatActivity {
         XAxis xAxis = chart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setTextSize(10f);
+        xAxis.setGranularityEnabled(true);
+        xAxis.setGranularity(1f);
         xAxis.setDrawAxisLine(false);
         xAxis.setDrawGridLines(false);
         xAxis.setCenterAxisLabels(true);
-        xAxis.setGranularity(0.25f); // 15 min
         xAxis.setValueFormatter(new ValueFormatter() {
             private final SimpleDateFormat mFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
             @Override
@@ -81,7 +84,7 @@ public class MoreActivity extends AppCompatActivity {
         });
         xAxis.setEnabled(true);
         // Se muestran las ultimas 24 horas incialmente
-        xAxis.setAxisMinimum((System.currentTimeMillis()/1000F)-(TimeUnit.HOURS.toMillis(24)/1000F));
+        //xAxis.setAxisMinimum((System.currentTimeMillis()/1000F)-(TimeUnit.HOURS.toMillis(24)/1000F));
 
 
         /*********
@@ -91,7 +94,6 @@ public class MoreActivity extends AppCompatActivity {
         leftAxis.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART);
         leftAxis.setDrawGridLines(false);
         leftAxis.setGranularityEnabled(true);
-        //leftAxis.setYOffset(-9f);
         leftAxis.setEnabled(false);
         YAxis rightAxis = chart.getAxisRight();
         rightAxis.setEnabled(false);
@@ -117,16 +119,18 @@ public class MoreActivity extends AppCompatActivity {
          *********************/
         LineDataSet serieTemp = new LineDataSet(temp, getString(R.string.tempTitle));
         serieTemp.setAxisDependency(YAxis.AxisDependency.LEFT);
-        serieTemp.setColor(Color.TRANSPARENT);
+        serieTemp.enableDashedLine(50, 10, 0);
+        serieTemp.setColor(Color.BLACK);
         serieTemp.setValueTextColor(Color.BLACK);
-        serieTemp.setLineWidth(0.2F);
-        serieTemp.setDrawCircles(false);
+        serieTemp.setLineWidth(2F);
+        serieTemp.setDrawCircles(true);
         serieTemp.setDrawValues(true);
-        serieTemp.setFillAlpha(65);
-        serieTemp.setFillColor(Color.RED);
-        serieTemp.setHighLightColor(Color.rgb(244, 117, 117));
+        serieTemp.setCircleColor(Color.BLACK);
         serieTemp.setDrawCircleHole(false);
+        serieTemp.setFillDrawable(getDrawable(R.drawable.gradient_temp));
+        serieTemp.setHighlightEnabled(false);
         serieTemp.setDrawFilled(true);
+        chart.setVisibleXRange(serieTemp.getXMin(), serieTemp.getXMax());
 
         // Se convierte a objeto con todos los datos
         LineData tempData = new LineData(serieTemp);
@@ -143,14 +147,14 @@ public class MoreActivity extends AppCompatActivity {
 
     public void configView(){
         // Device
-        device=(String)getIntent().getExtras().get("device");
+        device=(String) Objects.requireNonNull(getIntent().getExtras()).get("device");
 
         /***********
          * TOOLBAR *
          ***********/
         toolbar=findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         setTitle(device);
         /***********
          * GRAFICO *

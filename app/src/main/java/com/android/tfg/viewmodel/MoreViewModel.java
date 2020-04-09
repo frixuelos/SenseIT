@@ -45,7 +45,9 @@ public class MoreViewModel extends AndroidViewModel {
                      ***************************/
                     query.add(id.getValue(MessageModel.class)); // Añade el resultado
                 }
-                messages.setValue(query); // Actualiza el MutableLiveData
+                if(!query.isEmpty()){
+                        messages.setValue(query);// Actualiza el MutableLiveData
+                }
             }
 
             @Override
