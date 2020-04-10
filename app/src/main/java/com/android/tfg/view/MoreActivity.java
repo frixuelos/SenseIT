@@ -2,9 +2,9 @@ package com.android.tfg.view;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.renderscript.Sampler;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,80 +23,101 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 public class MoreActivity extends AppCompatActivity {
 
     Toolbar toolbar;
-    LineChart chart;
+    HashMap<String,LineChart> charts;
     MoreViewModel moreViewModel;
     String device;
 
     public void setupChart(){
-        chart=findViewById(R.id.moreChart);
-        // sin descripcion
-        chart.getDescription().setEnabled(false);
-        // para las acciones al pulsar
-        chart.setTouchEnabled(true);
-        chart.setDragDecelerationFrictionCoef(0.9f);
-        // escalado y arrastre
-        chart.setDragEnabled(true);
-        chart.setScaleEnabled(true);
-        chart.setScaleYEnabled(true);
-        chart.setHorizontalScrollBarEnabled(true);
-        chart.setDrawGridBackground(true);
-        chart.setHighlightPerDragEnabled(true);
-        chart.setPinchZoom(true);
-        chart.setNoDataTextColor(Color.BLACK);
-        chart.setNoDataText(getString(R.string.moreNoData));
-        // fondo
-        chart.setGridBackgroundColor(Color.TRANSPARENT);
+        /**********************
+         * TODOS LOS GRAFICOS *
+         **********************/
+        charts=new HashMap<>();
+        charts.put("temp", (LineChart) findViewById(R.id.tempChart));
+        Objects.requireNonNull(charts.get("temp")).getDescription().setTextSize(24f);
+        Objects.requireNonNull(charts.get("temp")).getDescription().setText(getString(R.string.tempTitle));
 
-        // leyenda
-        Legend l = chart.getLegend();
-        l.setEnabled(false);
+        charts.put("hum", (LineChart) findViewById(R.id.humChart));
+        Objects.requireNonNull(charts.get("hum")).getDescription().setTextSize(24f);
+        Objects.requireNonNull(charts.get("hum")).getDescription().setText(getString(R.string.humTitle));
 
-        /*********
-         * EJE X *
-         *********/
-        XAxis xAxis = chart.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setTextSize(10f);
-        xAxis.setGranularityEnabled(true);
-        xAxis.setGranularity(1f);
-        xAxis.setDrawAxisLine(false);
-        xAxis.setDrawGridLines(false);
-        xAxis.setCenterAxisLabels(true);
-        xAxis.setValueFormatter(new ValueFormatter() {
-            private final SimpleDateFormat mFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
-            @Override
-            public String getFormattedValue(float value) {
-                return mFormat.format(new Date((long)value*1000L));
-            }
-        });
-        xAxis.setEnabled(true);
-        // Se muestran las ultimas 24 horas incialmente
-        //xAxis.setAxisMinimum((System.currentTimeMillis()/1000F)-(TimeUnit.HOURS.toMillis(24)/1000F));
+        charts.put("pres", (LineChart) findViewById(R.id.presChart));
+        Objects.requireNonNull(charts.get("pres")).getDescription().setTextSize(24f);
+        Objects.requireNonNull(charts.get("pres")).getDescription().setText(getString(R.string.presTitle));
 
 
-        /*********
-         * EJE Y *
-         *********/
-        YAxis leftAxis = chart.getAxisLeft();
-        leftAxis.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART);
-        leftAxis.setDrawGridLines(false);
-        leftAxis.setGranularityEnabled(true);
-        leftAxis.setEnabled(false);
-        YAxis rightAxis = chart.getAxisRight();
-        rightAxis.setEnabled(false);
+        for(LineChart chart : charts.values()) {
+
+            // descripcion
+            chart.getDescription().setEnabled(true);
+            // para las acciones al pulsar
+            chart.setTouchEnabled(true);
+            chart.setDragDecelerationFrictionCoef(0.9f);
+            // escalado y arrastre
+            chart.setDragEnabled(true);
+            chart.setScaleEnabled(true);
+            chart.setScaleYEnabled(true);
+            chart.setHorizontalScrollBarEnabled(true);
+            chart.setDrawGridBackground(true);
+            chart.setHighlightPerDragEnabled(true);
+            chart.setPinchZoom(true);
+            chart.setNoDataTextColor(Color.BLACK);
+            chart.setNoDataText(getString(R.string.moreNoData));
+            // fondo
+            chart.setGridBackgroundColor(Color.TRANSPARENT);
+            // animacion
+            chart.animateY(1000);
+
+            // leyenda
+            Legend l = chart.getLegend();
+            l.setEnabled(false);
+
+            /*********
+             * EJE X *
+             *********/
+            XAxis xAxis = chart.getXAxis();
+            xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+            xAxis.setTextSize(12f);
+            xAxis.setGranularityEnabled(true);
+            xAxis.setGranularity(900f);
+            xAxis.setDrawAxisLine(false);
+            xAxis.setDrawGridLines(true);
+            xAxis.enableGridDashedLine(10,5,0);
+            xAxis.setCenterAxisLabels(true);
+            xAxis.setLabelRotationAngle(-45f);
+            xAxis.setValueFormatter(new ValueFormatter() {
+                private final SimpleDateFormat mFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+
+                @Override
+                public String getFormattedValue(float value) {
+                    return mFormat.format(new Date((long) value * 1000L));
+                }
+            });
+            xAxis.setEnabled(true);
+
+            /*********
+             * EJE Y *
+             *********/
+            YAxis leftAxis = chart.getAxisLeft();
+            leftAxis.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART);
+            leftAxis.setDrawGridLines(false);
+            leftAxis.setGranularityEnabled(true);
+            leftAxis.setEnabled(false);
+            leftAxis.setLabelCount(4);
+            YAxis rightAxis = chart.getAxisRight();
+            rightAxis.setEnabled(false);
+        }
 
     }
 
@@ -130,22 +151,105 @@ public class MoreActivity extends AppCompatActivity {
         serieTemp.setFillDrawable(getDrawable(R.drawable.gradient_temp));
         serieTemp.setHighlightEnabled(false);
         serieTemp.setDrawFilled(true);
-        chart.setVisibleXRange(serieTemp.getXMin(), serieTemp.getXMax());
 
         // Se convierte a objeto con todos los datos
         LineData tempData = new LineData(serieTemp);
         tempData.setValueTextColor(Color.BLACK);
-        tempData.setValueTextSize(9f);
+        tempData.setValueTextSize(12f);
 
         // Agregar datos
-        chart.setData(tempData);
+        Objects.requireNonNull(charts.get("temp")).setData(tempData);
 
         // Actualizar grafico
-        chart.invalidate();
+        Objects.requireNonNull(charts.get("temp")).invalidate();
+
+        // Visible 2 ultimas horas
+        Objects.requireNonNull(charts.get("temp")).setVisibleXRangeMaximum(2*60*60);
+        Objects.requireNonNull(charts.get("temp")).moveViewToX(messages.getLast().getDate()-(2*60*60));
+
+        // Animar
+        Objects.requireNonNull(charts.get("temp")).animateX(500);
+
+
+        /*****************
+         * SERIE HUMEDAD *
+         *****************/
+        LineDataSet serieHum = new LineDataSet(hum, getString(R.string.humTitle));
+        serieHum.setAxisDependency(YAxis.AxisDependency.LEFT);
+        serieHum.enableDashedLine(50, 10, 0);
+        serieHum.setColor(Color.BLACK);
+        serieHum.setValueTextColor(Color.BLACK);
+        serieHum.setLineWidth(2F);
+        serieHum.setDrawCircles(true);
+        serieHum.setDrawValues(true);
+        serieHum.setCircleColor(Color.BLACK);
+        serieHum.setDrawCircleHole(false);
+        serieHum.setFillDrawable(getDrawable(R.drawable.gradient_hum));
+        serieHum.setHighlightEnabled(false);
+        serieHum.setDrawFilled(true);
+
+        // Se convierte a objeto con todos los datos
+        LineData humData = new LineData(serieHum);
+        humData.setValueTextColor(Color.BLACK);
+        humData.setValueTextSize(12f);
+
+        // Agregar datos
+        Objects.requireNonNull(charts.get("hum")).setData(humData);
+
+        // Actualizar grafico
+        Objects.requireNonNull(charts.get("hum")).invalidate();
+
+        // Visible 2 ultimas horas
+        Objects.requireNonNull(charts.get("hum")).setVisibleXRangeMaximum(2*60*60);
+        Objects.requireNonNull(charts.get("hum")).moveViewToX(messages.getLast().getDate()-(2*60*60));
+
+        // Animar
+        Objects.requireNonNull(charts.get("hum")).animateX(500);
+
+        /*****************
+         * SERIE PRESION *
+         *****************/
+        LineDataSet seriePres = new LineDataSet(press, getString(R.string.presTitle));
+        seriePres.setAxisDependency(YAxis.AxisDependency.LEFT);
+        seriePres.enableDashedLine(50, 10, 0);
+        seriePres.setColor(Color.BLACK);
+        seriePres.setValueTextColor(Color.BLACK);
+        seriePres.setLineWidth(2F);
+        seriePres.setDrawCircles(true);
+        seriePres.setDrawValues(true);
+        seriePres.setCircleColor(Color.BLACK);
+        seriePres.setDrawCircleHole(false);
+        seriePres.setFillDrawable(getDrawable(R.drawable.gradient_pres));
+        seriePres.setHighlightEnabled(false);
+        seriePres.setDrawFilled(true);
+
+        // Se convierte a objeto con todos los datos
+        LineData presData = new LineData(seriePres);
+        presData.setValueTextColor(Color.BLACK);
+        presData.setValueTextSize(12f);
+
+        // Agregar datos
+        Objects.requireNonNull(charts.get("pres")).setData(presData);
+
+        // Actualizar grafico
+        Objects.requireNonNull(charts.get("pres")).invalidate();
+
+        // Visible 2 ultimas horas
+        Objects.requireNonNull(charts.get("pres")).setVisibleXRangeMaximum(2*60*60);
+        Objects.requireNonNull(charts.get("pres")).moveViewToX(messages.getLast().getDate()-(2*60*60));
+
+        // Animar
+        Objects.requireNonNull(charts.get("pres")).animateX(500);
 
     }
 
     public void configView(){
+
+        /****************
+         * PROGRESS BAR *
+         ****************/
+        findViewById(R.id.progressBarMore).setVisibility(View.VISIBLE);
+
         // Device
         device=(String) Objects.requireNonNull(getIntent().getExtras()).get("device");
 
@@ -156,6 +260,7 @@ public class MoreActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         setTitle(device);
+
         /***********
          * GRAFICO *
          ***********/
@@ -166,16 +271,13 @@ public class MoreActivity extends AppCompatActivity {
          **************/
         moreViewModel = new ViewModelProvider(this).get(MoreViewModel.class);
         moreViewModel.getMessagesFromDevice(device); // primera llamada para todos los dispositivos
-        final Observer<LinkedList<MessageModel>> obs = new Observer<LinkedList<MessageModel>>() {
-            @Override
-            public void onChanged(LinkedList<MessageModel> messages) {
-                // Ocultar barra de carga cuando se muestran datos
-                //vw.findViewById(R.id.progressBarSearch).setVisibility(View.INVISIBLE);
+        final Observer<LinkedList<MessageModel>> obs = messages -> {
+            // Ocultar barra de carga cuando se muestran datos
+            findViewById(R.id.progressBarMore).setVisibility(View.GONE);
 
-                // añadir datos al grafico
-                setData(messages);
-                Log.v("Mensajes...", String.valueOf(messages.getFirst().getDate()));
-            }
+            // añadir datos al grafico
+            setData(messages);
+            Log.v("Mensajes...", String.valueOf(messages.getFirst().getDate()));
         };
         moreViewModel.getMessages().observe(this, obs); // mensajes
 

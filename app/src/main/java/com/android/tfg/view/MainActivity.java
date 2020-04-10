@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity{
     BottomNavigationView bottomNavigationView;
 
     public void goHome(){
+        setTitle(getString(R.string.nav_home));
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.container_fragment, new HomeFragment())
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
     public void goSearch(){
+        setTitle(getString(R.string.nav_search));
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.container_fragment, new SearchFragment())

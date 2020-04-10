@@ -28,6 +28,7 @@ import com.android.tfg.adapter.SearchAdapter;
 import com.android.tfg.model.DeviceModel;
 import com.android.tfg.viewmodel.SearchViewModel;
 import java.util.LinkedList;
+import java.util.Objects;
 
 public class SearchFragment extends Fragment implements SearchView.OnQueryTextListener{
 
@@ -94,11 +95,6 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     @Override
     public void onAttach(@NonNull Context context) { // Es necesario para recuperar la actividad sin nullpointer
         super.onAttach(context);
-        /***********
-         * TOOLBAR *
-         ***********/
-        toolbar=((AppCompatActivity)getActivity()).getSupportActionBar();
-        toolbar.setTitle(getResources().getString(R.string.nav_search));
     }
 
     @Nullable
@@ -137,7 +133,9 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 
     @Override
     public boolean onQueryTextChange(String newText) { // Filtra con cada cambio de texto
-        searchAdapter.filter(newText);
+        if(searchAdapter!=null){
+            searchAdapter.filter(newText);
+        }
         return false;
     }
 }
