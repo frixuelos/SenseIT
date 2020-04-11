@@ -34,7 +34,6 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 
     private RecyclerView recyclerView;
     private SearchViewModel searchViewModel;
-    private ActionBar toolbar;
     private SearchAdapter searchAdapter;
 
     // Necesario para actualizar la vista conforme a los datos de la BBDD
@@ -46,12 +45,6 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     }
 
     public void configView(View view){
-        final View vw = view;
-        /****************
-         * PROGRESS BAR *
-         ****************/
-        view.findViewById(R.id.progressBarSearch).setVisibility(View.VISIBLE);
-
         /******************
          * SEARCH TOOLBAR *
          ******************/
@@ -70,9 +63,8 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         final Observer<LinkedList<DeviceModel>> obs = new Observer<LinkedList<DeviceModel>>() {
             @Override
             public void onChanged(LinkedList<DeviceModel> deviceModels) {
-                // Ocultar barra de carga cuando se muestran datos
-                vw.findViewById(R.id.progressBarSearch).setVisibility(View.INVISIBLE);
-
+                // Ocultamos pantalla de carga
+                ((MainActivity) Objects.requireNonNull(getActivity())).done();
                 // configurar recycler view con los datos
                 configRecyclerView(deviceModels);
             }
@@ -85,7 +77,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         view.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                ((InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(getView().getWindowToken(), 0);
+                ((InputMethodManager) Objects.requireNonNull(Objects.requireNonNull(getActivity()).getSystemService(Activity.INPUT_METHOD_SERVICE))).hideSoftInputFromWindow(Objects.requireNonNull(getView()).getWindowToken(), 0);
                 return true;
             }
         });
@@ -109,8 +101,9 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 
    @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) { // Inflar menu busqueda
-        inflater.inflate(R.menu.option_menu, menu);
+       //inflater.inflate(R.menu.option_menu, menu);
         MenuItem menuItem = menu.findItem(R.id.action_search);
+        if(menuItem==null){super.onCreateOptionsMenu(menu, inflater);return;} // cuando se cambia a otra vista es nulo
         SearchView searchView = (SearchView) menuItem.getActionView();
         searchView.setQueryHint(getResources().getString(R.string.searchHint));
         EditText editText = (EditText) searchView.findViewById(androidx.appcompat.R.id.search_src_text);

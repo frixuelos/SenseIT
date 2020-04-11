@@ -9,6 +9,7 @@ import android.view.View;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -111,10 +112,12 @@ public class MoreActivity extends AppCompatActivity {
              *********/
             YAxis leftAxis = chart.getAxisLeft();
             leftAxis.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART);
-            leftAxis.setDrawGridLines(false);
+            leftAxis.setDrawGridLines(true);
             leftAxis.setGranularityEnabled(true);
-            leftAxis.setEnabled(false);
+            leftAxis.setEnabled(true);
+            leftAxis.setXOffset(-15);
             leftAxis.setLabelCount(4);
+            leftAxis.enableGridDashedLine(10,5,0);
             YAxis rightAxis = chart.getAxisRight();
             rightAxis.setEnabled(false);
         }
@@ -145,7 +148,7 @@ public class MoreActivity extends AppCompatActivity {
         serieTemp.setValueTextColor(Color.BLACK);
         serieTemp.setLineWidth(2F);
         serieTemp.setDrawCircles(true);
-        serieTemp.setDrawValues(true);
+        serieTemp.setDrawValues(false);
         serieTemp.setCircleColor(Color.BLACK);
         serieTemp.setDrawCircleHole(false);
         serieTemp.setFillDrawable(getDrawable(R.drawable.gradient_temp));
@@ -181,7 +184,7 @@ public class MoreActivity extends AppCompatActivity {
         serieHum.setValueTextColor(Color.BLACK);
         serieHum.setLineWidth(2F);
         serieHum.setDrawCircles(true);
-        serieHum.setDrawValues(true);
+        serieHum.setDrawValues(false);
         serieHum.setCircleColor(Color.BLACK);
         serieHum.setDrawCircleHole(false);
         serieHum.setFillDrawable(getDrawable(R.drawable.gradient_hum));
@@ -216,7 +219,7 @@ public class MoreActivity extends AppCompatActivity {
         seriePres.setValueTextColor(Color.BLACK);
         seriePres.setLineWidth(2F);
         seriePres.setDrawCircles(true);
-        seriePres.setDrawValues(true);
+        seriePres.setDrawValues(false);
         seriePres.setCircleColor(Color.BLACK);
         seriePres.setDrawCircleHole(false);
         seriePres.setFillDrawable(getDrawable(R.drawable.gradient_pres));
@@ -244,7 +247,6 @@ public class MoreActivity extends AppCompatActivity {
     }
 
     public void configView(){
-
         /****************
          * PROGRESS BAR *
          ****************/
@@ -275,9 +277,13 @@ public class MoreActivity extends AppCompatActivity {
             // Ocultar barra de carga cuando se muestran datos
             findViewById(R.id.progressBarMore).setVisibility(View.GONE);
 
+            // Cards visibles
+            findViewById(R.id.cardTemp).setVisibility(View.VISIBLE);
+            findViewById(R.id.cardHum).setVisibility(View.VISIBLE);
+            findViewById(R.id.cardPres).setVisibility(View.VISIBLE);
+
             // añadir datos al grafico
             setData(messages);
-            Log.v("Mensajes...", String.valueOf(messages.getFirst().getDate()));
         };
         moreViewModel.getMessages().observe(this, obs); // mensajes
 

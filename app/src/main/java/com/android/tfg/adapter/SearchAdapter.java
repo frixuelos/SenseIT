@@ -94,7 +94,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> {
         holder.item_temp.setText(String.valueOf(filteredDevices.get(position).getLastMessage().getTemp())+" ºC");
         holder.item_hum.setText(String.valueOf(filteredDevices.get(position).getLastMessage().getHum())+" %");
         holder.item_press.setText(String.valueOf(filteredDevices.get(position).getLastMessage().getPres())+" hPa");
-        holder.item_map.onCreate(null);
+       /* holder.item_map.onCreate(null);
         holder.item_map.onResume();
         holder.item_map.getMapAsync(new OnMapReadyCallback() {
             @Override
@@ -106,7 +106,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> {
                 googleMap.moveCamera(CameraUpdateFactory.newLatLng(filteredDevices.get(position).getSite()));
                 googleMap.setMinZoomPreference(15);
             }
-        });
+        });*/
     }
 
     @Override

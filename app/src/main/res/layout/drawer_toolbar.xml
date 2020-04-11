@@ -2,14 +2,15 @@
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:id="@+id/toolbar"
         android:theme="@style/ToolbarTheme"
-        android:elevation="60dp"
+        android:elevation="4dp"
         app:titleTextAppearance="@style/ToolbarTheme.Title"/>
 
 </androidx.appcompat.widget.LinearLayoutCompat>
