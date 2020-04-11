@@ -24,7 +24,7 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
 
             case 1: return new SearchFragment();
 
-            case 2: return new SupportMapFragment();
+            case 2: return new HomeFragment();
 
         }
         return null;

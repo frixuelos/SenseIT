@@ -37,14 +37,14 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     private SearchAdapter searchAdapter;
 
     // Necesario para actualizar la vista conforme a los datos de la BBDD
-    public void configRecyclerView(LinkedList<DeviceModel> devices){
+    private void configRecyclerView(LinkedList<DeviceModel> devices){
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         searchAdapter = new SearchAdapter(devices);
         recyclerView.setAdapter(searchAdapter);
         recyclerView.setLayoutManager(layoutManager);
     }
 
-    public void configView(View view){
+    private void configView(View view){
         /******************
          * SEARCH TOOLBAR *
          ******************/
@@ -54,22 +54,6 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
          * RECYCLER VIEW *
          *****************/
         recyclerView=view.findViewById(R.id.searchsRecyclerView);
-
-        /*************
-        * MODEL VIEW *
-        **************/
-        searchViewModel = new ViewModelProvider(this).get(SearchViewModel.class);
-        searchViewModel.setDevicesListener(); // primera llamada para todos los dispositivos
-        final Observer<LinkedList<DeviceModel>> obs = new Observer<LinkedList<DeviceModel>>() {
-            @Override
-            public void onChanged(LinkedList<DeviceModel> deviceModels) {
-                // Ocultamos pantalla de carga
-                ((MainActivity) Objects.requireNonNull(getActivity())).done();
-                // configurar recycler view con los datos
-                configRecyclerView(deviceModels);
-            }
-        };
-        searchViewModel.getDevices().observe(getViewLifecycleOwner(), obs); // TEST dispositivos
 
         /*****************
          * HIDE KEYBOARD *
@@ -82,6 +66,22 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
             }
         });
 
+    }
+
+    private void configViewModel(){
+        /*************
+         * MODEL VIEW *
+         **************/
+        searchViewModel = new ViewModelProvider(this).get(SearchViewModel.class);
+        searchViewModel.setDevicesListener(); // primera llamada para todos los dispositivos
+        final Observer<LinkedList<DeviceModel>> obs = new Observer<LinkedList<DeviceModel>>() {
+            @Override
+            public void onChanged(LinkedList<DeviceModel> deviceModels) {
+                // configurar recycler view con los datos
+                configRecyclerView(deviceModels);
+            }
+        };
+        searchViewModel.getDevices().observe(getViewLifecycleOwner(), obs); // TEST dispositivos
     }
 
     @Override
@@ -99,7 +99,13 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         return view;
     }
 
-   @Override
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        configViewModel(); // Configuramos el viewmodel aqui para que cargue los datos antes
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) { // Inflar menu busqueda
        //inflater.inflate(R.menu.option_menu, menu);
         MenuItem menuItem = menu.findItem(R.id.action_search);

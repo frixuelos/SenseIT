@@ -65,25 +65,100 @@
                     android:background="?android:attr/listDivider"
                     android:id="@+id/dividerTitle"/>
 
-                <TextView
-                    android:id="@+id/item_temp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="21.6 ºC"
-                    android:textSize="24sp"/>
-                <TextView
-                    android:id="@+id/item_hum"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="50 %"
-                    android:textSize="24sp"/>
 
-                <TextView
-                    android:id="@+id/item_press"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                <TableLayout
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/right_table"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1010.25 hPa"
-                    android:textSize="24sp"/>
+                    android:id="@+id/left_table">
+                    <TableRow
+                        android:layout_marginTop="5dp"
+                        android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/ic_temp"
+                        android:padding="5dp"
+                        android:id="@+id/icon_temp"/>
+
+                    <TextView
+                        android:id="@+id/item_temp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="21.6"
+                        android:textSize="24sp"/>
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_marginTop="5dp"
+                        android:gravity="center">
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="16dp"
+                        android:src="@drawable/ic_hum"
+                        android:id="@+id/icon_hum"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="59"
+                        android:textSize="24dp"
+                        android:id="@+id/item_hum"/>
+                    </TableRow>
+                    </TableLayout>
+
+                    <TableLayout
+                        android:id="@+id/right_table"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/left_table"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                    <TableRow
+                        android:layout_marginTop="5dp"
+                        android:gravity="center">
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="16dp"
+                        android:src="@drawable/ic_pres"
+                        android:id="@+id/icon_pres"/>
+
+                    <TextView
+                        android:id="@+id/item_pres"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1018,23"
+                        android:textSize="24dp"/>
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_marginTop="5dp"
+                        android:gravity="center">
+                    <ImageView
+                        android:id="@+id/icon_uv"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/ic_uv"/>
+
+                    <TextView
+                        android:id="@+id/item_uv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0,14"
+                        android:textSize="24dp"/>
+                    </TableRow>
+                </TableLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <View
                     android:layout_width="match_parent"

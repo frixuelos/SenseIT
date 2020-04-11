@@ -46,7 +46,7 @@ public class MoreViewModel extends AndroidViewModel implements ValueEventListene
     }
 
     public void getMessagesFromDevice(String device){
-        if(device.isEmpty()){return;} // por si el string esta vacio
+        if(device==null){return;} // por si el string esta vacio
         databaseReference.child(device).orderByKey().limitToLast(140).addValueEventListener(this);
     }
 

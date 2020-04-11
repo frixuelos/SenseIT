@@ -10,6 +10,11 @@
         <item name="fontFamily">@font/rubik</item>
     </style>
 
+    <style name="AppTheme.Launcher">
+        <item name="android:windowBackground">@drawable/design_load</item>
+        <!--<item name="android:windowFullscreen">true</item>-->
+    </style>
+
     <style name="bottomNavStyle">
         <item name="android:background">@color/colorPrimary</item>
         <item name="itemIconTint">@color/bottom_nav_bar</item>

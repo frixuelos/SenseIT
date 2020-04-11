@@ -30,14 +30,23 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity{
 
-    BottomNavigationView bottomNavigationView;
-    ViewPager viewPager;
-    SearchAdapter searchAdapter;
+    private BottomNavigationView bottomNavigationView;
+    private ViewPager viewPager;
+    private SearchAdapter searchAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        // modo normal (muestra pantalla inicio)
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        setTheme(R.style.AppTheme);
+
+
         supportRequestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY); // para ocultar con scroll
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         /***********
@@ -126,8 +135,4 @@ public class MainActivity extends AppCompatActivity{
         return super.onCreateOptionsMenu(menu);
     }
 
-    public void done(){
-        TransitionManager.beginDelayedTransition(findViewById(R.id.load), new AutoTransition());
-        findViewById(R.id.load).setVisibility(View.GONE);
-    } // notificar la carga de datos y ocultar pantalla de carga
 }

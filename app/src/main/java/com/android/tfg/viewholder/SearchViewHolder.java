@@ -17,6 +17,7 @@ public class SearchViewHolder extends RecyclerView.ViewHolder {
     public TextView item_temp;
     public TextView item_hum;
     public TextView item_press;
+    public TextView item_uv;
 
     public SearchViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -28,7 +29,8 @@ public class SearchViewHolder extends RecyclerView.ViewHolder {
         item_title=itemView.findViewById(R.id.item_title);
         item_temp=itemView.findViewById(R.id.item_temp);
         item_hum=itemView.findViewById(R.id.item_hum);
-        item_press=itemView.findViewById(R.id.item_press);
+        item_press=itemView.findViewById(R.id.item_pres);
+        item_uv=itemView.findViewById(R.id.item_uv);
 
 
     }
