@@ -2,7 +2,6 @@ package com.android.tfg.view;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,27 +31,13 @@ import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Objects;
 
-public class HumChartFragment extends Fragment {
+public class PresChartFragment extends Fragment {
 
-    LineChart chart;
     MoreViewModel moreViewModel;
+    LineChart chart;
 
-    public HumChartFragment() {
-    }
+    public PresChartFragment(){
 
-    private void configViewModel(){
-        /**************
-         * MODEL VIEW *
-         **************/
-        moreViewModel = new ViewModelProvider(getActivity()).get("charts",MoreViewModel.class);
-        final Observer<LinkedList<MessageModel>> obs = new Observer<LinkedList<MessageModel>>() {
-            @Override
-            public void onChanged(LinkedList<MessageModel> messages) {
-                // añadir datos al grafico
-                setData(messages);
-            }
-        };
-        moreViewModel.getMessages().observe(getViewLifecycleOwner(), obs); // mensajes
     }
 
     private void setData(LinkedList<MessageModel> messages) {
@@ -60,34 +45,34 @@ public class HumChartFragment extends Fragment {
         /**************************************
          * CONVIERTE MENSAJES A VALORES (X,Y) *
          **************************************/
-        ArrayList<Entry> hum = new ArrayList<>();
+        ArrayList<Entry> pres = new ArrayList<>();
         for (MessageModel m : messages) {
-            hum.add(new Entry(m.getDate(), (float) m.getHum()));
+            pres.add(new Entry(m.getDate(), (float) m.getPres()));
         }
 
         /*****************
-         * SERIE HUMEDAD *
+         * SERIE PRESION *
          *****************/
-        LineDataSet serieHum = new LineDataSet(hum, getString(R.string.humTitle));
-        serieHum.setAxisDependency(YAxis.AxisDependency.LEFT);
-        serieHum.enableDashedLine(50, 10, 0);
-        serieHum.setColor(Color.BLACK);
-        serieHum.setValueTextColor(Color.BLACK);
-        serieHum.setLineWidth(2F);
-        serieHum.setDrawCircles(true);
-        serieHum.setDrawValues(true);
-        serieHum.setCircleColor(Color.BLACK);
-        serieHum.setDrawCircleHole(false);
-        serieHum.setFillDrawable(Objects.requireNonNull(getView()).getResources().getDrawable(R.drawable.gradient_hum));
-        serieHum.setHighlightEnabled(false);
-        serieHum.setDrawFilled(true);
+        LineDataSet seriePres = new LineDataSet(pres, getString(R.string.presTitle));
+        seriePres.setAxisDependency(YAxis.AxisDependency.LEFT);
+        seriePres.enableDashedLine(50, 10, 0);
+        seriePres.setColor(Color.BLACK);
+        seriePres.setValueTextColor(Color.BLACK);
+        seriePres.setLineWidth(2F);
+        seriePres.setDrawCircles(true);
+        seriePres.setDrawValues(true);
+        seriePres.setCircleColor(Color.BLACK);
+        seriePres.setDrawCircleHole(false);
+        seriePres.setFillDrawable(Objects.requireNonNull(getView()).getResources().getDrawable(R.drawable.gradient_pres));
+        seriePres.setHighlightEnabled(false);
+        seriePres.setDrawFilled(true);
 
         // Se convierte a objeto con todos los datos
-        LineData humData = new LineData(serieHum);
-        humData.setValueTextColor(Color.BLACK);
-        humData.setValueTextSize(12f);
+        LineData presData = new LineData(seriePres);
+        presData.setValueTextColor(Color.BLACK);
+        presData.setValueTextSize(12f);
         // Formatter para mostrar solo 2 decimales
-        humData.setValueFormatter(new ValueFormatter() {
+        presData.setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
                 return String.valueOf(Math.round(value*100.0)/100.0);
@@ -95,7 +80,7 @@ public class HumChartFragment extends Fragment {
         });
 
         // Agregar datos
-        chart.setData(humData);
+        chart.setData(presData);
 
         // Actualizar grafico
         chart.invalidate();
@@ -109,9 +94,9 @@ public class HumChartFragment extends Fragment {
     }
 
     private void setupChart(View v){
-        chart= v.findViewById(R.id.humChart);
+        chart= v.findViewById(R.id.presChart);
         chart.getDescription().setTextSize(24f);
-        chart.getDescription().setText(getString(R.string.humTitle));
+        chart.getDescription().setText(getString(R.string.presTitle));
 
         // descripcion
         chart.getDescription().setEnabled(false);
@@ -132,24 +117,23 @@ public class HumChartFragment extends Fragment {
         chart.setGridBackgroundColor(Color.TRANSPARENT);
         // animacion
         chart.animateY(1000);
-        // leyenda
+         // leyenda
         Legend l = chart.getLegend();
         l.setEnabled(false);
-        /*********
-         * EJE X *
-         *********/
+
+       /*********
+        * EJE X *
+        *********/
         XAxis xAxis = chart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setTextSize(12f);
-        xAxis.setGranularityEnabled(true);
-        xAxis.setGranularity(1f);
         xAxis.setDrawAxisLine(false);
         xAxis.setDrawGridLines(true);
         xAxis.enableGridDashedLine(10,5,0);
         xAxis.setCenterAxisLabels(true);
         xAxis.setLabelRotationAngle(-45f);
         xAxis.setValueFormatter(new ValueFormatter() {
-            private final SimpleDateFormat mFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+        private final SimpleDateFormat mFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
             @Override
             public String getFormattedValue(float value) {
                 return mFormat.format(new Date((long) value * 1000L));
@@ -161,20 +145,33 @@ public class HumChartFragment extends Fragment {
          * EJE Y *
          *********/
         YAxis leftAxis = chart.getAxisLeft();
-        leftAxis.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART);
+        leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
         leftAxis.setDrawGridLines(true);
-        leftAxis.setGranularityEnabled(true);
         leftAxis.setEnabled(false);
-        leftAxis.setLabelCount(4);
         leftAxis.enableGridDashedLine(10,5,0);
         YAxis rightAxis = chart.getAxisRight();
         rightAxis.setEnabled(false);
     }
 
+    private void configViewModel(){
+        /**************
+         * MODEL VIEW *
+         **************/
+        moreViewModel = new ViewModelProvider(getActivity()).get("charts",MoreViewModel.class);
+        final Observer<LinkedList<MessageModel>> obs = new Observer<LinkedList<MessageModel>>() {
+            @Override
+            public void onChanged(LinkedList<MessageModel> messages) {
+                // añadir datos al grafico
+                setData(messages);
+            }
+        };
+        moreViewModel.getMessages().observe(getViewLifecycleOwner(), obs); // mensajes
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_hum, container, false);
+        View v = inflater.inflate(R.layout.fragment_pres, container, false);
 
         /***********
          * GRAFICO *
@@ -182,11 +179,6 @@ public class HumChartFragment extends Fragment {
         setupChart(v);
 
         return v;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override

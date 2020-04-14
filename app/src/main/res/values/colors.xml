@@ -9,5 +9,6 @@
     <color name="tempColor">#A6FF0000</color>
     <color name="humColor">#A60077FF</color>
     <color name="presColor">#A600FF3C</color>
+    <color name="uvColor">#A6FFEB3B</color>
     <color name="transparent">#00FFFFFF</color>
 </resources>

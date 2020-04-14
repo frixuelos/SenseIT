@@ -25,6 +25,7 @@
     <string name="tempTitle">Temperature</string>
     <string name="humTitle">Humidity</string>
     <string name="presTitle">Pressure</string>
+    <string name="uvTitle">UV</string>
 
     <!-- LOGIN -->
     <string name="btnLogin">Login</string>

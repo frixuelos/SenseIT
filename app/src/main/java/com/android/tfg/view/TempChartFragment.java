@@ -36,15 +36,10 @@ import java.util.Objects;
 public class TempChartFragment extends Fragment {
 
     MoreViewModel moreViewModel;
-    String device;
     LineChart chart;
 
     public TempChartFragment(){
 
-    }
-
-    public TempChartFragment(String device){
-        this.device=device;
     }
 
     private void setData(LinkedList<MessageModel> messages) {
@@ -67,7 +62,7 @@ public class TempChartFragment extends Fragment {
         serieTemp.setValueTextColor(Color.BLACK);
         serieTemp.setLineWidth(2F);
         serieTemp.setDrawCircles(true);
-        serieTemp.setDrawValues(false);
+        serieTemp.setDrawValues(true);
         serieTemp.setCircleColor(Color.BLACK);
         serieTemp.setDrawCircleHole(false);
         serieTemp.setFillDrawable(Objects.requireNonNull(getView()).getResources().getDrawable(R.drawable.gradient_temp));
@@ -78,6 +73,13 @@ public class TempChartFragment extends Fragment {
         LineData tempData = new LineData(serieTemp);
         tempData.setValueTextColor(Color.BLACK);
         tempData.setValueTextSize(12f);
+        // Formatter para mostrar solo 2 decimales
+        tempData.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                return String.valueOf(Math.round(value*100.0)/100.0);
+            }
+        });
 
         // Agregar datos
         chart.setData(tempData);
@@ -99,7 +101,7 @@ public class TempChartFragment extends Fragment {
         chart.getDescription().setText(getString(R.string.tempTitle));
 
         // descripcion
-        chart.getDescription().setEnabled(true);
+        chart.getDescription().setEnabled(false);
         // para las acciones al pulsar
         chart.setTouchEnabled(true);
         chart.setDragDecelerationFrictionCoef(0.9f);
@@ -120,6 +122,7 @@ public class TempChartFragment extends Fragment {
          // leyenda
         Legend l = chart.getLegend();
         l.setEnabled(false);
+
          /*********
         * EJE X *
         *********/
@@ -146,7 +149,7 @@ public class TempChartFragment extends Fragment {
         YAxis leftAxis = chart.getAxisLeft();
         leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
         leftAxis.setDrawGridLines(true);
-        leftAxis.setEnabled(true);
+        leftAxis.setEnabled(false);
         leftAxis.enableGridDashedLine(10,5,0);
         YAxis rightAxis = chart.getAxisRight();
         rightAxis.setEnabled(false);

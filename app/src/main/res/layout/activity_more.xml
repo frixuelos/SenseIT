@@ -29,7 +29,7 @@
                 android:id="@+id/tabMore"
                 android:background="@color/colorPrimaryDark"
                 app:tabTextColor="@color/titleColor"
-                app:tabMode="scrollable"/>
+                app:tabMode="fixed" />
         </androidx.viewpager.widget.ViewPager>
     </androidx.appcompat.widget.LinearLayoutCompat>
 

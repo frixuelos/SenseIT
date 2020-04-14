@@ -10,7 +10,10 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.android.tfg.R;
 import com.android.tfg.view.HumChartFragment;
+import com.android.tfg.view.PresChartFragment;
 import com.android.tfg.view.TempChartFragment;
+import com.android.tfg.view.UVChartFragment;
+import com.google.android.gms.maps.SupportMapFragment;
 
 public class MorePagerAdapter extends FragmentStatePagerAdapter {
 
@@ -34,8 +37,10 @@ public class MorePagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
 
         switch (position){
-            default: return new TempChartFragment(device);
+            default: return new TempChartFragment();
             case 1: return new HumChartFragment();
+            case 2: return new PresChartFragment();
+            case 3: return new UVChartFragment();
         }
     }
 
@@ -48,9 +53,10 @@ public class MorePagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         switch(position){
-            case 0: return context.getString(R.string.tempTitle);
+            default: return context.getString(R.string.tempTitle);
             case 1: return context.getString(R.string.humTitle);
+            case 2: return context.getString(R.string.presTitle);
+            case 3: return context.getString(R.string.uvTitle);
         }
-        return "";
     }
 }
