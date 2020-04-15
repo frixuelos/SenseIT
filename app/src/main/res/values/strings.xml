@@ -6,6 +6,13 @@
     <string name="title_activity_login">LoginActivity</string>
     <string name="mainLoading">Loading... Please, wait</string>
 
+    <!-- VIEW MODELS -->
+    <string name="moreViewModel">more</string>
+    <string name="mainViewModel">main</string>
+
+    <!-- PREFERENCES -->
+    <string name="favoritesPreferences">fav</string>
+
     <!-- OPTIONS -->
     <string name="optLogout">Logout</string>
 
@@ -26,6 +33,7 @@
     <string name="humTitle">Humidity</string>
     <string name="presTitle">Pressure</string>
     <string name="uvTitle">UV</string>
+    <string name="favoriteEvent">Favorite</string>
 
     <!-- LOGIN -->
     <string name="btnLogin">Login</string>

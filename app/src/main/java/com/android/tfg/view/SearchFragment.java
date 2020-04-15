@@ -1,11 +1,8 @@
 package com.android.tfg.view;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,14 +23,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.tfg.R;
 import com.android.tfg.adapter.SearchAdapter;
 import com.android.tfg.model.DeviceModel;
-import com.android.tfg.viewmodel.SearchViewModel;
+import com.android.tfg.viewmodel.MainViewModel;
 import java.util.LinkedList;
 import java.util.Objects;
 
 public class SearchFragment extends Fragment implements SearchView.OnQueryTextListener{
 
     private RecyclerView recyclerView;
-    private SearchViewModel searchViewModel;
+    private MainViewModel mainViewModel;
     private SearchAdapter searchAdapter;
 
     // Necesario para actualizar la vista conforme a los datos de la BBDD
@@ -72,8 +69,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         /*************
          * MODEL VIEW *
          **************/
-        searchViewModel = new ViewModelProvider(this).get(SearchViewModel.class);
-        searchViewModel.setDevicesListener(); // primera llamada para todos los dispositivos
+        mainViewModel = new ViewModelProvider(getActivity()).get(getString(R.string.mainViewModel), MainViewModel.class);
         final Observer<LinkedList<DeviceModel>> obs = new Observer<LinkedList<DeviceModel>>() {
             @Override
             public void onChanged(LinkedList<DeviceModel> deviceModels) {
@@ -81,7 +77,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
                 configRecyclerView(deviceModels);
             }
         };
-        searchViewModel.getDevices().observe(getViewLifecycleOwner(), obs); // TEST dispositivos
+        mainViewModel.getDevices().observe(getActivity(), obs); // TEST dispositivos
     }
 
     @Override

@@ -159,7 +159,7 @@ public class TempChartFragment extends Fragment {
         /**************
          * MODEL VIEW *
          **************/
-        moreViewModel = new ViewModelProvider(getActivity()).get("charts",MoreViewModel.class);
+        moreViewModel = new ViewModelProvider(getActivity()).get(getString(R.string.moreViewModel), MoreViewModel.class);
         final Observer<LinkedList<MessageModel>> obs = new Observer<LinkedList<MessageModel>>() {
             @Override
             public void onChanged(LinkedList<MessageModel> messages) {

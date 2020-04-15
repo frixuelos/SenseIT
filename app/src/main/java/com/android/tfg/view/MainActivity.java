@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
@@ -12,6 +13,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.transition.AutoTransition;
 import android.transition.TransitionManager;
+import android.util.Log;
 import android.view.Menu;
 
 import android.view.MenuItem;
@@ -23,16 +25,30 @@ import android.widget.ProgressBar;
 import com.android.tfg.R;
 import com.android.tfg.adapter.MainPagerAdapter;
 import com.android.tfg.adapter.SearchAdapter;
+import com.android.tfg.model.MessageModel;
+import com.android.tfg.viewmodel.MainViewModel;
+import com.android.tfg.viewmodel.MoreViewModel;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.LinkedList;
 
 
 public class MainActivity extends AppCompatActivity{
 
     private BottomNavigationView bottomNavigationView;
     private ViewPager viewPager;
-    private SearchAdapter searchAdapter;
+    private MainViewModel mainViewModel;
+
+    private void configViewModel(){
+        /**************
+         * MODEL VIEW *
+         **************/
+        mainViewModel = new ViewModelProvider(this).get(getString(R.string.mainViewModel), MainViewModel.class);
+        mainViewModel.getAllDevices(); // primera llamada para todos los dispositivos
+        mainViewModel.getAllFavorites(); // primera llamada para los favoritos
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +64,11 @@ public class MainActivity extends AppCompatActivity{
         supportRequestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY); // para ocultar con scroll
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        /**************
+         * VIEW MODEL *
+         **************/
+        configViewModel();
 
         /***********
          * TOOLBAR *

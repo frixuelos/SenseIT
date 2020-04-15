@@ -1,6 +1,8 @@
 package com.android.tfg.viewmodel;
 
 import android.app.Application;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Message;
 import android.util.Log;
 
@@ -8,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.android.tfg.R;
 import com.android.tfg.model.DeviceModel;
 import com.android.tfg.model.MessageModel;
 import com.google.firebase.database.DataSnapshot;
@@ -26,6 +29,7 @@ public class MoreViewModel extends AndroidViewModel implements ValueEventListene
     private static FirebaseDatabase database = FirebaseDatabase.getInstance();
     private static DatabaseReference databaseReference = database.getReference("sigfox/messages");
     private MutableLiveData<LinkedList<MessageModel>> messages;
+    private SharedPreferences sharedPreferences;
 
     /**********************
      * TIPO DE LISTENER   *
@@ -37,8 +41,29 @@ public class MoreViewModel extends AndroidViewModel implements ValueEventListene
 
     public MoreViewModel(@NonNull Application application) {
         super(application);
+        sharedPreferences=application.getApplicationContext().getSharedPreferences(application.getApplicationContext().getString(R.string.favoritesPreferences), Context.MODE_PRIVATE);
         messages=new MutableLiveData<>();
         this.TYPE=0;
+    }
+
+    public boolean isFavorite(String device){
+        return sharedPreferences.getBoolean(device, false);
+    }
+
+    public void add2Favorites(String device){
+        // Añadir localmente a favoritos
+        sharedPreferences
+                .edit()
+                .putBoolean(device, true)
+                .apply();
+    }
+
+    public void removeFromFavorites(String device){
+        // Eliminar localmente a favoritos
+        sharedPreferences
+                .edit()
+                .remove(device)
+                .apply();
     }
 
     public MutableLiveData<LinkedList<MessageModel>> getMessages(){
