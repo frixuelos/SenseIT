@@ -52,7 +52,7 @@ public class SearchViewModel extends AndroidViewModel {
                     /********************************
                      * SE OBTIENE EL ULTIMO MENSAJE *
                      ********************************/
-                    query.add(new DeviceModel(deviceID, null, null, id.getValue(MessageModel.class))); // Añade el resultado
+                    query.add(new DeviceModel(deviceID, null, null, id.getValue(MessageModel.class))); // Añade el resultado al query
                 }
                 devices.setValue(query); // Actualiza el MutableLiveData
             }
