@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
+
+import com.android.tfg.view.FavoritesFragment;
 import com.android.tfg.view.HomeFragment;
 import com.android.tfg.view.SearchFragment;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -24,7 +26,7 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
 
             case 1: return new SearchFragment();
 
-            case 2: return new HomeFragment();
+            case 2: return new FavoritesFragment();
 
         }
         return null;
