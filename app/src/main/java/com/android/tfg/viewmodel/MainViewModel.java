@@ -38,63 +38,84 @@ public class MainViewModel extends AndroidViewModel {
     private MutableLiveData<LinkedList<DeviceModel>> devices, favDevices;
     private SharedPreferences sharedPreferences;
 
+    /*************
+     * LISTENERS *
+     *************/
+    private ValueEventListener allDevicesListener = new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            LinkedList<DeviceModel> query = new LinkedList<>();
+            for (DataSnapshot id : dataSnapshot.getChildren()) { // Itera los IDs
+                final String deviceID = id.getKey(); // Obtiene el ID
+                /********************************
+                 * SE OBTIENE EL ULTIMO MENSAJE *
+                 ********************************/
+                query.add(new DeviceModel(deviceID, null, null, id.getValue(MessageModel.class))); // Añade el resultado
+            }
+            devices.setValue(query); // Actualiza el MutableLiveData
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+        }
+    };
+    private ValueEventListener favoritesListener = new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            LinkedList<DeviceModel> query = new LinkedList<>();
+            for (DataSnapshot id : dataSnapshot.getChildren()) { // Itera los IDs
+                final String deviceID = id.getKey(); // Obtiene el ID
+                /********************************
+                 * SE OBTIENE EL ULTIMO MENSAJE *
+                 ********************************/
+                if (sharedPreferences.getAll().containsKey(deviceID)) { // solo si esta en favoritos se agrega
+                    query.add(new DeviceModel(deviceID, null, null, id.getValue(MessageModel.class))); // Añade el resultado
+                }
+                favDevices.setValue(query); // Actualiza el MutableLiveData
+            }
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+        }
+    };
+
+
     public MainViewModel(@NonNull Application application) {
         super(application);
         devices=new MutableLiveData<>();
         favDevices=new MutableLiveData<>();
         sharedPreferences=application.getApplicationContext().getSharedPreferences(application.getApplicationContext().getString(R.string.favoritesPreferences), Context.MODE_PRIVATE);
+
+        sharedPreferences.registerOnSharedPreferenceChangeListener(new SharedPreferences.OnSharedPreferenceChangeListener() {
+            @Override
+            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+                Log.v("PA","TATA");
+            }
+        });
+
     }
 
     public MutableLiveData<LinkedList<DeviceModel>> getDevices() {
         return devices;
     }
 
-    public void getAllDevices() {
-        databaseReference.child("last").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                LinkedList<DeviceModel> query = new LinkedList<>();
-                for (DataSnapshot id : dataSnapshot.getChildren()) { // Itera los IDs
-                    final String deviceID = id.getKey(); // Obtiene el ID
-                    /********************************
-                     * SE OBTIENE EL ULTIMO MENSAJE *
-                     ********************************/
-                    query.add(new DeviceModel(deviceID, null, null, id.getValue(MessageModel.class))); // Añade el resultado al query
-                }
-                devices.setValue(query); // Actualiza el MutableLiveData
-            }
+    public void registerAllDevices() {
+        databaseReference.child("last").addValueEventListener(allDevicesListener);
+    }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+    public void unregisterAllDevices(){
+        databaseReference.child("last").removeEventListener(allDevicesListener);
     }
 
     public MutableLiveData<LinkedList<DeviceModel>> getFavDevices(){ return favDevices; }
 
-    public void getAllFavorites(){
-        databaseReference.child("last").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                LinkedList<DeviceModel> query = new LinkedList<>();
-                for (DataSnapshot id : dataSnapshot.getChildren()) { // Itera los IDs
-                    final String deviceID = id.getKey(); // Obtiene el ID
-                    /********************************
-                     * SE OBTIENE EL ULTIMO MENSAJE *
-                     ********************************/
-                    if (sharedPreferences.getAll().containsKey(deviceID)) { // solo si esta en favoritos se agrega
-                        query.add(new DeviceModel(deviceID, null, null, id.getValue(MessageModel.class))); // Añade el resultado
-                    }
-                    favDevices.setValue(query); // Actualiza el MutableLiveData
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+    public void registerAllFavorites(){
+        // Puesto que es una consulta "puntual" se elimina tambien el listener
+        databaseReference.child("last").addListenerForSingleValueEvent(favoritesListener);
+        databaseReference.child("last").removeEventListener(favoritesListener);
     }
 
 }

@@ -7,16 +7,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragment_favorites"
     android:orientation="vertical"
-    tools:context="view.FavoritesFragment"
-    android:paddingBottom="56dp">
+    tools:context="view.FavoritesFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/searchsRecyclerView"
+        android:id="@+id/favoriteRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scrollbars="vertical"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:text="@string/no_fav_text"
+        android:textSize="24dp"
+        android:textAlignment="center"
+        android:id="@+id/no_fav_text"
+        android:alpha="0.5"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

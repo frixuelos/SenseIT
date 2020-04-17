@@ -25,15 +25,12 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedList;
+import java.util.Locale;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> {
-
-    // EXPAND VIEW
-    LinearLayoutCompat expandView;
-    Button expandButton;
-    Button moreButton;
-    CardView cardView;
 
     private LinkedList<DeviceModel> devices;
     private LinkedList<DeviceModel> filteredDevices;
@@ -59,24 +56,21 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> {
         /***************
          * EXPAND VIEW *
          ***************/
-        expandView = holder.itemView.findViewById(R.id.expandView);
-        expandButton = holder.itemView.findViewById(R.id.expandButton);
-        expandButton.setOnClickListener(new View.OnClickListener() {
+        holder.expand_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(expandView.getVisibility()==View.GONE){
-                    TransitionManager.beginDelayedTransition(cardView, new AutoTransition());
-                    expandView.setVisibility(View.VISIBLE);
-                    expandButton.setBackgroundResource(R.drawable.ic_keyboard_arrow_up_24dp);
+                if(holder.expand_view.getVisibility()==View.GONE){
+                    TransitionManager.beginDelayedTransition(holder.card_view, new AutoTransition());
+                    holder.expand_view.setVisibility(View.VISIBLE);
+                    holder.expand_button.setBackgroundResource(R.drawable.ic_keyboard_arrow_up_24dp);
                 }else{
-                    TransitionManager.beginDelayedTransition(cardView, new AutoTransition());
-                    expandView.setVisibility(View.GONE);
-                    expandButton.setBackgroundResource(R.drawable.ic_keyboard_arrow_down_24dp);
+                    TransitionManager.beginDelayedTransition(holder.card_view, new AutoTransition());
+                    holder.expand_view.setVisibility(View.GONE);
+                    holder.expand_button.setBackgroundResource(R.drawable.ic_keyboard_arrow_down_24dp);
                 }
             }
         });
-        moreButton = holder.itemView.findViewById(R.id.moreButton);
-        moreButton.setOnClickListener(new View.OnClickListener() {
+        holder.more_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(v.getContext(), MoreActivity.class);
@@ -84,13 +78,14 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> {
                 v.getContext().startActivity(i);
             }
         });
-        cardView = holder.itemView.findViewById(R.id.cardViewSearch);
-
 
         /****************
          * DEFAULT VIEW *
          ****************/
         holder.item_title.setText(filteredDevices.get(position).getName());
+        Date lastUpdated = new Date(filteredDevices.get(position).getLastMessage().getDate()*1000L);
+        SimpleDateFormat mFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
+        holder.item_last_updated.setText(mFormat.format(lastUpdated));
         holder.item_temp.setText(String.valueOf(filteredDevices.get(position).getLastMessage().getTemp()));
         holder.item_hum.setText(String.valueOf(filteredDevices.get(position).getLastMessage().getHum()));
         holder.item_press.setText(String.valueOf(filteredDevices.get(position).getLastMessage().getPres()));

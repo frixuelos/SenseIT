@@ -15,6 +15,8 @@ import androidx.annotation.Nullable;
 import android.view.inputmethod.InputMethodManager;
 import androidx.appcompat.widget.SearchView;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;

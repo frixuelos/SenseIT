@@ -9,6 +9,8 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.transition.AutoTransition;
@@ -35,7 +37,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.LinkedList;
 
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
     private ViewPager viewPager;
@@ -46,8 +48,8 @@ public class MainActivity extends AppCompatActivity{
          * MODEL VIEW *
          **************/
         mainViewModel = new ViewModelProvider(this).get(getString(R.string.mainViewModel), MainViewModel.class);
-        mainViewModel.getAllDevices(); // primera llamada para todos los dispositivos
-        mainViewModel.getAllFavorites(); // primera llamada para los favoritos
+        mainViewModel.registerAllDevices(); // primera llamada para todos los dispositivos
+        mainViewModel.registerAllFavorites(); // primera llamada para los favoritos
     }
 
     @Override
@@ -129,7 +131,12 @@ public class MainActivity extends AppCompatActivity{
 
             }
         });
+    }
 
+    @Override
+    protected void onDestroy() {
+        mainViewModel.unregisterAllDevices(); // Eliminar listener de dispositivos
+        super.onDestroy();
     }
 
     @Override
@@ -155,5 +162,4 @@ public class MainActivity extends AppCompatActivity{
         }
         return super.onCreateOptionsMenu(menu);
     }
-
 }
