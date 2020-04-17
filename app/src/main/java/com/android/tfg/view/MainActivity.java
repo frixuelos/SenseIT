@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.Menu;
 
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
@@ -27,6 +28,7 @@ import android.widget.ProgressBar;
 import com.android.tfg.R;
 import com.android.tfg.adapter.MainPagerAdapter;
 import com.android.tfg.adapter.SearchAdapter;
+import com.android.tfg.controller.SearchSwipeController;
 import com.android.tfg.model.MessageModel;
 import com.android.tfg.viewmodel.MainViewModel;
 import com.android.tfg.viewmodel.MoreViewModel;
@@ -104,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
          * VIEW PAGER *
          **************/
         viewPager = findViewById(R.id.mainViewPager);
+        //viewPager.setOnTouchListener((v, event) -> true); // Deshabilita el swipe
         viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager()));
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
