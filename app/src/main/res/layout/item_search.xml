@@ -35,8 +35,7 @@
                 android:id="@+id/item_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/rubik"
-                android:text="Title"
+                android:text="18AF23"
                 android:textSize="24sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -48,7 +47,8 @@
                 android:background="@drawable/ic_keyboard_arrow_down_24dp"
                 android:backgroundTint="@color/colorAccent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/item_title"/>
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
@@ -60,10 +60,20 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginBottom="20dp"
+                    android:layout_height="2dp"
+                    android:layout_marginBottom="10dp"
                     android:background="?android:attr/listDivider"
                     android:id="@+id/dividerTitle"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="24/04/2020 @ 11:00:00"
+                    android:textSize="12dp"
+                    android:alpha="0.65"
+                    android:id="@+id/item_last_update"
+                    android:layout_gravity="center_horizontal"
+                    android:paddingBottom="20dp"/>
 
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -162,7 +172,7 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="2dp"
                     android:layout_marginTop="20dp"
                     android:background="?android:attr/listDivider"
                     android:id="@+id/divider"/>

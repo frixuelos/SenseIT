@@ -34,6 +34,11 @@
     <string name="presTitle">Pressure</string>
     <string name="uvTitle">UV</string>
     <string name="favoriteEvent">Favorite</string>
+    <string name="remove_from_favorites">Removed from favorites</string>
+    <string name="add_to_favorites">Added to favorites</string>
+
+    <!-- FAVORITES -->
+    <string name="no_fav_text">Empty favorites list.</string>
 
     <!-- LOGIN -->
     <string name="btnLogin">Login</string>

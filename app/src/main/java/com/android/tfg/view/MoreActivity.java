@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,14 +42,7 @@ public class MoreActivity extends AppCompatActivity {
          * MODEL VIEW *
          **************/
         moreViewModel = new ViewModelProvider(this).get(getString(R.string.moreViewModel), MoreViewModel.class);
-        moreViewModel.getMessagesFromDevice(device); // primera llamada para todos los dispositivos
-        final Observer<LinkedList<MessageModel>> obs = new Observer<LinkedList<MessageModel>>() {
-            @Override
-            public void onChanged(LinkedList<MessageModel> messages) {
-                Log.v("ACTIVIDAD", "ESCUCHANDO");
-            }
-        };
-        moreViewModel.getMessages().observe(this, obs); // mensajes
+        moreViewModel.registerMessagesFromDevice(device); // primera llamada para todos los dispositivos
     }
 
     public void configView(){
@@ -83,17 +77,25 @@ public class MoreActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onDestroy() {
+        moreViewModel.unregisterMessagesFromDevice(device); // Eliminar listener de mensajes asociado al dispositivo
+        super.onDestroy();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // inflar boton favoritos
         getMenuInflater().inflate(R.menu.favorites_menu, menu);
 
         // cargar preferencias favoritos
-        if(moreViewModel.isFavorite(device)){
+        if(moreViewModel.isFavorite(device)){ // Añadido a favoritos
             toolbar.getMenu().findItem(R.id.favoriteEvent).setIcon(getDrawable(R.drawable.ic_favorite_checked_24dp));
             menu.findItem(R.id.favoriteEvent).setChecked(true);
-        }else{
+
+        }else{ // eliminado de favoritos
             toolbar.getMenu().findItem(R.id.favoriteEvent).setIcon(getDrawable(R.drawable.ic_favorite_24dp));
             menu.findItem(R.id.favoriteEvent).setChecked(false);
+
         }
 
         // capturar el evento fav
@@ -118,6 +120,7 @@ public class MoreActivity extends AppCompatActivity {
 
         // añadir a favoritos
         moreViewModel.add2Favorites(device);
+        Toast.makeText(getApplicationContext(), getString(R.string.add_to_favorites), Toast.LENGTH_SHORT).show();
     }
 
     private void removeFav(MenuItem item){
@@ -127,6 +130,7 @@ public class MoreActivity extends AppCompatActivity {
 
         // eliminar de favoritos
         moreViewModel.removeFromFavorites(device);
+        Toast.makeText(getApplicationContext(), getString(R.string.remove_from_favorites), Toast.LENGTH_SHORT).show();
     }
 
     @Override
