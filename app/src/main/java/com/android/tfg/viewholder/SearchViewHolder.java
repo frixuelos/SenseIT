@@ -2,6 +2,7 @@ package com.android.tfg.viewholder;
 
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.LinearLayoutCompat;
@@ -26,6 +27,7 @@ public class SearchViewHolder extends RecyclerView.ViewHolder {
     public Button expand_button;
     public LinearLayoutCompat expand_view;
     public Button more_button;
+    public ImageView item_fav_check;
     public CardView card_view;
 
     public SearchViewHolder(@NonNull View itemView) {
@@ -46,5 +48,6 @@ public class SearchViewHolder extends RecyclerView.ViewHolder {
         expand_view=itemView.findViewById(R.id.expandView);
         more_button=itemView.findViewById(R.id.moreButton);
         card_view=itemView.findViewById(R.id.cardViewSearch);
+        item_fav_check=itemView.findViewById(R.id.item_fav_check);
     }
 }

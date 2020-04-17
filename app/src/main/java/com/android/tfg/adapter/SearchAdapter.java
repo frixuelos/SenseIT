@@ -1,6 +1,9 @@
 package com.android.tfg.adapter;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.transition.AutoTransition;
@@ -8,20 +11,27 @@ import android.transition.TransitionManager;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
+import android.widget.Toast;
+
 import androidx.appcompat.widget.LinearLayoutCompat;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.tfg.R;
 import com.android.tfg.model.DeviceModel;
 import com.android.tfg.view.MoreActivity;
 import com.android.tfg.viewholder.SearchViewHolder;
+import com.android.tfg.viewmodel.MainViewModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -34,7 +44,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
-public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> {
+public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> implements Filterable {
 
     private LinkedList<DeviceModel> devices;
     private LinkedList<DeviceModel> filteredDevices;
@@ -49,7 +59,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> {
     @Override
     public SearchViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // Vista cardview
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_search, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_search_v2, parent, false);
 
         return new SearchViewHolder(view);
     }
@@ -59,7 +69,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> {
         final int pos = position;
         /***************
          * EXPAND VIEW *
-         ***************/
+         ***************
         holder.expand_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,6 +85,51 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> {
             }
         });
         holder.more_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(v.getContext(), MoreActivity.class);
+                i.putExtra("device", filteredDevices.get(pos).getDeviceID());
+                v.getContext().startActivity(i);
+            }
+        });*/
+
+        /******************
+         * ITEM FAV CHECK *
+         ******************/
+        // primero obtenemos si esta añadido a favoritos para mostrar el icono correctamente
+        Context context=holder.item_fav_check.getContext();
+        SharedPreferences sharedPreferences = context.getSharedPreferences(context.getString(R.string.favoritesPreferences), Context.MODE_PRIVATE);
+        boolean faved = sharedPreferences.getBoolean(filteredDevices.get(position).getDeviceID(), false);
+        if(faved){
+            holder.item_fav_check.setImageDrawable(holder.item_fav_check.getContext().getDrawable(R.drawable.ic_favorite_checked_24dp));
+        }else{
+            holder.item_fav_check.setImageDrawable(holder.item_fav_check.getContext().getDrawable(R.drawable.ic_favorite_24dp));
+            holder.item_fav_check.setColorFilter(Color.parseColor("#FF000E"));
+        }
+
+        // Bindeamos el icono de favoritos
+        holder.item_fav_check.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(faved){ // Si estaba en favoritos lo eliminamos
+                    sharedPreferences.edit()
+                            .remove(devices.get(position).getDeviceID())
+                            .apply();
+                    holder.item_fav_check.setImageDrawable(holder.item_fav_check.getContext().getDrawable(R.drawable.ic_favorite_24dp));
+                    Toast.makeText(context, context.getString(R.string.remove_from_favorites), Toast.LENGTH_SHORT).show();
+                }else{ // Si no estaba lo agregamos
+                    sharedPreferences.edit()
+                            .putBoolean(devices.get(position).getDeviceID(), true)
+                            .apply();
+                    holder.item_fav_check.setImageDrawable(holder.item_fav_check.getContext().getDrawable(R.drawable.ic_favorite_checked_24dp));
+                    holder.item_fav_check.setColorFilter(Color.parseColor("#FF000E"));
+                    Toast.makeText(context, context.getString(R.string.add_to_favorites), Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
+        holder.card_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(v.getContext(), MoreActivity.class);
@@ -123,17 +178,33 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> {
         return filteredDevices.size();
     }
 
-    public void filter(String text){
-        this.filteredDevices.clear();
-        this.filteredDevices.addAll(devices);
-        if(!text.isEmpty()){ // Texto a filtrar
-            for(DeviceModel deviceModel: this.filteredDevices){
-                if(!deviceModel.getName().contains(text)){
-                    this.filteredDevices.remove(deviceModel);
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                String text=constraint.toString().toLowerCase();
+                if(text.isEmpty()){
+                    filteredDevices=devices;
+                }else{
+                    LinkedList<DeviceModel> filterList=new LinkedList<>();
+                    for(DeviceModel deviceModel: devices){
+                        if(deviceModel.getName().toLowerCase().contains(text)){
+                            filterList.add(deviceModel);
+                        }
+                    }
+                    filteredDevices=filterList;
                 }
+                FilterResults filterResults = new FilterResults();
+                filterResults.values=filteredDevices;
+                return filterResults;
             }
-        }
-        notifyDataSetChanged();
-    }
 
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                filteredDevices = (LinkedList<DeviceModel>) results.values;
+                notifyDataSetChanged();
+            }
+        };
+    }
 }

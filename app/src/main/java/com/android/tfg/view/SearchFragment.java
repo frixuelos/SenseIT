@@ -20,10 +20,12 @@ import android.widget.ProgressBar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.android.tfg.R;
 import com.android.tfg.adapter.SearchAdapter;
+import com.android.tfg.controller.SearchSwipeController;
 import com.android.tfg.model.DeviceModel;
 import com.android.tfg.viewmodel.MainViewModel;
 import java.util.LinkedList;
@@ -34,6 +36,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     private RecyclerView recyclerView;
     private MainViewModel mainViewModel;
     private SearchAdapter searchAdapter;
+    private SearchSwipeController searchSwipeController;
 
     // Necesario para actualizar la vista conforme a los datos de la BBDD
     private void configRecyclerView(LinkedList<DeviceModel> devices){
@@ -53,6 +56,13 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
          * RECYCLER VIEW *
          *****************/
         recyclerView=view.findViewById(R.id.searchsRecyclerView);
+
+        /********************
+         * SWIPE CONTROLLER * (SOLO ADMINS EDIT->REMOVE)
+         ********************
+        searchSwipeController=new SearchSwipeController();
+        ItemTouchHelper itemTouchHelper=new ItemTouchHelper(searchSwipeController);
+        itemTouchHelper.attachToRecyclerView(recyclerView);*/
 
         /*****************
          * HIDE KEYBOARD *
@@ -125,14 +135,13 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 
     @Override
     public boolean onQueryTextSubmit(String query) {
+        searchAdapter.getFilter().filter(query);
         return false;
     }
 
     @Override
     public boolean onQueryTextChange(String newText) { // Filtra con cada cambio de texto
-        if(searchAdapter!=null){
-            searchAdapter.filter(newText);
-        }
+        searchAdapter.getFilter().filter(newText);
         return false;
     }
 }
