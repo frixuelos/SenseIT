@@ -13,6 +13,7 @@ public class FavoritesViewHolder extends RecyclerView.ViewHolder {
 
     public MapView item_map_fav;
     public TextView item_title_fav;
+    public TextView item_location_fav;
     public TextView item_last_updated;
     public TextView item_temp_fav;
     public TextView item_hum_fav;
@@ -27,6 +28,7 @@ public class FavoritesViewHolder extends RecyclerView.ViewHolder {
         ************************/
         item_map_fav=itemView.findViewById(R.id.item_map_fav);
         item_title_fav=itemView.findViewById(R.id.item_title_fav);
+        item_location_fav=itemView.findViewById(R.id.item_location_fav);
         item_last_updated=itemView.findViewById(R.id.item_last_update_fav);
         item_temp_fav=itemView.findViewById(R.id.item_temp_fav);
         item_hum_fav=itemView.findViewById(R.id.item_hum_fav);

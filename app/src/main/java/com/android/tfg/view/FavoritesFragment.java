@@ -40,8 +40,10 @@ public class FavoritesFragment extends Fragment {
 
     private void configRecyclerView(LinkedList<DeviceModel> devices){
         // Para el texto de lista de favoritos vacia
-        if(!devices.isEmpty()){getView().findViewById(R.id.no_fav_text).setVisibility(View.GONE);}
-        else{getView().findViewById(R.id.no_fav_text).setVisibility(View.VISIBLE);}
+        if(getView()!=null){
+            if(!devices.isEmpty()){getView().findViewById(R.id.no_fav_text).setVisibility(View.GONE);}
+            else{getView().findViewById(R.id.no_fav_text).setVisibility(View.VISIBLE);}
+        }
 
         // Actualizar recyclerview
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);

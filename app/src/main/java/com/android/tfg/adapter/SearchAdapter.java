@@ -1,6 +1,8 @@
 package com.android.tfg.adapter;
 
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.transition.AutoTransition;
 import android.transition.TransitionManager;
 import android.util.Log;
@@ -25,9 +27,11 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> {
@@ -82,6 +86,15 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> {
         /****************
          * DEFAULT VIEW *
          ****************/
+        Geocoder geocoder = new Geocoder(holder.item_location.getContext(), Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocation(filteredDevices.get(position).getLastMessage().getComputedLocation().getLat(), filteredDevices.get(position).getLastMessage().getComputedLocation().getLng(), 1);
+            if(addresses.get(0).getLocality()==null || addresses.get(0).getSubAdminArea()==null){throw new IOException();}
+            holder.item_location.setText(String.format(holder.item_location.getContext().getString(R.string.locationFormat),addresses.get(0).getLocality(), addresses.get(0).getSubAdminArea()));
+        } catch (IOException e) {
+            // No se pudo encontrar una dirección se establece nulo
+            holder.item_location.setVisibility(View.GONE);
+        }
         holder.item_title.setText(filteredDevices.get(position).getName());
         Date lastUpdated = new Date(filteredDevices.get(position).getLastMessage().getDate()*1000L);
         SimpleDateFormat mFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
