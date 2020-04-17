@@ -17,8 +17,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <uses-library android:name="org.apache.http.legacy" android:required="false"/> <!-- set_timerslack_ns write failed: Operation not permitted -->
-
         <activity android:name=".view.MainActivity"
             android:windowSoftInputMode="adjustPan"
             android:theme="@style/AppTheme.Launcher"

@@ -17,6 +17,7 @@ public class SearchViewHolder extends RecyclerView.ViewHolder {
 
     public MapView item_map;
     public TextView item_title;
+    public TextView item_location;
     public TextView item_last_updated;
     public TextView item_temp;
     public TextView item_hum;
@@ -35,6 +36,7 @@ public class SearchViewHolder extends RecyclerView.ViewHolder {
         ************************/
         item_map=itemView.findViewById(R.id.item_map);
         item_title=itemView.findViewById(R.id.item_title);
+        item_location=itemView.findViewById(R.id.item_location);
         item_last_updated=itemView.findViewById(R.id.item_last_update);
         item_temp=itemView.findViewById(R.id.item_temp);
         item_hum=itemView.findViewById(R.id.item_hum);

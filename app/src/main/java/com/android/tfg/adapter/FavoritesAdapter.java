@@ -1,6 +1,8 @@
 package com.android.tfg.adapter;
 
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.transition.AutoTransition;
 import android.transition.TransitionManager;
 import android.view.LayoutInflater;
@@ -23,9 +25,11 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 
 public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesViewHolder> {
@@ -53,6 +57,14 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesViewHolder> 
         /****************
          * DEFAULT VIEW *
          ****************/
+        Geocoder geocoder = new Geocoder(holder.item_location_fav.getContext(), Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocation(devices.get(position).getLastMessage().getComputedLocation().getLat(), devices.get(position).getLastMessage().getComputedLocation().getLng(), 1);
+            holder.item_location_fav.setText(String.format(holder.item_location_fav.getContext().getString(R.string.locationFormat),addresses.get(0).getLocality(), addresses.get(0).getSubAdminArea()));
+        } catch (IOException e) {
+            // No se pudo encontrar una dirección se establece nulo
+            holder.item_location_fav.setVisibility(View.GONE);
+        }
         holder.item_title_fav.setText(devices.get(position).getName());
         Date lastUpdated = new Date(devices.get(position).getLastMessage().getDate()*1000L);
         SimpleDateFormat mFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());

@@ -27,6 +27,7 @@
     <!-- SEARCH -->
     <string name="searchHint">Search...</string>
     <string name="itemMoreButton">MORE</string>
+    <string name="locationFormat">%s (%s)</string>
 
     <!-- MORE -->
     <string name="tempTitle">Temperature</string>
