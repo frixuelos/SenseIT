@@ -88,14 +88,6 @@ public class MainViewModel extends AndroidViewModel {
         devices=new MutableLiveData<>();
         favDevices=new MutableLiveData<>();
         sharedPreferences=application.getApplicationContext().getSharedPreferences(application.getApplicationContext().getString(R.string.favoritesPreferences), Context.MODE_PRIVATE);
-
-        sharedPreferences.registerOnSharedPreferenceChangeListener(new SharedPreferences.OnSharedPreferenceChangeListener() {
-            @Override
-            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                Log.v("PA","TATA");
-            }
-        });
-
     }
 
     public MutableLiveData<LinkedList<DeviceModel>> getDevices() {
@@ -116,6 +108,29 @@ public class MainViewModel extends AndroidViewModel {
         // Puesto que es una consulta "puntual" se elimina tambien el listener
         databaseReference.child("last").addListenerForSingleValueEvent(favoritesListener);
         databaseReference.child("last").removeEventListener(favoritesListener);
+    }
+
+    /*************
+     * FAVORITOS *
+     *************/
+    public boolean isFavorite(String device){
+        return sharedPreferences.getBoolean(device, false);
+    }
+
+    public void add2Favorites(String device){
+        // Añadir localmente a favoritos
+        sharedPreferences
+                .edit()
+                .putBoolean(device, true)
+                .apply();
+    }
+
+    public void removeFromFavorites(String device){
+        // Eliminar localmente a favoritos
+        sharedPreferences
+                .edit()
+                .remove(device)
+                .apply();
     }
 
 }

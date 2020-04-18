@@ -3,46 +3,27 @@ package com.android.tfg.view;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.os.Bundle;
-import android.transition.AutoTransition;
-import android.transition.TransitionManager;
-import android.util.Log;
 import android.view.Menu;
 
 import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
 import android.view.Window;
-import android.widget.EditText;
-import android.widget.ProgressBar;
 
+import com.android.tfg.NoSwipeViewPager;
 import com.android.tfg.R;
 import com.android.tfg.adapter.MainPagerAdapter;
-import com.android.tfg.adapter.SearchAdapter;
-import com.android.tfg.controller.SearchSwipeController;
-import com.android.tfg.model.MessageModel;
 import com.android.tfg.viewmodel.MainViewModel;
-import com.android.tfg.viewmodel.MoreViewModel;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import java.util.LinkedList;
 
 
 public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
-    private ViewPager viewPager;
+    private NoSwipeViewPager viewPager;
     private MainViewModel mainViewModel;
 
     private void configViewModel(){
@@ -57,13 +38,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // modo normal (muestra pantalla inicio)
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         setTheme(R.style.AppTheme);
-
 
         supportRequestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY); // para ocultar con scroll
         super.onCreate(savedInstanceState);
@@ -95,8 +70,12 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.nav_search:   viewPager.setCurrentItem(1,true);
                                             return true;
 
-                    case R.id.nav_fav: viewPager.setCurrentItem(2,true);
+                    case R.id.nav_map: viewPager.setCurrentItem(2, true);
+                        return true;
+
+                    case R.id.nav_fav: viewPager.setCurrentItem(3,true);
                                         return true;
+
                 }
                 return false;
             }
@@ -106,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
          * VIEW PAGER *
          **************/
         viewPager = findViewById(R.id.mainViewPager);
-        //viewPager.setOnTouchListener((v, event) -> true); // Deshabilita el swipe
         viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager()));
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -123,9 +101,13 @@ public class MainActivity extends AppCompatActivity {
                     case 1: bottomNavigationView.getMenu().findItem(R.id.nav_search).setChecked(true);
                         setTitle(getString(R.string.nav_search));
                         break;
-                    case 2: bottomNavigationView.getMenu().findItem(R.id.nav_fav).setChecked(true);
+                    case 2: bottomNavigationView.getMenu().findItem(R.id.nav_map).setChecked(true);
+                        setTitle(getString(R.string.nav_map));
+                        break;
+                    case 3: bottomNavigationView.getMenu().findItem(R.id.nav_fav).setChecked(true);
                         setTitle(getString(R.string.nav_fav));
                         break;
+
                 }
             }
 

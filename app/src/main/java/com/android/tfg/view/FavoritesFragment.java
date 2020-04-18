@@ -2,6 +2,7 @@ package com.android.tfg.view;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,6 +23,7 @@ import com.android.tfg.R;
 import com.android.tfg.adapter.FavoritesAdapter;
 import com.android.tfg.adapter.SearchAdapter;
 import com.android.tfg.model.DeviceModel;
+import com.android.tfg.swipe.SwipeRemoveCallback;
 import com.android.tfg.viewmodel.MainViewModel;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -31,12 +34,43 @@ public class FavoritesFragment extends Fragment {
     private MainViewModel mainViewModel;
     private RecyclerView recyclerView;
     private FavoritesAdapter favoritesAdapter;
+
+    // Swipe para eliminar
+    private SwipeRemoveCallback swipeRemoveCallback;
+
+    // Listener para el cambio de preferencias (actualiza los favoritos)
     private SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
             mainViewModel.registerAllFavorites(); // Se vuelve a consultar el valor
         }
     };
+
+    private void configSwipeToRemove(){
+        swipeRemoveCallback = new SwipeRemoveCallback(requireContext()){
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i){
+                int pos = viewHolder.getAdapterPosition();
+                DeviceModel removed = favoritesAdapter.removeItem(pos);
+                mainViewModel.removeFromFavorites(removed.getDeviceID());
+
+                Snackbar snackbar = Snackbar
+                        .make(getView(), getString(R.string.remove_from_favorites), Snackbar.LENGTH_LONG);
+                snackbar.getView().setBottom(-56);
+                snackbar.setAction(getString(R.string.undo), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        favoritesAdapter.insertItem(removed, pos);
+                        recyclerView.scrollToPosition(pos);
+                        mainViewModel.add2Favorites(removed.getDeviceID());
+                    }
+                });
+                snackbar.show();
+            }
+
+        };
+    }
 
     private void configRecyclerView(LinkedList<DeviceModel> devices){
         // Para el texto de lista de favoritos vacia
@@ -46,17 +80,20 @@ public class FavoritesFragment extends Fragment {
         }
 
         // Actualizar recyclerview
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
         favoritesAdapter = new FavoritesAdapter(devices);
         recyclerView.setAdapter(favoritesAdapter);
         recyclerView.setLayoutManager(layoutManager);
+        configSwipeToRemove();
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeRemoveCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
     private void configViewModel(){
         /*************
          * MODEL VIEW *
          **************/
-        mainViewModel = new ViewModelProvider(getActivity()).get(getString(R.string.mainViewModel), MainViewModel.class);
+        mainViewModel = new ViewModelProvider(requireActivity()).get(getString(R.string.mainViewModel), MainViewModel.class);
         final Observer<LinkedList<DeviceModel>> obs = new Observer<LinkedList<DeviceModel>>() {
             @Override
             public void onChanged(LinkedList<DeviceModel> deviceModels) {
@@ -64,7 +101,7 @@ public class FavoritesFragment extends Fragment {
                 configRecyclerView(deviceModels);
             }
         };
-        mainViewModel.getFavDevices().observe(getActivity(), obs); // Observar favoritos
+        mainViewModel.getFavDevices().observe(requireActivity(), obs); // Observar favoritos
     }
 
     private void configView(View v){
@@ -84,7 +121,7 @@ public class FavoritesFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         configViewModel(); // Configuramos el viewmodel aqui para que cargue los datos antes
-        getActivity().getSharedPreferences("fav", Context.MODE_PRIVATE).registerOnSharedPreferenceChangeListener(preferenceChangeListener);
+        requireActivity().getSharedPreferences("fav", Context.MODE_PRIVATE).registerOnSharedPreferenceChangeListener(preferenceChangeListener);
         super.onActivityCreated(savedInstanceState);
     }
 

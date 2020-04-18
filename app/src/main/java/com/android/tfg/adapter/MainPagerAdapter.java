@@ -12,7 +12,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 
 public class MainPagerAdapter extends FragmentStatePagerAdapter {
 
-    private static final int NUM_PAGES = 3;
+    private static final int NUM_PAGES = 4;
 
     public MainPagerAdapter(@NonNull FragmentManager fm) {
         super(fm);
@@ -26,8 +26,9 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
 
             case 1: return new SearchFragment();
 
-            case 2: return new FavoritesFragment();
+            case 2: return new SupportMapFragment();
 
+            case 3: return new FavoritesFragment();
         }
         return null;
     }
