@@ -15,17 +15,14 @@ import androidx.annotation.Nullable;
 import android.view.inputmethod.InputMethodManager;
 import androidx.appcompat.widget.SearchView;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.android.tfg.R;
 import com.android.tfg.adapter.SearchAdapter;
-import com.android.tfg.controller.SearchSwipeController;
 import com.android.tfg.model.DeviceModel;
 import com.android.tfg.viewmodel.MainViewModel;
 import java.util.LinkedList;
@@ -36,7 +33,6 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     private RecyclerView recyclerView;
     private MainViewModel mainViewModel;
     private SearchAdapter searchAdapter;
-    private SearchSwipeController searchSwipeController;
 
     // Necesario para actualizar la vista conforme a los datos de la BBDD
     private void configRecyclerView(LinkedList<DeviceModel> devices){

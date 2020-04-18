@@ -15,7 +15,7 @@
         android:layout_height="wrap_content" />
 
     <!-- Contenido -->
-    <androidx.viewpager.widget.ViewPager
+    <com.android.tfg.NoSwipeViewPager
         android:id="@+id/mainViewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -1,37 +1,21 @@
 package com.android.tfg.adapter;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
-import android.transition.AutoTransition;
-import android.transition.TransitionManager;
-import android.util.Log;
-import android.view.DragEvent;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.Toast;
-
-import androidx.appcompat.widget.LinearLayoutCompat;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.tfg.R;
 import com.android.tfg.model.DeviceModel;
 import com.android.tfg.view.MoreActivity;
 import com.android.tfg.viewholder.SearchViewHolder;
-import com.android.tfg.viewmodel.MainViewModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -59,14 +43,14 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> implem
     @Override
     public SearchViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // Vista cardview
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_search_v2, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_search, parent, false);
 
         return new SearchViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull SearchViewHolder holder, final int position) {
-        final int pos = position;
+        DeviceModel device = filteredDevices.get(position);
         /***************
          * EXPAND VIEW *
          ***************
@@ -93,47 +77,15 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> implem
             }
         });*/
 
-        /******************
-         * ITEM FAV CHECK *
-         ******************/
-        // primero obtenemos si esta añadido a favoritos para mostrar el icono correctamente
-        Context context=holder.item_fav_check.getContext();
-        SharedPreferences sharedPreferences = context.getSharedPreferences(context.getString(R.string.favoritesPreferences), Context.MODE_PRIVATE);
-        boolean faved = sharedPreferences.getBoolean(filteredDevices.get(position).getDeviceID(), false);
-        if(faved){
-            holder.item_fav_check.setImageDrawable(holder.item_fav_check.getContext().getDrawable(R.drawable.ic_favorite_checked_24dp));
-        }else{
-            holder.item_fav_check.setImageDrawable(holder.item_fav_check.getContext().getDrawable(R.drawable.ic_favorite_24dp));
-            holder.item_fav_check.setColorFilter(Color.parseColor("#FF000E"));
-        }
 
-        // Bindeamos el icono de favoritos
-        holder.item_fav_check.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(faved){ // Si estaba en favoritos lo eliminamos
-                    sharedPreferences.edit()
-                            .remove(devices.get(position).getDeviceID())
-                            .apply();
-                    holder.item_fav_check.setImageDrawable(holder.item_fav_check.getContext().getDrawable(R.drawable.ic_favorite_24dp));
-                    Toast.makeText(context, context.getString(R.string.remove_from_favorites), Toast.LENGTH_SHORT).show();
-                }else{ // Si no estaba lo agregamos
-                    sharedPreferences.edit()
-                            .putBoolean(devices.get(position).getDeviceID(), true)
-                            .apply();
-                    holder.item_fav_check.setImageDrawable(holder.item_fav_check.getContext().getDrawable(R.drawable.ic_favorite_checked_24dp));
-                    holder.item_fav_check.setColorFilter(Color.parseColor("#FF000E"));
-                    Toast.makeText(context, context.getString(R.string.add_to_favorites), Toast.LENGTH_SHORT).show();
-                }
-
-            }
-        });
-
+        /**********************
+         * CARD VIEW LISTENER *
+         **********************/
         holder.card_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(v.getContext(), MoreActivity.class);
-                i.putExtra("device", filteredDevices.get(pos).getDeviceID());
+                i.putExtra("device", device.getDeviceID());
                 v.getContext().startActivity(i);
             }
         });
@@ -143,21 +95,21 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> implem
          ****************/
         Geocoder geocoder = new Geocoder(holder.item_location.getContext(), Locale.getDefault());
         try {
-            List<Address> addresses = geocoder.getFromLocation(filteredDevices.get(position).getLastMessage().getComputedLocation().getLat(), filteredDevices.get(position).getLastMessage().getComputedLocation().getLng(), 1);
+            List<Address> addresses = geocoder.getFromLocation(device.getLastMessage().getComputedLocation().getLat(), device.getLastMessage().getComputedLocation().getLng(), 1);
             if(addresses.get(0).getLocality()==null || addresses.get(0).getSubAdminArea()==null){throw new IOException();}
             holder.item_location.setText(String.format(holder.item_location.getContext().getString(R.string.locationFormat),addresses.get(0).getLocality(), addresses.get(0).getSubAdminArea()));
         } catch (IOException e) {
             // No se pudo encontrar una dirección se establece nulo
             holder.item_location.setVisibility(View.GONE);
         }
-        holder.item_title.setText(filteredDevices.get(position).getName());
-        Date lastUpdated = new Date(filteredDevices.get(position).getLastMessage().getDate()*1000L);
+        holder.item_title.setText(device.getName());
+        Date lastUpdated = new Date(device.getLastMessage().getDate()*1000L);
         SimpleDateFormat mFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
         holder.item_last_updated.setText(mFormat.format(lastUpdated));
-        holder.item_temp.setText(String.valueOf(filteredDevices.get(position).getLastMessage().getTemp()));
-        holder.item_hum.setText(String.valueOf(filteredDevices.get(position).getLastMessage().getHum()));
-        holder.item_press.setText(String.valueOf(filteredDevices.get(position).getLastMessage().getPres()));
-        holder.item_uv.setText(String.valueOf(filteredDevices.get(position).getLastMessage().getUv()));
+        holder.item_temp.setText(String.valueOf(device.getLastMessage().getTemp()));
+        holder.item_hum.setText(String.valueOf(device.getLastMessage().getHum()));
+        holder.item_press.setText(String.valueOf(device.getLastMessage().getPres()));
+        holder.item_uv.setText(String.valueOf(device.getLastMessage().getUv()));
         holder.item_map.onCreate(null);
         holder.item_map.onResume();
         holder.item_map.getMapAsync(new OnMapReadyCallback() {
@@ -165,9 +117,9 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> implem
             public void onMapReady(GoogleMap googleMap) {
                 googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
                 MarkerOptions markerOptions = new MarkerOptions();
-                markerOptions.position(filteredDevices.get(position).getSite());
+                markerOptions.position(device.getSite());
                 googleMap.addMarker(markerOptions);
-                googleMap.moveCamera(CameraUpdateFactory.newLatLng(filteredDevices.get(position).getSite()));
+                googleMap.moveCamera(CameraUpdateFactory.newLatLng(device.getSite()));
                 googleMap.setMinZoomPreference(15);
             }
         });
@@ -207,4 +159,5 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> implem
             }
         };
     }
+
 }

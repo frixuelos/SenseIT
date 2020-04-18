@@ -1,9 +1,6 @@
 package com.android.tfg.view;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -11,23 +8,13 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 import com.android.tfg.R;
 import com.android.tfg.adapter.MorePagerAdapter;
-import com.android.tfg.model.MessageModel;
 import com.android.tfg.viewmodel.MoreViewModel;
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.google.android.material.tabs.TabLayout;
-import java.util.LinkedList;
+
 import java.util.Objects;
 
 public class MoreActivity extends AppCompatActivity {
@@ -85,7 +72,7 @@ public class MoreActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // inflar boton favoritos
-        getMenuInflater().inflate(R.menu.favorites_menu, menu);
+        getMenuInflater().inflate(R.menu.more_favorites_menu, menu);
 
         // cargar preferencias favoritos
         if(moreViewModel.isFavorite(device)){ // Añadido a favoritos

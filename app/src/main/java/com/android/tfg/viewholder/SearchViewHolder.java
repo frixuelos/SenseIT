@@ -24,10 +24,6 @@ public class SearchViewHolder extends RecyclerView.ViewHolder {
     public TextView item_hum;
     public TextView item_press;
     public TextView item_uv;
-    public Button expand_button;
-    public LinearLayoutCompat expand_view;
-    public Button more_button;
-    public ImageView item_fav_check;
     public CardView card_view;
 
     public SearchViewHolder(@NonNull View itemView) {
@@ -44,10 +40,7 @@ public class SearchViewHolder extends RecyclerView.ViewHolder {
         item_hum=itemView.findViewById(R.id.item_hum);
         item_press=itemView.findViewById(R.id.item_pres);
         item_uv=itemView.findViewById(R.id.item_uv);
-        expand_button=itemView.findViewById(R.id.expandButton);
-        expand_view=itemView.findViewById(R.id.expandView);
-        more_button=itemView.findViewById(R.id.moreButton);
         card_view=itemView.findViewById(R.id.cardViewSearch);
-        item_fav_check=itemView.findViewById(R.id.item_fav_check);
+
     }
 }

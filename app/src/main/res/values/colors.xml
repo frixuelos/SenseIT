@@ -11,4 +11,5 @@
     <color name="presColor">#A600FF3C</color>
     <color name="uvColor">#A6FFEB3B</color>
     <color name="transparent">#00FFFFFF</color>
+    <color name="favColor">#FF000E</color>
 </resources>

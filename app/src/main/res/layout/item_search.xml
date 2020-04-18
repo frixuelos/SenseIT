@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -11,197 +10,142 @@
     app:cardCornerRadius="5dp"
     android:elevation="4dp"
     style="@style/CardView.Light"
-    android:id="@+id/cardViewSearch">
+    android:clickable="true"
+    android:id="@+id/cardViewSearch"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_margin="5dp">
 
     <com.google.android.gms.maps.MapView
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:id="@+id/item_map"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:layout_margin="5dp" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="bottom"
-            app:layout_constraintTop_toBottomOf="@+id/item_map"
-            android:layout_marginTop="5dp">
-
-            <TextView
-                android:id="@+id/item_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="18AF23"
-                android:textSize="24sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="120dp"
+            android:layout_margin="5dp"
+            android:gravity="left"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/item_location"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:text="Aviles (Asturias)"
-                android:textSize="18dp"
-                app:layout_constraintBottom_toBottomOf="@id/item_title"
-                app:layout_constraintStart_toEndOf="@id/item_title"
-                app:layout_constraintEnd_toStartOf="@id/expandButton"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <Button
-                android:id="@+id/expandButton"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:background="@drawable/ic_keyboard_arrow_down_24dp"
-                android:backgroundTint="@color/colorAccent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="@id/item_title"/>
-
-            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/expandView"
-                android:orientation="vertical"
-                app:layout_constraintTop_toBottomOf="@id/expandButton"
-                android:visibility="gone">
+                android:text="Aviles (Asturias)"
+                android:textSize="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/item_title"/>
 
-                <View
+            <TextView
+                android:id="@+id/item_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="18AF23"
+                android:textSize="12dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/item_location"
+                app:layout_constraintBottom_toTopOf="@id/item_last_update"/>
+
+
+            <TextView
+                android:id="@+id/item_last_update"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:alpha="0.65"
+                android:text="24/04/2020 @ 11:00:00"
+                android:textSize="12dp"
+                app:layout_constraintTop_toBottomOf="@id/item_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/info"/>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="?android:attr/listDivider"
-                    android:id="@+id/dividerTitle"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="24/04/2020 @ 11:00:00"
-                    android:textSize="12dp"
-                    android:alpha="0.65"
-                    android:id="@+id/item_last_update"
-                    android:layout_gravity="center_horizontal"
-                    android:paddingBottom="20dp"/>
-
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                <TableLayout
+                    android:layout_marginTop="5dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/item_last_update"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/right_table"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/left_table">
-                    <TableRow
-                        android:layout_marginTop="5dp"
-                        android:gravity="center">
+                    android:id="@+id/info">
 
                     <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:src="@drawable/ic_temp"
-                        android:padding="5dp"
-                        android:id="@+id/icon_temp"/>
+                        android:id="@+id/icon_temp"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/ic_temp" />
 
                     <TextView
                         android:id="@+id/item_temp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:text="21.6"
-                        android:textSize="24sp"/>
-                    </TableRow>
+                        android:textSize="16sp" />
 
-                    <TableRow
-                        android:layout_marginTop="5dp"
-                        android:gravity="center">
                     <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_marginStart="16dp"
-                        android:src="@drawable/ic_hum"
-                        android:id="@+id/icon_hum"/>
+                        android:id="@+id/icon_hum"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="5dp"
+                        android:src="@drawable/ic_hum" />
 
                     <TextView
+                        android:id="@+id/item_hum"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:text="59"
-                        android:textSize="24dp"
-                        android:id="@+id/item_hum"/>
-                    </TableRow>
-                    </TableLayout>
+                        android:textSize="16sp" />
 
-                    <TableLayout
-                        android:id="@+id/right_table"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/left_table"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
 
-                    <TableRow
-                        android:layout_marginTop="5dp"
-                        android:gravity="center">
                     <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_marginStart="16dp"
-                        android:src="@drawable/ic_pres"
-                        android:id="@+id/icon_pres"/>
+                        android:id="@+id/icon_pres"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="5dp"
+                        android:src="@drawable/ic_pres" />
 
                     <TextView
                         android:id="@+id/item_pres"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:text="1018,23"
-                        android:textSize="24dp"/>
-                    </TableRow>
+                        android:textSize="16sp" />
 
-                    <TableRow
-                        android:layout_marginTop="5dp"
-                        android:gravity="center">
                     <ImageView
                         android:id="@+id/icon_uv"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:src="@drawable/ic_uv"/>
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="5dp"
+                        android:src="@drawable/ic_uv" />
 
                     <TextView
                         android:id="@+id/item_uv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:text="0,14"
-                        android:textSize="24dp"/>
-                    </TableRow>
-                </TableLayout>
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                        android:textSize="16sp" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:layout_marginTop="20dp"
-                    android:background="?android:attr/listDivider"
-                    android:id="@+id/divider"/>
+                </androidx.appcompat.widget.LinearLayoutCompat>
 
-                <Button
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:text="@string/itemMoreButton"
-                    android:textColor="@color/colorAccent"
-                    android:id="@+id/moreButton"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 </androidx.cardview.widget.CardView>

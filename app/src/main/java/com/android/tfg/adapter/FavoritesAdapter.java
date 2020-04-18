@@ -3,23 +3,17 @@ package com.android.tfg.adapter;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
-import android.transition.AutoTransition;
-import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.LinearLayoutCompat;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.tfg.R;
 import com.android.tfg.model.DeviceModel;
 import com.android.tfg.view.MoreActivity;
 import com.android.tfg.viewholder.FavoritesViewHolder;
-import com.android.tfg.viewholder.SearchViewHolder;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -53,6 +47,17 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesViewHolder> 
     public void onBindViewHolder(@NonNull FavoritesViewHolder holder, final int position) {
         final int pos = position;
 
+        /**********************
+         * CARD VIEW LISTENER *
+         **********************/
+        holder.card_view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(v.getContext(), MoreActivity.class);
+                i.putExtra("device", devices.get(position).getDeviceID());
+                v.getContext().startActivity(i);
+            }
+        });
 
         /****************
          * DEFAULT VIEW *
@@ -91,6 +96,18 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesViewHolder> 
     @Override
     public int getItemCount() {
         return devices.size();
+    }
+
+    public DeviceModel removeItem(int pos){
+        DeviceModel removed = devices.get(pos);
+        devices.remove(pos);
+        notifyItemRemoved(pos);
+        return removed;
+    }
+
+    public void insertItem(DeviceModel device, int pos){
+        devices.add(pos, device);
+        notifyItemInserted(pos);
     }
 
 }
