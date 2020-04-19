@@ -75,6 +75,9 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.nav_fav: viewPager.setCurrentItem(3,true);
                                         return true;
 
+                    case R.id.nav_config: viewPager.setCurrentItem(4, true);
+                                        return true;
+
                 }
                 return false;
             }
@@ -84,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
          * VIEW PAGER *
          **************/
         viewPager = findViewById(R.id.mainViewPager);
+        viewPager.setOffscreenPageLimit(5);
         viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager()));
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -106,7 +110,9 @@ public class MainActivity extends AppCompatActivity {
                     case 3: bottomNavigationView.getMenu().findItem(R.id.nav_fav).setChecked(true);
                         setTitle(getString(R.string.nav_fav));
                         break;
-
+                    case 4: bottomNavigationView.getMenu().findItem(R.id.nav_config).setChecked(true);
+                        setTitle(getString(R.string.nav_config));
+                        break;
                 }
             }
 

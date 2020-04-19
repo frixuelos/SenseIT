@@ -66,7 +66,7 @@ public class MainViewModel extends AndroidViewModel {
 
     public MainViewModel(@NonNull Application application) {
         super(application);
-        sigfoxRepository=SigfoxRepository.getInstance();
+        sigfoxRepository=SigfoxRepository.getInstance(getApplication().getApplicationContext());
         devices=new MutableLiveData<>();
         favDevices=new MutableLiveData<>();
         sharedPreferences=application.getApplicationContext().getSharedPreferences(application.getApplicationContext().getString(R.string.favoritesPreferences), Context.MODE_PRIVATE);

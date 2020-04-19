@@ -48,7 +48,7 @@ public class MoreViewModel extends AndroidViewModel {
 
     public MoreViewModel(@NonNull Application application) {
         super(application);
-        sigfoxRepository=SigfoxRepository.getInstance();
+        sigfoxRepository=SigfoxRepository.getInstance(getApplication().getApplicationContext());
         sharedPreferences=application.getApplicationContext().getSharedPreferences(application.getApplicationContext().getString(R.string.favoritesPreferences), Context.MODE_PRIVATE);
         messages=new MutableLiveData<>();
     }

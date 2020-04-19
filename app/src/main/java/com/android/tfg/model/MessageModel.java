@@ -13,11 +13,19 @@ public class MessageModel {
     private double fixedLat;
     private double fixedLng;
     private double uv;
+    private int seqNumber;
     private Timestamp date;
     private int countryCode;
     private String operatorName, lqi;
     private ComputedLocationModel computedLocation;
 
+    public int getSeqNumber() {
+        return seqNumber;
+    }
+
+    public void setSeqNumber(String seqNumber) {
+        this.seqNumber = Integer.parseInt(seqNumber);
+    }
 
     public double getUv() {
         return uv;

@@ -7,7 +7,6 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!-- Se require para obtener la posición -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -21,7 +20,8 @@
             android:windowSoftInputMode="adjustPan"
             android:theme="@style/AppTheme.Launcher"
             android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity">
+            android:configChanges="orientation|keyboardHidden"
+            tools:ignore="LockedOrientationActivity" >
 
             <meta-data
                 android:name="android.app.searchable"
@@ -36,7 +36,7 @@
         <activity android:name=".view.MoreActivity"
             android:screenOrientation="landscape"
             android:configChanges="orientation|keyboardHidden"
-            tools:ignore="LockedOrientationActivity" />
+            tools:ignore="LockedOrientationActivity"/>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

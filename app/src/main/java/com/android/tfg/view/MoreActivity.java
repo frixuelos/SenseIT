@@ -48,6 +48,7 @@ public class MoreActivity extends AppCompatActivity {
          * PAGER *
          *********/
         viewPager = findViewById(R.id.morePager);
+        viewPager.setOffscreenPageLimit(4);
         viewPager.setAdapter(new MorePagerAdapter(getSupportFragmentManager(),getApplicationContext(), device));
         // para el tablayout
         TabLayout tabLayout = findViewById(R.id.tabMore);

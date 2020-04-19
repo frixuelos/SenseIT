@@ -94,17 +94,9 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> implem
         /****************
          * DEFAULT VIEW *
          ****************/
-        Geocoder geocoder = new Geocoder(holder.item_location.getContext(), Locale.getDefault());
-        try {
-            List<Address> addresses = geocoder.getFromLocation(device.getLastMessage().getComputedLocation().getLat(), device.getLastMessage().getComputedLocation().getLng(), 1);
-            if(addresses.get(0).getLocality()==null || addresses.get(0).getSubAdminArea()==null){throw new IOException();}
-            holder.item_location.setText(String.format(holder.item_location.getContext().getString(R.string.locationFormat),addresses.get(0).getLocality(), addresses.get(0).getSubAdminArea()));
-        } catch (IOException e) {
-            // No se pudo encontrar una dirección se establece nulo
-            holder.item_location.setVisibility(View.GONE);
-        }
-        holder.item_title.setText(device.getName());
-        Date lastUpdated = new Date(device.getLastMessage().getDate().getSeconds());
+        holder.item_location.setText(device.getName());
+        holder.item_title.setText(device.getDeviceID());
+        Date lastUpdated = new Date(device.getLastMessage().getDate().getSeconds()*1000L);
         SimpleDateFormat mFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
         holder.item_last_updated.setText(mFormat.format(lastUpdated));
         holder.item_temp.setText(String.valueOf(device.getLastMessage().getTemp()));

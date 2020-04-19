@@ -45,7 +45,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull FavoritesViewHolder holder, final int position) {
-        final int pos = position;
+        DeviceModel device = devices.get(position);
 
         /**********************
          * CARD VIEW LISTENER *
@@ -54,7 +54,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesViewHolder> 
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(v.getContext(), MoreActivity.class);
-                i.putExtra("device", devices.get(position).getDeviceID());
+                i.putExtra("device", device.getDeviceID());
                 v.getContext().startActivity(i);
             }
         });
@@ -62,22 +62,15 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesViewHolder> 
         /****************
          * DEFAULT VIEW *
          ****************/
-        Geocoder geocoder = new Geocoder(holder.item_location_fav.getContext(), Locale.getDefault());
-        try {
-            List<Address> addresses = geocoder.getFromLocation(devices.get(position).getLastMessage().getComputedLocation().getLat(), devices.get(position).getLastMessage().getComputedLocation().getLng(), 1);
-            holder.item_location_fav.setText(String.format(holder.item_location_fav.getContext().getString(R.string.locationFormat),addresses.get(0).getLocality(), addresses.get(0).getSubAdminArea()));
-        } catch (IOException e) {
-            // No se pudo encontrar una dirección se establece nulo
-            holder.item_location_fav.setVisibility(View.GONE);
-        }
-        holder.item_title_fav.setText(devices.get(position).getName());
-        Date lastUpdated = new Date(devices.get(position).getLastMessage().getDate().getSeconds());
+        holder.item_location_fav.setText(device.getName());
+        holder.item_title_fav.setText(device.getDeviceID());
+        Date lastUpdated = new Date(device.getLastMessage().getDate().getSeconds()*1000L);
         SimpleDateFormat mFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
         holder.item_last_updated.setText(mFormat.format(lastUpdated));
-        holder.item_temp_fav.setText(String.valueOf(devices.get(position).getLastMessage().getTemp()));
-        holder.item_hum_fav.setText(String.valueOf(devices.get(position).getLastMessage().getHum()));
-        holder.item_press_fav.setText(String.valueOf(devices.get(position).getLastMessage().getPres()));
-        holder.item_uv_fav.setText(String.valueOf(devices.get(position).getLastMessage().getUv()));
+        holder.item_temp_fav.setText(String.valueOf(device.getLastMessage().getTemp()));
+        holder.item_hum_fav.setText(String.valueOf(device.getLastMessage().getHum()));
+        holder.item_press_fav.setText(String.valueOf(device.getLastMessage().getPres()));
+        holder.item_uv_fav.setText(String.valueOf(device.getLastMessage().getUv()));
         holder.item_map_fav.onCreate(null);
         holder.item_map_fav.onResume();
         holder.item_map_fav.getMapAsync(new OnMapReadyCallback() {
@@ -85,9 +78,9 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesViewHolder> 
             public void onMapReady(GoogleMap googleMap) {
                 googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
                 MarkerOptions markerOptions = new MarkerOptions();
-                markerOptions.position(devices.get(position).getSite());
+                markerOptions.position(device.getSite());
                 googleMap.addMarker(markerOptions);
-                googleMap.moveCamera(CameraUpdateFactory.newLatLng(devices.get(position).getSite()));
+                googleMap.moveCamera(CameraUpdateFactory.newLatLng(device.getSite()));
                 googleMap.setMinZoomPreference(15);
             }
         });

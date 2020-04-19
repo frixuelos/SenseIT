@@ -16,4 +16,8 @@
         android:id="@+id/nav_fav"
         android:icon="@drawable/ic_favorite_24dp"
         android:title="@string/nav_fav" />
+    <item
+        android:id="@+id/nav_config"
+        android:icon="@drawable/ic_config_24dp"
+        android:title="@string/nav_config" />
 </menu>

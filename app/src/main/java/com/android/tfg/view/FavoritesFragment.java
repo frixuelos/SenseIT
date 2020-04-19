@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,6 +27,8 @@ import com.android.tfg.model.DeviceModel;
 import com.android.tfg.swipe.SwipeRemoveCallback;
 import com.android.tfg.viewmodel.MainViewModel;
 import com.google.android.material.snackbar.Snackbar;
+
+import org.w3c.dom.Text;
 
 import java.util.LinkedList;
 
@@ -65,10 +68,15 @@ public class FavoritesFragment extends Fragment {
                         favoritesAdapter.insertItem(removed, pos);
                         recyclerView.scrollToPosition(pos);
                         mainViewModel.add2Favorites(removed.getDeviceID());
+                        getView().findViewById(R.id.no_fav_text).setVisibility(View.GONE); // Ocultar el texto de favoritos vacio
                     }
                 });
                 snackbar.show();
-            }
+
+                if(favoritesAdapter.getItemCount()==0){ // Mostrar el texto si no hay favoritos
+                    getView().findViewById(R.id.no_fav_text).setVisibility(View.VISIBLE);
+                }
+                            }
 
         };
     }
