@@ -62,7 +62,7 @@ public class HumChartFragment extends Fragment {
          **************************************/
         ArrayList<Entry> hum = new ArrayList<>();
         for (MessageModel m : messages) {
-            hum.add(new Entry(m.getDate(), (float) m.getHum()));
+            hum.add(new Entry(m.getDate().getSeconds(), (float) m.getHum()));
         }
 
         /*****************

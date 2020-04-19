@@ -12,10 +12,12 @@ import android.widget.SearchView;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 
 import com.android.tfg.R;
 import com.android.tfg.model.DeviceModel;
 import com.android.tfg.model.MessageModel;
+import com.android.tfg.repository.SigfoxRepository;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.firebase.database.DataSnapshot;
@@ -33,86 +35,80 @@ import java.util.LinkedList;
 
 public class MainViewModel extends AndroidViewModel {
 
-    private static FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private static DatabaseReference databaseReference = database.getReference("sigfox");
+    private SigfoxRepository sigfoxRepository;
     private MutableLiveData<LinkedList<DeviceModel>> devices, favDevices;
     private SharedPreferences sharedPreferences;
 
     /*************
-     * LISTENERS *
+     * OBSERVERS *
      *************/
-    private ValueEventListener allDevicesListener = new ValueEventListener() {
+    private final Observer<LinkedList<DeviceModel>> allDevicesObserver = new Observer<LinkedList<DeviceModel>>() {
         @Override
-        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-            LinkedList<DeviceModel> query = new LinkedList<>();
-            for (DataSnapshot id : dataSnapshot.getChildren()) { // Itera los IDs
-                final String deviceID = id.getKey(); // Obtiene el ID
-                /********************************
-                 * SE OBTIENE EL ULTIMO MENSAJE *
-                 ********************************/
-                query.add(new DeviceModel(deviceID, null, null, id.getValue(MessageModel.class))); // Añade el resultado
-            }
-            devices.setValue(query); // Actualiza el MutableLiveData
-        }
-
-        @Override
-        public void onCancelled(@NonNull DatabaseError databaseError) {
-
+        public void onChanged(LinkedList<DeviceModel> deviceModels) {
+            // actualizar datos
+            devices.setValue(deviceModels);
         }
     };
-    private ValueEventListener favoritesListener = new ValueEventListener() {
+    private final Observer<LinkedList<DeviceModel>> favDevicesObserver = new Observer<LinkedList<DeviceModel>>() {
         @Override
-        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+        public void onChanged(LinkedList<DeviceModel> deviceModels) {
+            // actualizar datos
             LinkedList<DeviceModel> query = new LinkedList<>();
-            for (DataSnapshot id : dataSnapshot.getChildren()) { // Itera los IDs
-                final String deviceID = id.getKey(); // Obtiene el ID
-                /********************************
-                 * SE OBTIENE EL ULTIMO MENSAJE *
-                 ********************************/
-                if (sharedPreferences.getAll().containsKey(deviceID)) { // solo si esta en favoritos se agrega
-                    query.add(new DeviceModel(deviceID, null, null, id.getValue(MessageModel.class))); // Añade el resultado
+            for(DeviceModel deviceModel : deviceModels){
+                if(sharedPreferences.getAll().containsKey(deviceModel.getDeviceID())){
+                    query.add(deviceModel);
                 }
-                favDevices.setValue(query); // Actualiza el MutableLiveData
             }
-        }
-
-        @Override
-        public void onCancelled(@NonNull DatabaseError databaseError) {
-
+            favDevices.setValue(query);
         }
     };
 
 
     public MainViewModel(@NonNull Application application) {
         super(application);
+        sigfoxRepository=SigfoxRepository.getInstance();
         devices=new MutableLiveData<>();
         favDevices=new MutableLiveData<>();
         sharedPreferences=application.getApplicationContext().getSharedPreferences(application.getApplicationContext().getString(R.string.favoritesPreferences), Context.MODE_PRIVATE);
     }
 
+    /***************
+     * ALL DEVICES *
+     ****************/
     public MutableLiveData<LinkedList<DeviceModel>> getDevices() {
         return devices;
     }
 
     public void registerAllDevices() {
-        databaseReference.child("last").addValueEventListener(allDevicesListener);
+        sigfoxRepository.registerAllDevicesListener();
+        sigfoxRepository.getAllDevices().observeForever(allDevicesObserver);
+        sigfoxRepository.getAllDevices().observeForever(favDevicesObserver);
     }
 
     public void unregisterAllDevices(){
-        databaseReference.child("last").removeEventListener(allDevicesListener);
-    }
-
-    public MutableLiveData<LinkedList<DeviceModel>> getFavDevices(){ return favDevices; }
-
-    public void registerAllFavorites(){
-        // Puesto que es una consulta "puntual" se elimina tambien el listener
-        databaseReference.child("last").addListenerForSingleValueEvent(favoritesListener);
-        databaseReference.child("last").removeEventListener(favoritesListener);
+        sigfoxRepository.unregisterAllDevicesListener();
+        sigfoxRepository.getAllDevices().removeObserver(allDevicesObserver);;
+        sigfoxRepository.getAllDevices().removeObserver(favDevicesObserver);
     }
 
     /*************
-     * FAVORITOS *
+     * FAVORITES *
      *************/
+    public MutableLiveData<LinkedList<DeviceModel>> getFavDevices(){ return favDevices; }
+
+    public void updateFavDevices(){
+        if(devices.getValue()==null){return;} // Si es nulo se omite
+
+        // actualizar datos
+        LinkedList<DeviceModel> query = new LinkedList<>();
+        for(DeviceModel deviceModel : devices.getValue()){
+            if(sharedPreferences.getAll().containsKey(deviceModel.getDeviceID())){
+                query.add(deviceModel);
+            }
+        }
+        favDevices.setValue(query);
+    }
+
     public boolean isFavorite(String device){
         return sharedPreferences.getBoolean(device, false);
     }
@@ -123,6 +119,8 @@ public class MainViewModel extends AndroidViewModel {
                 .edit()
                 .putBoolean(device, true)
                 .apply();
+        // Actualizar favoritos
+        updateFavDevices();
     }
 
     public void removeFromFavorites(String device){
@@ -131,6 +129,8 @@ public class MainViewModel extends AndroidViewModel {
                 .edit()
                 .remove(device)
                 .apply();
+        // Actualizar favoritos
+        updateFavDevices();
     }
 
 }

@@ -8,6 +8,8 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import com.android.tfg.view.FavoritesFragment;
 import com.android.tfg.view.HomeFragment;
 import com.android.tfg.view.SearchFragment;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 
 public class MainPagerAdapter extends FragmentStatePagerAdapter {
@@ -26,7 +28,13 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
 
             case 1: return new SearchFragment();
 
-            case 2: return new SupportMapFragment();
+            case 2: SupportMapFragment mapFragment = new SupportMapFragment();
+                mapFragment.getMapAsync(new OnMapReadyCallback() {
+                    @Override
+                    public void onMapReady(GoogleMap googleMap) {
+                        // Dibujar todos los dispositivos
+                    }
+                });
 
             case 3: return new FavoritesFragment();
         }

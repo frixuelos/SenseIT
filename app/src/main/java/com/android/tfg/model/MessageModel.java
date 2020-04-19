@@ -2,6 +2,8 @@ package com.android.tfg.model;
 
 import androidx.annotation.NonNull;
 
+import com.google.firebase.Timestamp;
+
 public class MessageModel {
 
     private double temp;
@@ -11,7 +13,7 @@ public class MessageModel {
     private double fixedLat;
     private double fixedLng;
     private double uv;
-    private long date;
+    private Timestamp date;
     private int countryCode;
     private String operatorName, lqi;
     private ComputedLocationModel computedLocation;
@@ -73,11 +75,11 @@ public class MessageModel {
         this.fixedLng = fixedLng;
     }
 
-    public long getDate() {
+    public Timestamp getDate() {
         return date;
     }
 
-    public void setDate(long date) {
+    public void setDate(Timestamp date) {
         this.date = date;
     }
 

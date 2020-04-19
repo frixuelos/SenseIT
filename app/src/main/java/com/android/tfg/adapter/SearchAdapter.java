@@ -20,6 +20,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.rpc.Help;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -103,7 +104,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> implem
             holder.item_location.setVisibility(View.GONE);
         }
         holder.item_title.setText(device.getName());
-        Date lastUpdated = new Date(device.getLastMessage().getDate()*1000L);
+        Date lastUpdated = new Date(device.getLastMessage().getDate().getSeconds());
         SimpleDateFormat mFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
         holder.item_last_updated.setText(mFormat.format(lastUpdated));
         holder.item_temp.setText(String.valueOf(device.getLastMessage().getTemp()));
@@ -158,6 +159,12 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> implem
                 notifyDataSetChanged();
             }
         };
+    }
+
+    public void updateItems(LinkedList<DeviceModel> devices){
+        this.devices.clear();
+        this.devices.addAll(devices);
+        notifyDataSetChanged();
     }
 
 }

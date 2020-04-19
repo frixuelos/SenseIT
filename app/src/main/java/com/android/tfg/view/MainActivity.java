@@ -13,7 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 
-import com.android.tfg.NoSwipeViewPager;
+import com.android.tfg.swipe.NoSwipeViewPager;
 import com.android.tfg.R;
 import com.android.tfg.adapter.MainPagerAdapter;
 import com.android.tfg.viewmodel.MainViewModel;
@@ -31,8 +31,7 @@ public class MainActivity extends AppCompatActivity {
          * MODEL VIEW *
          **************/
         mainViewModel = new ViewModelProvider(this).get(getString(R.string.mainViewModel), MainViewModel.class);
-        mainViewModel.registerAllDevices(); // primera llamada para todos los dispositivos
-        mainViewModel.registerAllFavorites(); // primera llamada para los favoritos
+        mainViewModel.registerAllDevices(); // primera llamada para todos los dispositivos (inclusive favoritos)
     }
 
     @Override

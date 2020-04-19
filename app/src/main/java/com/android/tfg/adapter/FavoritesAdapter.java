@@ -71,7 +71,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesViewHolder> 
             holder.item_location_fav.setVisibility(View.GONE);
         }
         holder.item_title_fav.setText(devices.get(position).getName());
-        Date lastUpdated = new Date(devices.get(position).getLastMessage().getDate()*1000L);
+        Date lastUpdated = new Date(devices.get(position).getLastMessage().getDate().getSeconds());
         SimpleDateFormat mFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
         holder.item_last_updated.setText(mFormat.format(lastUpdated));
         holder.item_temp_fav.setText(String.valueOf(devices.get(position).getLastMessage().getTemp()));
@@ -108,6 +108,12 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesViewHolder> 
     public void insertItem(DeviceModel device, int pos){
         devices.add(pos, device);
         notifyItemInserted(pos);
+    }
+
+    public void updateItems(LinkedList<DeviceModel> devices){
+        this.devices.clear();
+        this.devices.addAll(devices);
+        notifyDataSetChanged();
     }
 
 }

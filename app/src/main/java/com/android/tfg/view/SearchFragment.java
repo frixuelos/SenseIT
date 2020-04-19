@@ -36,6 +36,9 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 
     // Necesario para actualizar la vista conforme a los datos de la BBDD
     private void configRecyclerView(LinkedList<DeviceModel> devices){
+        if(searchAdapter!=null){
+            searchAdapter.updateItems(mainViewModel.getDevices().getValue());
+        }
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         searchAdapter = new SearchAdapter(devices);
         recyclerView.setAdapter(searchAdapter);
@@ -74,6 +77,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     }
 
     private void configViewModel(){
+        if(getActivity()==null){return;}
         /*************
          * MODEL VIEW *
          **************/

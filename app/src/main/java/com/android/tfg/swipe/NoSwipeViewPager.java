@@ -1,4 +1,4 @@
-package com.android.tfg;
+package com.android.tfg.swipe;
 
 import android.content.Context;
 import android.util.AttributeSet;

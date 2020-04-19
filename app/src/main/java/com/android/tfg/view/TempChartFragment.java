@@ -49,7 +49,8 @@ public class TempChartFragment extends Fragment {
          **************************************/
         ArrayList<Entry> temp = new ArrayList<>();
         for (MessageModel m : messages) {
-            temp.add(new Entry(m.getDate(), (float) m.getTemp()));
+            temp.add(new Entry(m.getDate().getSeconds(), (float) m.getTemp()));
+            Log.v("TEMP", String.format("%d -> %f", m.getDate().getSeconds(), m.getTemp()));
         }
 
         /*********************

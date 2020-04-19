@@ -47,7 +47,7 @@ public class PresChartFragment extends Fragment {
          **************************************/
         ArrayList<Entry> pres = new ArrayList<>();
         for (MessageModel m : messages) {
-            pres.add(new Entry(m.getDate(), (float) m.getPres()));
+            pres.add(new Entry(m.getDate().getSeconds(), (float) m.getPres()));
         }
 
         /*****************
