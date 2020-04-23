@@ -14,6 +14,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.android.tfg.R;
+import com.android.tfg.databinding.FragmentHumBinding;
 import com.android.tfg.model.MessageModel;
 import com.android.tfg.viewmodel.MoreViewModel;
 import com.github.mikephil.charting.charts.LineChart;
@@ -34,8 +35,8 @@ import java.util.Objects;
 
 public class HumChartFragment extends Fragment {
 
-    LineChart chart;
-    MoreViewModel moreViewModel;
+    private MoreViewModel moreViewModel;
+    private FragmentHumBinding binding;
 
     public HumChartFragment() {
     }
@@ -45,12 +46,9 @@ public class HumChartFragment extends Fragment {
          * MODEL VIEW *
          **************/
         moreViewModel = new ViewModelProvider(getActivity()).get(getString(R.string.moreViewModel), MoreViewModel.class);
-        final Observer<LinkedList<MessageModel>> obs = new Observer<LinkedList<MessageModel>>() {
-            @Override
-            public void onChanged(LinkedList<MessageModel> messages) {
-                // añadir datos al grafico
-                setData(messages);
-            }
+        final Observer<LinkedList<MessageModel>> obs = messages -> {
+            // añadir datos al grafico
+            setData(messages);
         };
         moreViewModel.getMessages().observe(getViewLifecycleOwner(), obs); // mensajes
     }
@@ -95,50 +93,49 @@ public class HumChartFragment extends Fragment {
         });
 
         // Agregar datos
-        chart.setData(humData);
+        binding.humChart.setData(humData);
 
         // Actualizar grafico
-        chart.invalidate();
+        binding.humChart.invalidate();
 
         // Visible 2 ultimas horas
-        chart.setVisibleXRangeMaximum(2 * 60 * 60);
-        chart.moveViewToX(new Date().getTime() - (2 * 60 * 60));
+        binding.humChart.setVisibleXRangeMaximum(2 * 60 * 60);
+        binding.humChart.moveViewToX(new Date().getTime() - (2 * 60 * 60));
 
         // Animar
-        chart.animateX(500);
+        binding.humChart.animateX(500);
     }
 
-    private void setupChart(View v){
-        chart= v.findViewById(R.id.humChart);
-        chart.getDescription().setTextSize(24f);
-        chart.getDescription().setText(getString(R.string.humTitle));
+    private void setupChart(){
+        binding.humChart.getDescription().setTextSize(24f);
+        binding.humChart.getDescription().setText(getString(R.string.humTitle));
 
         // descripcion
-        chart.getDescription().setEnabled(false);
+        binding.humChart.getDescription().setEnabled(false);
         // para las acciones al pulsar
-        chart.setTouchEnabled(true);
-        chart.setDragDecelerationFrictionCoef(0.9f);
+        binding.humChart.setTouchEnabled(true);
+        binding.humChart.setDragDecelerationFrictionCoef(0.9f);
         // escalado y arrastre
-        chart.setDragEnabled(true);
-        chart.setScaleEnabled(true);
-        chart.setScaleYEnabled(true);
-        chart.setHorizontalScrollBarEnabled(true);
-        chart.setDrawGridBackground(true);
-        chart.setHighlightPerDragEnabled(true);
-        chart.setPinchZoom(true);
-        chart.setNoDataTextColor(Color.BLACK);
-        chart.setNoDataText(getString(R.string.moreNoData));
+        binding.humChart.setDragEnabled(true);
+        binding.humChart.setScaleEnabled(true);
+        binding.humChart.setScaleYEnabled(true);
+        binding.humChart.setHorizontalScrollBarEnabled(true);
+        binding.humChart.setDrawGridBackground(true);
+        binding.humChart.setHighlightPerDragEnabled(true);
+        binding.humChart.setPinchZoom(true);
+        binding.humChart.setNoDataTextColor(Color.BLACK);
+        binding.humChart.setNoDataText(getString(R.string.moreNoData));
         // fondo
-        chart.setGridBackgroundColor(Color.TRANSPARENT);
+        binding.humChart.setGridBackgroundColor(Color.TRANSPARENT);
         // animacion
-        chart.animateY(1000);
+        binding.humChart.animateY(1000);
         // leyenda
-        Legend l = chart.getLegend();
+        Legend l = binding.humChart.getLegend();
         l.setEnabled(false);
         /*********
          * EJE X *
          *********/
-        XAxis xAxis = chart.getXAxis();
+        XAxis xAxis = binding.humChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setTextSize(12f);
         xAxis.setGranularityEnabled(true);
@@ -160,28 +157,28 @@ public class HumChartFragment extends Fragment {
         /*********
          * EJE Y *
          *********/
-        YAxis leftAxis = chart.getAxisLeft();
+        YAxis leftAxis = binding.humChart.getAxisLeft();
         leftAxis.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART);
         leftAxis.setDrawGridLines(true);
         leftAxis.setGranularityEnabled(true);
         leftAxis.setEnabled(false);
         leftAxis.setLabelCount(4);
         leftAxis.enableGridDashedLine(10,5,0);
-        YAxis rightAxis = chart.getAxisRight();
+        YAxis rightAxis = binding.humChart.getAxisRight();
         rightAxis.setEnabled(false);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_hum, container, false);
+        binding = FragmentHumBinding.inflate(inflater, container, false);
 
         /***********
          * GRAFICO *
          ***********/
-        setupChart(v);
+        setupChart();
 
-        return v;
+        return binding.getRoot();
     }
 
     @Override

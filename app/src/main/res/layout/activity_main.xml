@@ -7,13 +7,6 @@
     tools:context=".view.MainActivity"
     android:id="@+id/drawer">
 
-    <!-- Toolbar -->
-    <include
-        android:id="@+id/include2"
-        layout="@layout/drawer_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
     <!-- Contenido -->
     <com.android.tfg.swipe.NoSwipeViewPager
         android:id="@+id/mainViewPager"
@@ -22,14 +15,15 @@
         android:layout_marginTop="56dp"
         android:layout_marginBottom="56dp"/>
 
-    <!-- Bottom navigation view -->
-    <include
+    <com.google.android.material.bottomnavigation.BottomNavigationView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        layout="@layout/bottom_bar"
+        android:layout_height="56dp"
+        android:layout_gravity="bottom"
+        app:menu="@menu/bottom_menu"
+        android:id="@+id/bottom_bar"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:id="@+id/bottom_bar"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:labelVisibilityMode="unlabeled"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

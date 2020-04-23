@@ -1,5 +1,6 @@
 package com.android.tfg.viewholder;
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -10,37 +11,66 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.tfg.R;
+import com.android.tfg.databinding.ItemSearchBinding;
+import com.android.tfg.model.DeviceModel;
+import com.android.tfg.view.MoreActivity;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.w3c.dom.Text;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class SearchViewHolder extends RecyclerView.ViewHolder {
 
-    public MapView item_map;
-    public TextView item_title;
-    public TextView item_location;
-    public TextView item_last_updated;
-    public TextView item_temp;
-    public TextView item_hum;
-    public TextView item_press;
-    public TextView item_uv;
-    public CardView card_view;
+    private ItemSearchBinding binding;
 
-    public SearchViewHolder(@NonNull View itemView) {
-        super(itemView);
-
-        /***********************
-        * COMPONENTES DEL ITEM *
-        ************************/
-        item_map=itemView.findViewById(R.id.item_map);
-        item_title=itemView.findViewById(R.id.item_title);
-        item_location=itemView.findViewById(R.id.item_location);
-        item_last_updated=itemView.findViewById(R.id.item_last_update);
-        item_temp=itemView.findViewById(R.id.item_temp);
-        item_hum=itemView.findViewById(R.id.item_hum);
-        item_press=itemView.findViewById(R.id.item_pres);
-        item_uv=itemView.findViewById(R.id.item_uv);
-        card_view=itemView.findViewById(R.id.cardViewSearch);
-
+    public SearchViewHolder(@NonNull ItemSearchBinding itemSearchBinding){
+        super(itemSearchBinding.getRoot());
+        this.binding=itemSearchBinding;
     }
+
+    public void bind(DeviceModel device){
+        /***************
+         * DEVICE INFO *
+         ***************/
+        binding.itemTitle.setText(device.getDeviceID());
+        binding.itemLocation.setText(device.getName());
+        binding.itemTemp.setText(String.valueOf(device.getLastMessage().getTemp()));
+        binding.itemHum.setText(String.valueOf(device.getLastMessage().getHum()));
+        binding.itemPres.setText(String.valueOf(device.getLastMessage().getPres()));
+        binding.itemUv.setText(String.valueOf(device.getLastMessage().getUv()));
+        Date lastUpdated = new Date(device.getLastMessage().getDate().getSeconds()*1000L);
+        SimpleDateFormat mFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
+        binding.itemLastUpdate.setText(mFormat.format(lastUpdated));
+
+        /**************
+         * DEVICE MAP *
+         **************/
+        binding.itemMap.onCreate(null);
+        binding.itemMap.onResume();
+        binding.itemMap.getMapAsync(googleMap -> {
+            googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+            MarkerOptions markerOptions = new MarkerOptions();
+            markerOptions.position(device.getSite());
+            googleMap.addMarker(markerOptions);
+            googleMap.moveCamera(CameraUpdateFactory.newLatLng(device.getSite()));
+            googleMap.setMinZoomPreference(15);
+        });
+
+        /**********************
+         * CARD VIEW ON CLICK *
+         **********************/
+        binding.cardViewSearch.setOnClickListener(v -> {
+            Intent i = new Intent(v.getContext(), MoreActivity.class);
+            i.putExtra("device", device.getDeviceID());
+            v.getContext().startActivity(i);
+        });
+    }
+
 }

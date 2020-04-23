@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/favoriteEvent"
-        android:icon="@drawable/ic_favorite_24dp"
+        android:icon="@drawable/ic_fav"
         app:showAsAction="always"
         android:title="@string/favoriteEvent" />
 </menu>

@@ -14,6 +14,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.android.tfg.R;
+import com.android.tfg.databinding.FragmentTempBinding;
 import com.android.tfg.model.MessageModel;
 import com.android.tfg.viewmodel.MoreViewModel;
 import com.github.mikephil.charting.charts.LineChart;
@@ -35,8 +36,8 @@ import java.util.Objects;
 
 public class TempChartFragment extends Fragment {
 
-    MoreViewModel moreViewModel;
-    LineChart chart;
+    private MoreViewModel moreViewModel;
+    private FragmentTempBinding binding;
 
     public TempChartFragment(){
 
@@ -82,51 +83,50 @@ public class TempChartFragment extends Fragment {
         });
 
         // Agregar datos
-        chart.setData(tempData);
+        binding.tempChart.setData(tempData);
 
         // Actualizar grafico
-        chart.invalidate();
+        binding.tempChart.invalidate();
 
         // Visible 2 ultimas horas
-        chart.setVisibleXRangeMaximum(2 * 60 * 60);
-        chart.moveViewToX(new Date().getTime() - (2 * 60 * 60));
+        binding.tempChart.setVisibleXRangeMaximum(2 * 60 * 60);
+        binding.tempChart.moveViewToX(new Date().getTime() - (2 * 60 * 60));
 
         // Animar
-        chart.animateX(500);
+        binding.tempChart.animateX(500);
     }
 
-    private void setupChart(View v){
-        chart= v.findViewById(R.id.tempChart);
-        chart.getDescription().setTextSize(24f);
-        chart.getDescription().setText(getString(R.string.tempTitle));
+    private void setupChart(){
+        binding.tempChart.getDescription().setTextSize(24f);
+        binding.tempChart.getDescription().setText(getString(R.string.tempTitle));
 
         // descripcion
-        chart.getDescription().setEnabled(false);
+        binding.tempChart.getDescription().setEnabled(false);
         // para las acciones al pulsar
-        chart.setTouchEnabled(true);
-        chart.setDragDecelerationFrictionCoef(0.9f);
+        binding.tempChart.setTouchEnabled(true);
+        binding.tempChart.setDragDecelerationFrictionCoef(0.9f);
         // escalado y arrastre
-        chart.setDragEnabled(true);
-        chart.setScaleEnabled(true);
-        chart.setScaleYEnabled(true);
-        chart.setHorizontalScrollBarEnabled(true);
-        chart.setDrawGridBackground(true);
-        chart.setHighlightPerDragEnabled(true);
-        chart.setPinchZoom(true);
-        chart.setNoDataTextColor(Color.BLACK);
-        chart.setNoDataText(getString(R.string.moreNoData));
+        binding.tempChart.setDragEnabled(true);
+        binding.tempChart.setScaleEnabled(true);
+        binding.tempChart.setScaleYEnabled(true);
+        binding.tempChart.setHorizontalScrollBarEnabled(true);
+        binding.tempChart.setDrawGridBackground(true);
+        binding.tempChart.setHighlightPerDragEnabled(true);
+        binding.tempChart.setPinchZoom(true);
+        binding.tempChart.setNoDataTextColor(Color.BLACK);
+        binding.tempChart.setNoDataText(getString(R.string.moreNoData));
         // fondo
-        chart.setGridBackgroundColor(Color.TRANSPARENT);
+        binding.tempChart.setGridBackgroundColor(Color.TRANSPARENT);
         // animacion
-        chart.animateY(1000);
+        binding.tempChart.animateY(1000);
          // leyenda
-        Legend l = chart.getLegend();
+        Legend l = binding.tempChart.getLegend();
         l.setEnabled(false);
 
          /*********
         * EJE X *
         *********/
-        XAxis xAxis = chart.getXAxis();
+        XAxis xAxis = binding.tempChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setTextSize(12f);
         xAxis.setDrawAxisLine(false);
@@ -146,12 +146,12 @@ public class TempChartFragment extends Fragment {
         /*********
          * EJE Y *
          *********/
-        YAxis leftAxis = chart.getAxisLeft();
+        YAxis leftAxis = binding.tempChart.getAxisLeft();
         leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
         leftAxis.setDrawGridLines(true);
         leftAxis.setEnabled(false);
         leftAxis.enableGridDashedLine(10,5,0);
-        YAxis rightAxis = chart.getAxisRight();
+        YAxis rightAxis = binding.tempChart.getAxisRight();
         rightAxis.setEnabled(false);
     }
 
@@ -160,12 +160,9 @@ public class TempChartFragment extends Fragment {
          * MODEL VIEW *
          **************/
         moreViewModel = new ViewModelProvider(getActivity()).get(getString(R.string.moreViewModel), MoreViewModel.class);
-        final Observer<LinkedList<MessageModel>> obs = new Observer<LinkedList<MessageModel>>() {
-            @Override
-            public void onChanged(LinkedList<MessageModel> messages) {
-                // añadir datos al grafico
-                setData(messages);
-            }
+        final Observer<LinkedList<MessageModel>> obs = messages -> {
+            // añadir datos al grafico
+            setData(messages);
         };
         moreViewModel.getMessages().observe(getViewLifecycleOwner(), obs); // mensajes
     }
@@ -173,14 +170,14 @@ public class TempChartFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_temp, container, false);
+        binding = FragmentTempBinding.inflate(inflater, container, false);
 
         /***********
          * GRAFICO *
          ***********/
-        setupChart(v);
+        setupChart();
 
-        return v;
+        return binding.getRoot();
     }
 
     @Override

@@ -13,6 +13,8 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.android.tfg.R;
+import com.android.tfg.databinding.FragmentPresBinding;
+import com.android.tfg.databinding.FragmentUvBinding;
 import com.android.tfg.model.MessageModel;
 import com.android.tfg.viewmodel.MoreViewModel;
 import com.github.mikephil.charting.charts.LineChart;
@@ -33,8 +35,8 @@ import java.util.Objects;
 
 public class PresChartFragment extends Fragment {
 
-    MoreViewModel moreViewModel;
-    LineChart chart;
+    private MoreViewModel moreViewModel;
+    private FragmentPresBinding binding;
 
     public PresChartFragment(){
 
@@ -80,51 +82,50 @@ public class PresChartFragment extends Fragment {
         });
 
         // Agregar datos
-        chart.setData(presData);
+        binding.presChart.setData(presData);
 
         // Actualizar grafico
-        chart.invalidate();
+        binding.presChart.invalidate();
 
         // Visible 2 ultimas horas
-        chart.setVisibleXRangeMaximum(2 * 60 * 60);
-        chart.moveViewToX(new Date().getTime() - (2 * 60 * 60));
+        binding.presChart.setVisibleXRangeMaximum(2 * 60 * 60);
+        binding.presChart.moveViewToX(new Date().getTime() - (2 * 60 * 60));
 
         // Animar
-        chart.animateX(500);
+        binding.presChart.animateX(500);
     }
 
-    private void setupChart(View v){
-        chart= v.findViewById(R.id.presChart);
-        chart.getDescription().setTextSize(24f);
-        chart.getDescription().setText(getString(R.string.presTitle));
+    private void setupChart(){
+        binding.presChart.getDescription().setTextSize(24f);
+        binding.presChart.getDescription().setText(getString(R.string.presTitle));
 
         // descripcion
-        chart.getDescription().setEnabled(false);
+        binding.presChart.getDescription().setEnabled(false);
         // para las acciones al pulsar
-        chart.setTouchEnabled(true);
-        chart.setDragDecelerationFrictionCoef(0.9f);
+        binding.presChart.setTouchEnabled(true);
+        binding.presChart.setDragDecelerationFrictionCoef(0.9f);
         // escalado y arrastre
-        chart.setDragEnabled(true);
-        chart.setScaleEnabled(true);
-        chart.setScaleYEnabled(true);
-        chart.setHorizontalScrollBarEnabled(true);
-        chart.setDrawGridBackground(true);
-        chart.setHighlightPerDragEnabled(true);
-        chart.setPinchZoom(true);
-        chart.setNoDataTextColor(Color.BLACK);
-        chart.setNoDataText(getString(R.string.moreNoData));
+        binding.presChart.setDragEnabled(true);
+        binding.presChart.setScaleEnabled(true);
+        binding.presChart.setScaleYEnabled(true);
+        binding.presChart.setHorizontalScrollBarEnabled(true);
+        binding.presChart.setDrawGridBackground(true);
+        binding.presChart.setHighlightPerDragEnabled(true);
+        binding.presChart.setPinchZoom(true);
+        binding.presChart.setNoDataTextColor(Color.BLACK);
+        binding.presChart.setNoDataText(getString(R.string.moreNoData));
         // fondo
-        chart.setGridBackgroundColor(Color.TRANSPARENT);
+        binding.presChart.setGridBackgroundColor(Color.TRANSPARENT);
         // animacion
-        chart.animateY(1000);
+        binding.presChart.animateY(1000);
          // leyenda
-        Legend l = chart.getLegend();
+        Legend l = binding.presChart.getLegend();
         l.setEnabled(false);
 
        /*********
         * EJE X *
         *********/
-        XAxis xAxis = chart.getXAxis();
+        XAxis xAxis = binding.presChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setTextSize(12f);
         xAxis.setDrawAxisLine(false);
@@ -144,12 +145,12 @@ public class PresChartFragment extends Fragment {
         /*********
          * EJE Y *
          *********/
-        YAxis leftAxis = chart.getAxisLeft();
+        YAxis leftAxis = binding.presChart.getAxisLeft();
         leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
         leftAxis.setDrawGridLines(true);
         leftAxis.setEnabled(false);
         leftAxis.enableGridDashedLine(10,5,0);
-        YAxis rightAxis = chart.getAxisRight();
+        YAxis rightAxis = binding.presChart.getAxisRight();
         rightAxis.setEnabled(false);
     }
 
@@ -158,12 +159,9 @@ public class PresChartFragment extends Fragment {
          * MODEL VIEW *
          **************/
         moreViewModel = new ViewModelProvider(getActivity()).get(getString(R.string.moreViewModel), MoreViewModel.class);
-        final Observer<LinkedList<MessageModel>> obs = new Observer<LinkedList<MessageModel>>() {
-            @Override
-            public void onChanged(LinkedList<MessageModel> messages) {
-                // añadir datos al grafico
-                setData(messages);
-            }
+        final Observer<LinkedList<MessageModel>> obs = messages -> {
+            // añadir datos al grafico
+            setData(messages);
         };
         moreViewModel.getMessages().observe(getViewLifecycleOwner(), obs); // mensajes
     }
@@ -171,14 +169,14 @@ public class PresChartFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_pres, container, false);
+        binding = FragmentPresBinding.inflate(inflater, container, false);
 
         /***********
          * GRAFICO *
          ***********/
-        setupChart(v);
+        setupChart();
 
-        return v;
+        return binding.getRoot();
     }
 
     @Override

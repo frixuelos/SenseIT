@@ -3,6 +3,7 @@ package com.android.tfg.adapter;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.tfg.R;
+import com.android.tfg.databinding.ItemSearchBinding;
 import com.android.tfg.model.DeviceModel;
 import com.android.tfg.view.MoreActivity;
 import com.android.tfg.viewholder.SearchViewHolder;
@@ -44,77 +46,21 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> implem
     @Override
     public SearchViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // Vista cardview
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_search, parent, false);
+        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+        ItemSearchBinding binding = ItemSearchBinding.inflate(layoutInflater, parent, false);
 
-        return new SearchViewHolder(view);
+        return new SearchViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull SearchViewHolder holder, final int position) {
         DeviceModel device = filteredDevices.get(position);
-        /***************
-         * EXPAND VIEW *
-         ***************
-        holder.expand_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(holder.expand_view.getVisibility()==View.GONE){
-                    TransitionManager.beginDelayedTransition(holder.card_view, new AutoTransition());
-                    holder.expand_view.setVisibility(View.VISIBLE);
-                    holder.expand_button.setBackgroundResource(R.drawable.ic_keyboard_arrow_up_24dp);
-                }else{
-                    TransitionManager.beginDelayedTransition(holder.card_view, new AutoTransition());
-                    holder.expand_view.setVisibility(View.GONE);
-                    holder.expand_button.setBackgroundResource(R.drawable.ic_keyboard_arrow_down_24dp);
-                }
-            }
-        });
-        holder.more_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(v.getContext(), MoreActivity.class);
-                i.putExtra("device", filteredDevices.get(pos).getDeviceID());
-                v.getContext().startActivity(i);
-            }
-        });*/
+        holder.bind(device);
 
-
-        /**********************
-         * CARD VIEW LISTENER *
-         **********************/
-        holder.card_view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(v.getContext(), MoreActivity.class);
-                i.putExtra("device", device.getDeviceID());
-                v.getContext().startActivity(i);
-            }
-        });
-
-        /****************
-         * DEFAULT VIEW *
-         ****************/
-        holder.item_location.setText(device.getName());
-        holder.item_title.setText(device.getDeviceID());
-        Date lastUpdated = new Date(device.getLastMessage().getDate().getSeconds()*1000L);
-        SimpleDateFormat mFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
-        holder.item_last_updated.setText(mFormat.format(lastUpdated));
-        holder.item_temp.setText(String.valueOf(device.getLastMessage().getTemp()));
-        holder.item_hum.setText(String.valueOf(device.getLastMessage().getHum()));
-        holder.item_press.setText(String.valueOf(device.getLastMessage().getPres()));
-        holder.item_uv.setText(String.valueOf(device.getLastMessage().getUv()));
-        holder.item_map.onCreate(null);
-        holder.item_map.onResume();
-        holder.item_map.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(GoogleMap googleMap) {
-                googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-                MarkerOptions markerOptions = new MarkerOptions();
-                markerOptions.position(device.getSite());
-                googleMap.addMarker(markerOptions);
-                googleMap.moveCamera(CameraUpdateFactory.newLatLng(device.getSite()));
-                googleMap.setMinZoomPreference(15);
-            }
+        holder.itemView.setOnClickListener(v -> {
+            Intent i = new Intent(v.getContext(), MoreActivity.class);
+            i.putExtra("device", device.getDeviceID());
+            v.getContext().startActivity(i);
         });
     }
 

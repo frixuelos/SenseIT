@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 
+import com.android.tfg.databinding.ActivityMainBinding;
 import com.android.tfg.swipe.NoSwipeViewPager;
 import com.android.tfg.R;
 import com.android.tfg.adapter.MainPagerAdapter;
@@ -22,9 +23,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private BottomNavigationView bottomNavigationView;
-    private NoSwipeViewPager viewPager;
     private MainViewModel mainViewModel;
+    private ActivityMainBinding binding;
 
     private void configViewModel(){
         /**************
@@ -41,7 +41,8 @@ public class MainActivity extends AppCompatActivity {
 
         supportRequestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY); // para ocultar con scroll
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         setTitle(getString(R.string.nav_home));
 
         /**************
@@ -49,48 +50,36 @@ public class MainActivity extends AppCompatActivity {
          **************/
         configViewModel();
 
-        /***********
-         * TOOLBAR *
-         ***********/
-        Toolbar actionBar = findViewById(R.id.toolbar);
-        actionBar.setNestedScrollingEnabled(true);
-        setSupportActionBar(actionBar);
-
         /*************************
          * BOTTOM NAVIGATION BAR *
          *************************/
-        bottomNavigationView = findViewById(R.id.nav_bar);
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch(menuItem.getItemId()) {
-                    case R.id.nav_home: viewPager.setCurrentItem(0, true);
-                                        return true;
+        binding.bottomBar.setOnNavigationItemSelectedListener(menuItem -> {
+           switch(menuItem.getItemId()) {
+               case R.id.nav_home: binding.mainViewPager.setCurrentItem(0, true);
+                                   return true;
 
-                    case R.id.nav_search:   viewPager.setCurrentItem(1,true);
-                                            return true;
+               case R.id.nav_search:   binding.mainViewPager.setCurrentItem(1,true);
+                                       return true;
 
-                    case R.id.nav_map: viewPager.setCurrentItem(2, true);
-                        return true;
+               case R.id.nav_map:  binding.mainViewPager.setCurrentItem(2, true);
+                                   return true;
 
-                    case R.id.nav_fav: viewPager.setCurrentItem(3,true);
-                                        return true;
+               case R.id.nav_fav:  binding.mainViewPager.setCurrentItem(3,true);
+                                   return true;
 
-                    case R.id.nav_config: viewPager.setCurrentItem(4, true);
-                                        return true;
+               case R.id.nav_config:   binding.mainViewPager.setCurrentItem(4, true);
+                                       return true;
 
-                }
-                return false;
-            }
+           }
+           return false;
         });
 
         /**************
          * VIEW PAGER *
          **************/
-        viewPager = findViewById(R.id.mainViewPager);
-        viewPager.setOffscreenPageLimit(5);
-        viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager()));
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        binding.mainViewPager.setOffscreenPageLimit(5);
+        binding.mainViewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager()));
+        binding.mainViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 invalidateOptionsMenu(); // invalida el menu del toolbar
@@ -99,19 +88,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 switch (position){
-                    case 0: bottomNavigationView.getMenu().findItem(R.id.nav_home).setChecked(true);
+                    case 0: binding.bottomBar.getMenu().findItem(R.id.nav_home).setChecked(true);
                         setTitle(getString(R.string.nav_home));
                         break;
-                    case 1: bottomNavigationView.getMenu().findItem(R.id.nav_search).setChecked(true);
+                    case 1: binding.bottomBar.getMenu().findItem(R.id.nav_search).setChecked(true);
                         setTitle(getString(R.string.nav_search));
                         break;
-                    case 2: bottomNavigationView.getMenu().findItem(R.id.nav_map).setChecked(true);
+                    case 2: binding.bottomBar.getMenu().findItem(R.id.nav_map).setChecked(true);
                         setTitle(getString(R.string.nav_map));
                         break;
-                    case 3: bottomNavigationView.getMenu().findItem(R.id.nav_fav).setChecked(true);
+                    case 3: binding.bottomBar.getMenu().findItem(R.id.nav_fav).setChecked(true);
                         setTitle(getString(R.string.nav_fav));
                         break;
-                    case 4: bottomNavigationView.getMenu().findItem(R.id.nav_config).setChecked(true);
+                    case 4: binding.bottomBar.getMenu().findItem(R.id.nav_config).setChecked(true);
                         setTitle(getString(R.string.nav_config));
                         break;
                 }
@@ -132,10 +121,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed(){ // Para la pulsacion del boton atras (viewpager)
-        if(viewPager.getCurrentItem()==0) {
+        if(binding.mainViewPager.getCurrentItem()==0) {
             super.onBackPressed();
         }else{
-            viewPager.setCurrentItem(viewPager.getCurrentItem()-1,true);
+            binding.mainViewPager.setCurrentItem(binding.mainViewPager.getCurrentItem()-1,true);
         }
 
     }
@@ -145,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
      ****************/
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
-        switch(viewPager.getCurrentItem()){
+        switch(binding.mainViewPager.getCurrentItem()){
             case 1: getMenuInflater().inflate(R.menu.option_menu, menu); // Se infla aqui y se muestra para minimizar al lag del menu
                     menu.findItem(R.id.action_search).setVisible(true);
                     break;

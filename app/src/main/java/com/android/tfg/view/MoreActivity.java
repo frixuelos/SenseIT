@@ -3,6 +3,7 @@ package com.android.tfg.view;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -12,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 import com.android.tfg.R;
 import com.android.tfg.adapter.MorePagerAdapter;
+import com.android.tfg.databinding.ActivityMoreBinding;
 import com.android.tfg.viewmodel.MoreViewModel;
 import com.google.android.material.tabs.TabLayout;
 
@@ -19,10 +21,9 @@ import java.util.Objects;
 
 public class MoreActivity extends AppCompatActivity {
 
-    private Toolbar toolbar;
     private String device;
-    private ViewPager viewPager;
     private MoreViewModel moreViewModel;
+    private ActivityMoreBinding binding;
 
     private void configViewModel(){
         /**************
@@ -39,27 +40,24 @@ public class MoreActivity extends AppCompatActivity {
         /***********
          * TOOLBAR *
          ***********/
-        toolbar=findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        setTitle(device);
+        requestWindowFeature(Window.FEATURE_ACTION_BAR);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         /*********
          * PAGER *
          *********/
-        viewPager = findViewById(R.id.morePager);
-        viewPager.setOffscreenPageLimit(4);
-        viewPager.setAdapter(new MorePagerAdapter(getSupportFragmentManager(),getApplicationContext(), device));
+        binding.morePager.setOffscreenPageLimit(4);
+        binding.morePager.setAdapter(new MorePagerAdapter(getSupportFragmentManager(),getApplicationContext(), device));
         // para el tablayout
-        TabLayout tabLayout = findViewById(R.id.tabMore);
-        tabLayout.setupWithViewPager(viewPager);
+        binding.tabMore.setupWithViewPager(binding.morePager);
 
     }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_more);
+        binding = ActivityMoreBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         configView();
         configViewModel();
     }
@@ -77,33 +75,26 @@ public class MoreActivity extends AppCompatActivity {
 
         // cargar preferencias favoritos
         if(moreViewModel.isFavorite(device)){ // Añadido a favoritos
-            toolbar.getMenu().findItem(R.id.favoriteEvent).setIcon(getDrawable(R.drawable.ic_favorite_checked_24dp));
             menu.findItem(R.id.favoriteEvent).setChecked(true);
 
         }else{ // eliminado de favoritos
-            toolbar.getMenu().findItem(R.id.favoriteEvent).setIcon(getDrawable(R.drawable.ic_favorite_24dp));
             menu.findItem(R.id.favoriteEvent).setChecked(false);
-
         }
 
         // capturar el evento fav
-        menu.findItem(R.id.favoriteEvent).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                if(!item.isChecked()){ // Cambiar a añadido a favoritos
-                    addFav(item);
-                }else{ // Cambiar a eliminado de favoritos
-                    removeFav(item);
-                }
-                return true;
+        menu.findItem(R.id.favoriteEvent).setOnMenuItemClickListener(item -> {
+            if(!item.isChecked()){ // Cambiar a añadido a favoritos
+                addFav(item);
+            }else{ // Cambiar a eliminado de favoritos
+                removeFav(item);
             }
+            return true;
         });
         return super.onCreateOptionsMenu(menu);
     }
 
     private void addFav(MenuItem item){
         // configurar icono
-        item.setIcon(getDrawable(R.drawable.ic_favorite_checked_24dp));
         item.setChecked(true);
 
         // añadir a favoritos
@@ -113,7 +104,6 @@ public class MoreActivity extends AppCompatActivity {
 
     private void removeFav(MenuItem item){
         // configurar icono
-        item.setIcon(getDrawable(R.drawable.ic_favorite_24dp));
         item.setChecked(false);
 
         // eliminar de favoritos

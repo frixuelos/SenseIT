@@ -20,7 +20,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -48,7 +47,7 @@ public class MapFragment extends SupportMapFragment {
                         for(DeviceModel device : deviceModels){
                             MarkerOptions marker = new MarkerOptions().position(device.getSite()); // Crear marca
 
-                            Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault()); // Obtener nombre de posicion
+                            //Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault()); // Obtener nombre de posicion
                             marker.title(device.getDeviceID());
                             googleMap.addMarker(marker);
                         }

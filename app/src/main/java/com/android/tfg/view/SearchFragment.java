@@ -1,5 +1,6 @@
 package com.android.tfg.view;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -15,7 +16,6 @@ import androidx.annotation.Nullable;
 import android.view.inputmethod.InputMethodManager;
 import androidx.appcompat.widget.SearchView;
 import android.widget.EditText;
-
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.android.tfg.R;
 import com.android.tfg.adapter.SearchAdapter;
+import com.android.tfg.databinding.FragmentSearchBinding;
 import com.android.tfg.model.DeviceModel;
 import com.android.tfg.viewmodel.MainViewModel;
 import java.util.LinkedList;
@@ -30,9 +31,9 @@ import java.util.Objects;
 
 public class SearchFragment extends Fragment implements SearchView.OnQueryTextListener{
 
-    private RecyclerView recyclerView;
     private MainViewModel mainViewModel;
     private SearchAdapter searchAdapter;
+    private FragmentSearchBinding binding;
 
     // Necesario para actualizar la vista conforme a los datos de la BBDD
     private void configRecyclerView(LinkedList<DeviceModel> devices){
@@ -41,39 +42,15 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         }
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         searchAdapter = new SearchAdapter(devices);
-        recyclerView.setAdapter(searchAdapter);
-        recyclerView.setLayoutManager(layoutManager);
+        binding.searchsRecyclerView.setAdapter(searchAdapter);
+        binding.searchsRecyclerView.setLayoutManager(layoutManager);
     }
 
-    private void configView(View view){
+    private void configView(){
         /******************
          * SEARCH TOOLBAR *
          ******************/
         setHasOptionsMenu(true);
-
-        /*****************
-         * RECYCLER VIEW *
-         *****************/
-        recyclerView=view.findViewById(R.id.searchsRecyclerView);
-
-        /********************
-         * SWIPE CONTROLLER * (SOLO ADMINS EDIT->REMOVE)
-         ********************
-        searchSwipeController=new SearchSwipeController();
-        ItemTouchHelper itemTouchHelper=new ItemTouchHelper(searchSwipeController);
-        itemTouchHelper.attachToRecyclerView(recyclerView);*/
-
-        /*****************
-         * HIDE KEYBOARD *
-         *****************/
-        view.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                ((InputMethodManager) Objects.requireNonNull(Objects.requireNonNull(getActivity()).getSystemService(Activity.INPUT_METHOD_SERVICE))).hideSoftInputFromWindow(Objects.requireNonNull(getView()).getWindowToken(), 0);
-                return true;
-            }
-        });
-
     }
 
     private void configViewModel(){
@@ -82,12 +59,9 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
          * MODEL VIEW *
          **************/
         mainViewModel = new ViewModelProvider(getActivity()).get(getString(R.string.mainViewModel), MainViewModel.class);
-        final Observer<LinkedList<DeviceModel>> obs = new Observer<LinkedList<DeviceModel>>() {
-            @Override
-            public void onChanged(LinkedList<DeviceModel> deviceModels) {
-                // configurar recycler view con los datos
-                configRecyclerView(deviceModels);
-            }
+        final Observer<LinkedList<DeviceModel>> obs = deviceModels -> {
+            // configurar recycler view con los datos
+            configRecyclerView(deviceModels);
         };
         mainViewModel.getDevices().observe(getActivity(), obs); // TEST dispositivos
     }
@@ -100,11 +74,11 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_search, container, false);
+        binding = FragmentSearchBinding.inflate(inflater, container, false);
 
-        configView(view); // Configurar vista (inicializaciones)
+        configView(); // Configurar vista (inicializaciones)
 
-        return view;
+        return binding.getRoot();
     }
 
     @Override
@@ -115,20 +89,10 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) { // Inflar menu busqueda
-       //inflater.inflate(R.menu.option_menu, menu);
-        MenuItem menuItem = menu.findItem(R.id.action_search);
-        if(menuItem==null){super.onCreateOptionsMenu(menu, inflater);return;} // cuando se cambia a otra vista es nulo
-        SearchView searchView = (SearchView) menuItem.getActionView();
-        searchView.setQueryHint(getResources().getString(R.string.searchHint));
-        EditText editText = (EditText) searchView.findViewById(androidx.appcompat.R.id.search_src_text);
-        editText.setHighlightColor(getResources().getColor(R.color.colorAccent));
-        editText.setTextColor(getResources().getColor(R.color.titleColor));
-        searchView.setIconifiedByDefault(false);
-
         /*******************
          * SEARCH LISTENER *
          *******************/
-        searchView.setOnQueryTextListener(this);
+        ((SearchView)menu.findItem(R.id.action_search).getActionView()).setOnQueryTextListener(this);
 
         super.onCreateOptionsMenu(menu, inflater);
     }

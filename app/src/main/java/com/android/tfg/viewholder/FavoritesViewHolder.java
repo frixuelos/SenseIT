@@ -1,5 +1,6 @@
 package com.android.tfg.viewholder;
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.TextView;
 
@@ -8,34 +9,63 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.tfg.R;
+import com.android.tfg.databinding.ItemFavoritesBinding;
+import com.android.tfg.model.DeviceModel;
+import com.android.tfg.view.MoreActivity;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class FavoritesViewHolder extends RecyclerView.ViewHolder {
 
-    public MapView item_map_fav;
-    public TextView item_title_fav;
-    public TextView item_location_fav;
-    public TextView item_last_updated;
-    public TextView item_temp_fav;
-    public TextView item_hum_fav;
-    public TextView item_press_fav;
-    public TextView item_uv_fav;
-    public CardView card_view;
+    private ItemFavoritesBinding binding;
 
-    public FavoritesViewHolder(@NonNull View itemView) {
-        super(itemView);
-
-        /***********************
-        * COMPONENTES DEL ITEM *
-        ************************/
-        item_map_fav=itemView.findViewById(R.id.item_map_fav);
-        item_title_fav=itemView.findViewById(R.id.item_title_fav);
-        item_location_fav=itemView.findViewById(R.id.item_location_fav);
-        item_last_updated=itemView.findViewById(R.id.item_last_update_fav);
-        item_temp_fav=itemView.findViewById(R.id.item_temp_fav);
-        item_hum_fav=itemView.findViewById(R.id.item_hum_fav);
-        item_press_fav=itemView.findViewById(R.id.item_pres_fav);
-        item_uv_fav=itemView.findViewById(R.id.item_uv_fav);
-        card_view=itemView.findViewById(R.id.cardViewFav);
+    public FavoritesViewHolder(@NonNull ItemFavoritesBinding itemFavoritesBinding) {
+        super(itemFavoritesBinding.getRoot());
+        this.binding=itemFavoritesBinding;
     }
+
+    public void bind(DeviceModel device){
+        /***************
+         * DEVICE INFO *
+         ***************/
+        binding.itemTitleFav.setText(device.getDeviceID());
+        binding.itemLocationFav.setText(device.getName());
+        binding.itemTempFav.setText(String.valueOf(device.getLastMessage().getTemp()));
+        binding.itemHumFav.setText(String.valueOf(device.getLastMessage().getHum()));
+        binding.itemPresFav.setText(String.valueOf(device.getLastMessage().getPres()));
+        binding.itemUvFav.setText(String.valueOf(device.getLastMessage().getUv()));
+        Date lastUpdated = new Date(device.getLastMessage().getDate().getSeconds()*1000L);
+        SimpleDateFormat mFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
+        binding.itemLastUpdateFav.setText(mFormat.format(lastUpdated));
+
+        /**************
+         * DEVICE MAP *
+         **************/
+        binding.itemMapFav.onCreate(null);
+        binding.itemMapFav.onResume();
+        binding.itemMapFav.getMapAsync(googleMap -> {
+            googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+            MarkerOptions markerOptions = new MarkerOptions();
+            markerOptions.position(device.getSite());
+            googleMap.addMarker(markerOptions);
+            googleMap.moveCamera(CameraUpdateFactory.newLatLng(device.getSite()));
+            googleMap.setMinZoomPreference(15);
+        });
+
+        /**********************
+         * CARD VIEW ON CLICK *
+         **********************/
+        binding.cardViewFav.setOnClickListener(v -> {
+            Intent i = new Intent(v.getContext(), MoreActivity.class);
+            i.putExtra("device", device.getDeviceID());
+            v.getContext().startActivity(i);
+        });
+    }
+
 }

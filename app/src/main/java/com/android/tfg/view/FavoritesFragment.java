@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.tfg.R;
 import com.android.tfg.adapter.FavoritesAdapter;
 import com.android.tfg.adapter.SearchAdapter;
+import com.android.tfg.databinding.FragmentFavoritesBinding;
 import com.android.tfg.model.DeviceModel;
 import com.android.tfg.swipe.SwipeRemoveCallback;
 import com.android.tfg.viewmodel.MainViewModel;
@@ -35,8 +36,8 @@ import java.util.LinkedList;
 public class FavoritesFragment extends Fragment {
 
     private MainViewModel mainViewModel;
-    private RecyclerView recyclerView;
     private FavoritesAdapter favoritesAdapter;
+    private FragmentFavoritesBinding binding;
 
     // Swipe para eliminar
     private SwipeRemoveCallback swipeRemoveCallback;
@@ -62,14 +63,11 @@ public class FavoritesFragment extends Fragment {
                 Snackbar snackbar = Snackbar
                         .make(getView(), getString(R.string.remove_from_favorites), Snackbar.LENGTH_LONG);
                 snackbar.getView().setBottom(-56);
-                snackbar.setAction(getString(R.string.undo), new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        favoritesAdapter.insertItem(removed, pos);
-                        recyclerView.scrollToPosition(pos);
-                        mainViewModel.add2Favorites(removed.getDeviceID());
-                        getView().findViewById(R.id.no_fav_text).setVisibility(View.GONE); // Ocultar el texto de favoritos vacio
-                    }
+                snackbar.setAction(getString(R.string.undo), v -> {
+                    favoritesAdapter.insertItem(removed, pos);
+                    binding.favoriteRecyclerView.scrollToPosition(pos);
+                    mainViewModel.add2Favorites(removed.getDeviceID());
+                    getView().findViewById(R.id.no_fav_text).setVisibility(View.GONE); // Ocultar el texto de favoritos vacio
                 });
                 snackbar.show();
 
@@ -95,11 +93,11 @@ public class FavoritesFragment extends Fragment {
         // Actualizar recyclerview
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         favoritesAdapter = new FavoritesAdapter(devices);
-        recyclerView.setAdapter(favoritesAdapter);
-        recyclerView.setLayoutManager(layoutManager);
+        binding.favoriteRecyclerView.setAdapter(favoritesAdapter);
+        binding.favoriteRecyclerView.setLayoutManager(layoutManager);
         configSwipeToRemove();
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeRemoveCallback);
-        itemTouchHelper.attachToRecyclerView(recyclerView);
+        itemTouchHelper.attachToRecyclerView(binding.favoriteRecyclerView);
     }
 
     private void configViewModel(){
@@ -110,37 +108,28 @@ public class FavoritesFragment extends Fragment {
          * MODEL VIEW *
          **************/
         mainViewModel = new ViewModelProvider(getActivity()).get(getString(R.string.mainViewModel), MainViewModel.class);
-        final Observer<LinkedList<DeviceModel>> obs = new Observer<LinkedList<DeviceModel>>() {
-            @Override
-            public void onChanged(LinkedList<DeviceModel> deviceModels) {
-                // configurar recycler view con los datos de favoritos
-                // la primera vez se configura
-                if(favoritesAdapter==null){
-                    configRecyclerView(deviceModels);
+        final Observer<LinkedList<DeviceModel>> obs = deviceModels -> {
+            // configurar recycler view con los datos de favoritos
+            // la primera vez se configura
+            if(favoritesAdapter==null){
+                configRecyclerView(deviceModels);
 
-                // las siguientes simplemente se actualizan los valores del adapter
-                }else if(mainViewModel.getFavDevices().getValue()!=null){
-                   favoritesAdapter.updateItems(mainViewModel.getFavDevices().getValue());
-                }
-
-
+            // las siguientes simplemente se actualizan los valores del adapter
+            }else if(mainViewModel.getFavDevices().getValue()!=null){
+               favoritesAdapter.updateItems(mainViewModel.getFavDevices().getValue());
             }
+
+
         };
         mainViewModel.getFavDevices().observe(getActivity(), obs); // Observar favoritos
-    }
-
-    private void configView(View v){
-        recyclerView=v.findViewById(R.id.favoriteRecyclerView);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_favorites, container, false);
+        binding = FragmentFavoritesBinding.inflate(inflater, container, false);
 
-        configView(v); // Configurar vista
-
-        return v;
+        return binding.getRoot();
     }
 
     @Override
