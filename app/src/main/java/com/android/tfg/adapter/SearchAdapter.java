@@ -56,12 +56,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> implem
     public void onBindViewHolder(@NonNull SearchViewHolder holder, final int position) {
         DeviceModel device = filteredDevices.get(position);
         holder.bind(device);
-
-        holder.itemView.setOnClickListener(v -> {
-            Intent i = new Intent(v.getContext(), MoreActivity.class);
-            i.putExtra("device", device.getDeviceID());
-            v.getContext().startActivity(i);
-        });
     }
 
     @Override
@@ -71,6 +65,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> implem
 
     @Override
     public Filter getFilter() {
+        Log.v("getFilter()", "SearchAdapter");
         return new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
@@ -100,6 +95,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> implem
     }
 
     public void updateItems(LinkedList<DeviceModel> devices){
+        Log.v("updateItems()", "SearchAdapter");
         this.devices.clear();
         this.devices.addAll(devices);
         notifyDataSetChanged();

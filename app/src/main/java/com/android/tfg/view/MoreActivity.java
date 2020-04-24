@@ -37,12 +37,6 @@ public class MoreActivity extends AppCompatActivity {
         // Device
         device=(String) Objects.requireNonNull(getIntent().getExtras()).get("device");
 
-        /***********
-         * TOOLBAR *
-         ***********/
-        requestWindowFeature(Window.FEATURE_ACTION_BAR);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         /*********
          * PAGER *
          *********/
@@ -56,6 +50,13 @@ public class MoreActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        /***********
+         * TOOLBAR *
+         ***********/
+        requestWindowFeature(Window.FEATURE_ACTION_BAR);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         binding = ActivityMoreBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         configView();
