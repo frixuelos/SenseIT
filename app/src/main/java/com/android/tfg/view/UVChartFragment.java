@@ -64,7 +64,7 @@ public class UVChartFragment extends Fragment {
         serieUV.setDrawValues(true);
         serieUV.setCircleColor(Color.BLACK);
         serieUV.setDrawCircleHole(false);
-        serieUV.setFillDrawable(Objects.requireNonNull(getView()).getResources().getDrawable(R.drawable.gradient_uv));
+        serieUV.setFillDrawable(binding.getRoot().getResources().getDrawable(R.drawable.gradient_uv));
         serieUV.setHighlightEnabled(false);
         serieUV.setDrawFilled(true);
 

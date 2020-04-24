@@ -66,7 +66,7 @@ public class TempChartFragment extends Fragment {
         serieTemp.setDrawValues(true);
         serieTemp.setCircleColor(Color.BLACK);
         serieTemp.setDrawCircleHole(false);
-        serieTemp.setFillDrawable(Objects.requireNonNull(getView()).getResources().getDrawable(R.drawable.gradient_temp));
+        serieTemp.setFillDrawable(binding.getRoot().getResources().getDrawable(R.drawable.gradient_temp));
         serieTemp.setHighlightEnabled(false);
         serieTemp.setDrawFilled(true);
 

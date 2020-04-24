@@ -76,7 +76,7 @@ public class HumChartFragment extends Fragment {
         serieHum.setDrawValues(true);
         serieHum.setCircleColor(Color.BLACK);
         serieHum.setDrawCircleHole(false);
-        serieHum.setFillDrawable(Objects.requireNonNull(getView()).getResources().getDrawable(R.drawable.gradient_hum));
+        serieHum.setFillDrawable(binding.getRoot().getResources().getDrawable(R.drawable.gradient_hum));
         serieHum.setHighlightEnabled(false);
         serieHum.setDrawFilled(true);
 

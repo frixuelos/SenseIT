@@ -65,7 +65,7 @@ public class PresChartFragment extends Fragment {
         seriePres.setDrawValues(true);
         seriePres.setCircleColor(Color.BLACK);
         seriePres.setDrawCircleHole(false);
-        seriePres.setFillDrawable(Objects.requireNonNull(getView()).getResources().getDrawable(R.drawable.gradient_pres));
+        seriePres.setFillDrawable(binding.getRoot().getResources().getDrawable(R.drawable.gradient_pres));
         seriePres.setHighlightEnabled(false);
         seriePres.setDrawFilled(true);
 

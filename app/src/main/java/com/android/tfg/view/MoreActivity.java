@@ -15,6 +15,7 @@ import com.android.tfg.R;
 import com.android.tfg.adapter.MorePagerAdapter;
 import com.android.tfg.databinding.ActivityMoreBinding;
 import com.android.tfg.viewmodel.MoreViewModel;
+import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.Objects;
@@ -42,21 +43,38 @@ public class MoreActivity extends AppCompatActivity {
          *********/
         binding.morePager.setOffscreenPageLimit(4);
         binding.morePager.setAdapter(new MorePagerAdapter(getSupportFragmentManager(),getApplicationContext(), device));
-        // para el tablayout
-        binding.tabMore.setupWithViewPager(binding.morePager);
+
+        /*****************
+         * TOGGLE BUTTON *
+         *****************/
+        binding.toggleGroup.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
+            if(!isChecked){return;}
+            switch(checkedId){
+                case R.id.toggleTemp:   binding.morePager.setCurrentItem(0);
+                                        break;
+                case R.id.toggleHum:    binding.morePager.setCurrentItem(1);
+                                        break;
+                case R.id.togglePres:   binding.morePager.setCurrentItem(2);
+                                        break;
+                case R.id.toggleUV:     binding.morePager.setCurrentItem(3);
+                                        break;
+            }
+        });
 
     }
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
+    public void configToolbar(){
         /***********
          * TOOLBAR *
          ***********/
         requestWindowFeature(Window.FEATURE_ACTION_BAR);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
 
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        configToolbar();
         binding = ActivityMoreBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         configView();
