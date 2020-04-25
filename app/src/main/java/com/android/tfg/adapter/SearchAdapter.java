@@ -18,6 +18,7 @@ import com.android.tfg.databinding.ItemSearchBinding;
 import com.android.tfg.model.DeviceModel;
 import com.android.tfg.view.MoreActivity;
 import com.android.tfg.viewholder.SearchViewHolder;
+import com.android.tfg.viewmodel.MainViewModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -35,11 +36,13 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> implem
 
     private LinkedList<DeviceModel> devices;
     private LinkedList<DeviceModel> filteredDevices;
+    private MainViewModel mainViewModel;
 
-    public SearchAdapter(LinkedList<DeviceModel> devices){
+    public SearchAdapter(LinkedList<DeviceModel> devices, MainViewModel mainViewModel){
         this.devices=devices;
         this.filteredDevices=new LinkedList<DeviceModel>();
         this.filteredDevices.addAll(this.devices);
+        this.mainViewModel=mainViewModel;
     }
 
     @NonNull
@@ -49,7 +52,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> implem
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         ItemSearchBinding binding = ItemSearchBinding.inflate(layoutInflater, parent, false);
 
-        return new SearchViewHolder(binding);
+        return new SearchViewHolder(binding, mainViewModel);
     }
 
     @Override
@@ -65,7 +68,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> implem
 
     @Override
     public Filter getFilter() {
-        Log.v("getFilter()", "SearchAdapter");
         return new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
@@ -94,11 +96,27 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> implem
         };
     }
 
+    public void clearFilter(Filter filter){
+        filter=null;
+        if(this.filteredDevices.equals(devices)){return;} // Si son iguales no es necesario
+        // Si no lo son se elimina el filtro
+        this.filteredDevices.clear();
+        this.filteredDevices.addAll(devices);
+        notifyDataSetChanged();
+    }
+
     public void updateItems(LinkedList<DeviceModel> devices){
-        Log.v("updateItems()", "SearchAdapter");
         this.devices.clear();
         this.devices.addAll(devices);
         notifyDataSetChanged();
+    }
+
+    public void updateItem(String device){
+        for(DeviceModel deviceModel : this.devices){
+            if(deviceModel.getDeviceID().equals(device)){
+                notifyItemChanged(devices.indexOf(deviceModel));
+            }
+        }
     }
 
 }

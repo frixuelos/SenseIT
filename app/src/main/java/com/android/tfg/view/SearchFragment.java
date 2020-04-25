@@ -3,7 +3,9 @@ package com.android.tfg.view;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,7 +18,10 @@ import androidx.annotation.Nullable;
 import android.view.inputmethod.InputMethodManager;
 import androidx.appcompat.widget.SearchView;
 import android.widget.EditText;
+import android.widget.Filter;
+
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -29,11 +34,23 @@ import com.android.tfg.viewmodel.MainViewModel;
 import java.util.LinkedList;
 import java.util.Objects;
 
-public class SearchFragment extends Fragment implements SearchView.OnQueryTextListener{
+public class SearchFragment extends Fragment implements SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener{
 
+    private Filter searchFilter;
+    private boolean SEARCH_ENABLED = false;
     private MainViewModel mainViewModel;
     private SearchAdapter searchAdapter;
     private FragmentSearchBinding binding;
+    // Listener para el cambio de preferencias (actualiza los favoritos)
+    private SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+            if(binding.searchsRecyclerView.getAdapter()!=null){
+                // Se actualiza el elemento que ha cambiado
+                searchAdapter.updateItem(key);
+            }
+        }
+    };
 
     // Necesario para actualizar la vista conforme a los datos de la BBDD
     private void configRecyclerView(LinkedList<DeviceModel> devices){
@@ -41,7 +58,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
             searchAdapter.updateItems(mainViewModel.getDevices().getValue());
         }
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        searchAdapter = new SearchAdapter(devices);
+        searchAdapter = new SearchAdapter(devices, mainViewModel);
         binding.searchsRecyclerView.setAdapter(searchAdapter);
         binding.searchsRecyclerView.setLayoutManager(layoutManager);
     }
@@ -84,6 +101,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         configViewModel(); // Configuramos el viewmodel aqui para que cargue los datos antes
+        getActivity().getSharedPreferences("fav", Context.MODE_PRIVATE).registerOnSharedPreferenceChangeListener(preferenceChangeListener);
         super.onActivityCreated(savedInstanceState);
     }
 
@@ -92,22 +110,42 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         /*******************
          * SEARCH LISTENER *
          *******************/
-        ((SearchView)menu.findItem(R.id.action_search).getActionView()).setOnQueryTextListener(this);
+        ((SearchView)menu.findItem(R.id.action_search).getActionView()).setOnQueryTextListener(this); // Busqueda
+        menu.findItem(R.id.action_search).setOnActionExpandListener(this); // Collapse
 
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        searchAdapter.getFilter().filter(query);
-        return false;
+        if(!SEARCH_ENABLED){return false;}
+        if(searchFilter==null){
+            searchFilter=searchAdapter.getFilter();
+        }
+        searchFilter.filter(query);
+        return true;
     }
 
     @Override
     public boolean onQueryTextChange(String newText) { // Filtra con cada cambio de texto
-        if(!newText.isEmpty()){
-            searchAdapter.getFilter().filter(newText);
+        if(!SEARCH_ENABLED){return false;}
+        if(searchFilter==null){
+            searchFilter=searchAdapter.getFilter();
         }
-        return false;
+        searchFilter.filter(newText);
+        return true;
+    }
+
+    @Override
+    public boolean onMenuItemActionExpand(MenuItem item) { // Cuando se expande el menu de busqueda
+        SEARCH_ENABLED=true;
+        return true;
+    }
+
+    @Override
+    public boolean onMenuItemActionCollapse(MenuItem item) { // Cuando se oculta
+        searchAdapter.clearFilter(searchFilter);
+        SEARCH_ENABLED=false;
+        return true;
     }
 }

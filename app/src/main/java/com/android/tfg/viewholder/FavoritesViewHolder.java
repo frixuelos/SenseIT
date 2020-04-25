@@ -49,13 +49,15 @@ public class FavoritesViewHolder extends RecyclerView.ViewHolder {
          **************/
         binding.itemMapFav.onCreate(null);
         binding.itemMapFav.onResume();
+        binding.itemMapFav.onLowMemory();
         binding.itemMapFav.getMapAsync(googleMap -> {
+            googleMap.getUiSettings().setMapToolbarEnabled(false);
             googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
             MarkerOptions markerOptions = new MarkerOptions();
             markerOptions.position(device.getSite());
             googleMap.addMarker(markerOptions);
             googleMap.moveCamera(CameraUpdateFactory.newLatLng(device.getSite()));
-            googleMap.setMinZoomPreference(15);
+            //googleMap.setMinZoomPreference(15);
         });
 
         /**********************

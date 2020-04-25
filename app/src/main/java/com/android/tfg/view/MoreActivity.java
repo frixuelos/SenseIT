@@ -37,6 +37,7 @@ public class MoreActivity extends AppCompatActivity {
     public void configView(){
         // Device
         device=(String) Objects.requireNonNull(getIntent().getExtras()).get("device");
+        setTitle(device);
 
         /*********
          * PAGER *

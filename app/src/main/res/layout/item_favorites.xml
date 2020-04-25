@@ -22,10 +22,14 @@
         android:layout_margin="5dp">
 
     <com.google.android.gms.maps.MapView
+        xmlns:map="http://schemas.android.com/apk/res-auto"
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:id="@+id/item_map_fav"
-        android:layout_margin="5dp" />
+        android:layout_margin="5dp"
+        map:cameraZoom="14"
+        map:mapType="hybrid"
+        map:liteMode="true"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
