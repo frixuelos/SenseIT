@@ -1,24 +1,19 @@
 package com.android.tfg.view;
 
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
 import android.view.Menu;
 
-import android.view.MenuItem;
 import android.view.Window;
 
 import com.android.tfg.databinding.ActivityMainBinding;
-import com.android.tfg.swipe.NoSwipeViewPager;
 import com.android.tfg.R;
 import com.android.tfg.adapter.MainPagerAdapter;
 import com.android.tfg.viewmodel.MainViewModel;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -135,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         switch(binding.mainViewPager.getCurrentItem()){
-            case 1: getMenuInflater().inflate(R.menu.option_menu, menu); // Se infla aqui y se muestra para minimizar al lag del menu
+            case 1: getMenuInflater().inflate(R.menu.search_menu, menu); // Se infla aqui y se muestra para minimizar al lag del menu
                     menu.findItem(R.id.action_search).setVisible(true);
                     break;
 

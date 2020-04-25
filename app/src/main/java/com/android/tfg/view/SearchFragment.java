@@ -59,6 +59,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         }
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         searchAdapter = new SearchAdapter(devices, mainViewModel);
+        binding.searchsRecyclerView.setHasFixedSize(true);
         binding.searchsRecyclerView.setAdapter(searchAdapter);
         binding.searchsRecyclerView.setLayoutManager(layoutManager);
     }

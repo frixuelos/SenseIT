@@ -93,6 +93,7 @@ public class FavoritesFragment extends Fragment {
         // Actualizar recyclerview
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         favoritesAdapter = new FavoritesAdapter(devices);
+        binding.favoriteRecyclerView.setHasFixedSize(true);
         binding.favoriteRecyclerView.setAdapter(favoritesAdapter);
         binding.favoriteRecyclerView.setLayoutManager(layoutManager);
         configSwipeToRemove();
