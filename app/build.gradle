@@ -19,6 +19,9 @@ android {
         enabled = true
     }
 
+    apply plugin: "androidx.navigation.safeargs" // Safe Args
+
+
     buildTypes {
         release {
             minifyEnabled false

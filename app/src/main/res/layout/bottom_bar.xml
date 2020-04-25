@@ -11,6 +11,7 @@
         android:layout_gravity="bottom"
         app:menu="@menu/bottom_menu"
         android:id="@+id/nav_bar"
-        app:labelVisibilityMode="unlabeled"/>
+        app:labelVisibilityMode="unlabeled"
+        android:elevation="8dp"/>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

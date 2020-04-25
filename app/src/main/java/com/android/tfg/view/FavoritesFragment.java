@@ -60,21 +60,20 @@ public class FavoritesFragment extends Fragment {
                 DeviceModel removed = favoritesAdapter.removeItem(pos);
                 mainViewModel.removeFromFavorites(removed.getDeviceID());
 
-                Snackbar snackbar = Snackbar
-                        .make(getView(), getString(R.string.remove_from_favorites), Snackbar.LENGTH_LONG);
-                snackbar.getView().setBottom(-56);
+                Snackbar snackbar = Snackbar.make(binding.getRoot(), getString(R.string.remove_from_favorites), Snackbar.LENGTH_LONG);
+                snackbar.getView().setBottom(56);
                 snackbar.setAction(getString(R.string.undo), v -> {
                     favoritesAdapter.insertItem(removed, pos);
                     binding.favoriteRecyclerView.scrollToPosition(pos);
                     mainViewModel.add2Favorites(removed.getDeviceID());
-                    getView().findViewById(R.id.no_fav_text).setVisibility(View.GONE); // Ocultar el texto de favoritos vacio
+                    binding.noFavText.setVisibility(View.GONE); // Ocultar el texto de favoritos vacio
                 });
                 snackbar.show();
 
                 if(favoritesAdapter.getItemCount()==0){ // Mostrar el texto si no hay favoritos
-                    getView().findViewById(R.id.no_fav_text).setVisibility(View.VISIBLE);
+                    binding.noFavText.setVisibility(View.VISIBLE);
                 }
-                            }
+            }
 
         };
     }
@@ -85,9 +84,10 @@ public class FavoritesFragment extends Fragment {
         }
 
         // Para el texto de lista de favoritos vacia
-        if(getView()!=null){
-            if(!devices.isEmpty()){getView().findViewById(R.id.no_fav_text).setVisibility(View.GONE);}
-            else{getView().findViewById(R.id.no_fav_text).setVisibility(View.VISIBLE);}
+        if(devices.isEmpty()){
+            binding.noFavText.setVisibility(View.VISIBLE);
+        }else{
+            binding.noFavText.setVisibility(View.GONE);
         }
 
         // Actualizar recyclerview
@@ -113,9 +113,15 @@ public class FavoritesFragment extends Fragment {
             // la primera vez se configura
             if(favoritesAdapter==null){
                 configRecyclerView(deviceModels);
-
             // las siguientes simplemente se actualizan los valores del adapter
             }else if(mainViewModel.getFavDevices().getValue()!=null){
+
+                // Para el texto de lista de favoritos vacia
+                if(mainViewModel.getFavDevices().getValue().isEmpty()){
+                    binding.noFavText.setVisibility(View.VISIBLE);
+                }else{
+                    binding.noFavText.setVisibility(View.GONE);
+                }
                favoritesAdapter.updateItems(mainViewModel.getFavDevices().getValue());
             }
 

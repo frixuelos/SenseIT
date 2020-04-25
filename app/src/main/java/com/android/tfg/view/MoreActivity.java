@@ -94,9 +94,11 @@ public class MoreActivity extends AppCompatActivity {
 
         // cargar preferencias favoritos
         if(moreViewModel.isFavorite(device)){ // Añadido a favoritos
+            menu.findItem(R.id.favoriteEvent).setIcon(R.drawable.ic_favorite_checked_24dp);
             menu.findItem(R.id.favoriteEvent).setChecked(true);
 
         }else{ // eliminado de favoritos
+            menu.findItem(R.id.favoriteEvent).setIcon(R.drawable.ic_favorite_24dp);
             menu.findItem(R.id.favoriteEvent).setChecked(false);
         }
 
@@ -114,6 +116,7 @@ public class MoreActivity extends AppCompatActivity {
 
     private void addFav(MenuItem item){
         // configurar icono
+        item.setIcon(R.drawable.ic_favorite_checked_24dp);
         item.setChecked(true);
 
         // añadir a favoritos
@@ -123,6 +126,7 @@ public class MoreActivity extends AppCompatActivity {
 
     private void removeFav(MenuItem item){
         // configurar icono
+        item.setIcon(R.drawable.ic_favorite_24dp);
         item.setChecked(false);
 
         // eliminar de favoritos
