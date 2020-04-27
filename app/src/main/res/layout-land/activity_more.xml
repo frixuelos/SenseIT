@@ -10,20 +10,16 @@
 
 <androidx.cardview.widget.CardView
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     app:cardCornerRadius="0dp"
     style="@style/CardView.Light">
+
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:elevation="4dp">
-
-        <com.android.tfg.swipe.NoSwipeViewPager
-            android:id="@+id/morePager"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"/>
 
         <com.google.android.material.button.MaterialButtonToggleGroup
             android:id="@+id/toggleGroup"
@@ -32,7 +28,8 @@
             android:layout_gravity="center_horizontal"
             android:orientation="horizontal"
             app:checkedButton="@id/toggleTemp"
-            app:singleSelection="true">
+            app:singleSelection="true"
+            android:gravity="bottom|center_horizontal">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/toggleTemp"
@@ -64,6 +61,11 @@
 
         </com.google.android.material.button.MaterialButtonToggleGroup>
 
+        <com.android.tfg.swipe.NoSwipeViewPager
+            android:id="@+id/morePager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
     </androidx.appcompat.widget.LinearLayoutCompat>
 
 </androidx.cardview.widget.CardView>
@@ -75,7 +77,8 @@
         android:scrollbars="vertical"
         android:padding="5dp"
         android:id="@+id/moreRecyclerView"
-        android:background="#1A000000"/>
+        android:background="#1A000000"
+        android:visibility="gone"/>
 
 
 </androidx.appcompat.widget.LinearLayoutCompat>

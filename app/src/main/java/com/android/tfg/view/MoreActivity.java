@@ -1,23 +1,36 @@
 package com.android.tfg.view;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Message;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 import com.android.tfg.R;
+import com.android.tfg.adapter.MoreAdapter;
 import com.android.tfg.adapter.MorePagerAdapter;
+import com.android.tfg.adapter.SearchAdapter;
 import com.android.tfg.databinding.ActivityMoreBinding;
+import com.android.tfg.model.DeviceModel;
+import com.android.tfg.model.MessageModel;
+import com.android.tfg.viewholder.SearchViewHolder;
 import com.android.tfg.viewmodel.MoreViewModel;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.tabs.TabLayout;
 
+import java.util.LinkedList;
 import java.util.Objects;
 
 public class MoreActivity extends AppCompatActivity {
@@ -25,13 +38,33 @@ public class MoreActivity extends AppCompatActivity {
     private String device;
     private MoreViewModel moreViewModel;
     private ActivityMoreBinding binding;
+    private MoreAdapter moreAdapter;
+    private int CHART_SELECTED;
 
     private void configViewModel(){
         /**************
          * MODEL VIEW *
          **************/
         moreViewModel = new ViewModelProvider(this).get(getString(R.string.moreViewModel), MoreViewModel.class);
-        moreViewModel.registerMessagesFromDevice(device); // primera llamada para todos los dispositivos
+        moreViewModel.registerMessagesFromDevice(device); // primera llamada para todos los mensajes
+        final Observer<LinkedList<MessageModel>> obs = messages -> {
+            // añadir datos al recyclerview
+            configRecyclerView(messages);
+        };
+        moreViewModel.getMessages().observe(this, obs); // mensajes
+    }
+
+    // Necesario para actualizar la vista conforme a los datos de la BBDD
+    private void configRecyclerView(LinkedList<MessageModel> messages){
+        if(moreAdapter!=null){
+            moreAdapter.updateItems(moreViewModel.getMessages().getValue());
+        }
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
+        moreAdapter = new MoreAdapter(messages);
+        binding.moreRecyclerView.setHasFixedSize(true);
+        binding.moreRecyclerView.addItemDecoration(new DividerItemDecoration(binding.moreRecyclerView.getContext(), layoutManager.getOrientation()));
+        binding.moreRecyclerView.setAdapter(moreAdapter);
+        binding.moreRecyclerView.setLayoutManager(layoutManager);
     }
 
     public void configView(){
@@ -48,16 +81,21 @@ public class MoreActivity extends AppCompatActivity {
         /*****************
          * TOGGLE BUTTON *
          *****************/
+        CHART_SELECTED=0;
         binding.toggleGroup.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
             if(!isChecked){return;}
             switch(checkedId){
                 case R.id.toggleTemp:   binding.morePager.setCurrentItem(0);
+                                        CHART_SELECTED=0;
                                         break;
                 case R.id.toggleHum:    binding.morePager.setCurrentItem(1);
+                                        CHART_SELECTED=1;
                                         break;
                 case R.id.togglePres:   binding.morePager.setCurrentItem(2);
+                                        CHART_SELECTED=2;
                                         break;
                 case R.id.toggleUV:     binding.morePager.setCurrentItem(3);
+                                        CHART_SELECTED=3;
                                         break;
             }
         });
@@ -80,6 +118,24 @@ public class MoreActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         configView();
         configViewModel();
+    }
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        binding.morePager.setCurrentItem(CHART_SELECTED); // Cuando se cambia la orientacion de la pantalla establecemos el grafico seleccionado
+        binding.toggleGroup.clearChecked();
+        binding.toggleTemp.setChecked(false);
+        switch (CHART_SELECTED){
+            case 0: binding.toggleTemp.setChecked(true);
+                    break;
+            case 1: binding.toggleHum.setChecked(true);
+                    break;
+            case 2: binding.togglePres.setChecked(true);
+                    break;
+            case 3: binding.toggleUV.setChecked(true);
+                    break;
+        }
+        super.onConfigurationChanged(newConfig);
     }
 
     @Override
