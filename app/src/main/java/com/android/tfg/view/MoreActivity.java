@@ -1,8 +1,12 @@
 package com.android.tfg.view;
 
 import android.content.res.Configuration;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.os.Message;
+import android.os.PersistableBundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
@@ -39,7 +43,13 @@ public class MoreActivity extends AppCompatActivity {
     private MoreViewModel moreViewModel;
     private ActivityMoreBinding binding;
     private MoreAdapter moreAdapter;
-    private int CHART_SELECTED;
+    private SELECTION CHART_SELECTED;
+    private enum SELECTION{
+            T,
+            H,
+            P,
+            U
+    }
 
     private void configViewModel(){
         /**************
@@ -47,10 +57,8 @@ public class MoreActivity extends AppCompatActivity {
          **************/
         moreViewModel = new ViewModelProvider(this).get(getString(R.string.moreViewModel), MoreViewModel.class);
         moreViewModel.registerMessagesFromDevice(device); // primera llamada para todos los mensajes
-        final Observer<LinkedList<MessageModel>> obs = messages -> {
-            // añadir datos al recyclerview
-            configRecyclerView(messages);
-        };
+        // añadir datos al recyclerview
+        final Observer<LinkedList<MessageModel>> obs = this::configRecyclerView;
         moreViewModel.getMessages().observe(this, obs); // mensajes
     }
 
@@ -62,7 +70,10 @@ public class MoreActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
         moreAdapter = new MoreAdapter(messages);
         binding.moreRecyclerView.setHasFixedSize(true);
-        binding.moreRecyclerView.addItemDecoration(new DividerItemDecoration(binding.moreRecyclerView.getContext(), layoutManager.getOrientation()));
+        DividerItemDecoration divider = new DividerItemDecoration(binding.moreRecyclerView.getContext(), layoutManager.getOrientation());
+        divider.getDrawable().setTint(Color.WHITE);
+        divider.getDrawable().setTintMode(PorterDuff.Mode.OVERLAY);
+        binding.moreRecyclerView.addItemDecoration(divider);
         binding.moreRecyclerView.setAdapter(moreAdapter);
         binding.moreRecyclerView.setLayoutManager(layoutManager);
     }
@@ -81,21 +92,21 @@ public class MoreActivity extends AppCompatActivity {
         /*****************
          * TOGGLE BUTTON *
          *****************/
-        CHART_SELECTED=0;
+        if(CHART_SELECTED==null){CHART_SELECTED=SELECTION.T;}
         binding.toggleGroup.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
             if(!isChecked){return;}
             switch(checkedId){
                 case R.id.toggleTemp:   binding.morePager.setCurrentItem(0);
-                                        CHART_SELECTED=0;
+                                        CHART_SELECTED=SELECTION.T;
                                         break;
                 case R.id.toggleHum:    binding.morePager.setCurrentItem(1);
-                                        CHART_SELECTED=1;
+                                        CHART_SELECTED=SELECTION.H;
                                         break;
                 case R.id.togglePres:   binding.morePager.setCurrentItem(2);
-                                        CHART_SELECTED=2;
+                                        CHART_SELECTED=SELECTION.P;
                                         break;
                 case R.id.toggleUV:     binding.morePager.setCurrentItem(3);
-                                        CHART_SELECTED=3;
+                                        CHART_SELECTED=SELECTION.U;
                                         break;
             }
         });
@@ -121,21 +132,33 @@ public class MoreActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onConfigurationChanged(@NonNull Configuration newConfig) {
-        binding.morePager.setCurrentItem(CHART_SELECTED); // Cuando se cambia la orientacion de la pantalla establecemos el grafico seleccionado
-        binding.toggleGroup.clearChecked();
-        binding.toggleTemp.setChecked(false);
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        // Cuando se restaura el estado de la actividad restablecemos el estado de los toggle
+        String selected = savedInstanceState.getString("chart_selected");
+        if(selected==null){return;}
+        CHART_SELECTED = SELECTION.valueOf(selected);
         switch (CHART_SELECTED){
-            case 0: binding.toggleTemp.setChecked(true);
-                    break;
-            case 1: binding.toggleHum.setChecked(true);
-                    break;
-            case 2: binding.togglePres.setChecked(true);
-                    break;
-            case 3: binding.toggleUV.setChecked(true);
-                    break;
+            case T: binding.toggleTemp.setChecked(true);
+                CHART_SELECTED=SELECTION.T;
+                break;
+            case H: binding.toggleHum.setChecked(true);
+                CHART_SELECTED=SELECTION.H;
+                break;
+            case P: binding.togglePres.setChecked(true);
+                CHART_SELECTED=SELECTION.P;
+                break;
+            case U: binding.toggleUV.setChecked(true);
+                CHART_SELECTED=SELECTION.U;
+                break;
         }
-        super.onConfigurationChanged(newConfig);
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+    // Cuando se guarda el estado de la actividad almacenamos el estado de los toggle
+        outState.putString("chart_selected", CHART_SELECTED.toString());
+        super.onSaveInstanceState(outState);
     }
 
     @Override

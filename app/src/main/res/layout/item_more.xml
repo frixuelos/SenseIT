@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardBackgroundColor="@color/colorPrimaryDark"
+    app:cardCornerRadius="0dp">
+
 <androidx.appcompat.widget.LinearLayoutCompat android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:layout_margin="5dp"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:layout_margin="5dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -18,7 +24,7 @@
             android:id="@+id/divider3"
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:background="?android:attr/listDivider"
+            android:background="@color/darkColorDivider"
             android:padding="5dp"/>
 
             <androidx.appcompat.widget.LinearLayoutCompat
@@ -95,3 +101,4 @@
             </androidx.appcompat.widget.LinearLayoutCompat>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
+</androidx.cardview.widget.CardView>

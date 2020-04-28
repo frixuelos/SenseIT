@@ -38,4 +38,8 @@
         <item name="tint">@color/titleColor</item>
     </style>
 
+    <style name="AppTheme.RecyclerMore">
+        <item name="android:textColor">@color/titleColor</item>
+    </style>
+
 </resources>

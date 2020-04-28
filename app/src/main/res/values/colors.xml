@@ -12,4 +12,5 @@
     <color name="uvColor">#A6FFEB3B</color>
     <color name="transparent">#00FFFFFF</color>
     <color name="favColor">#FF000E</color>
+    <color name="darkColorDivider">#80FFFFFF</color>
 </resources>
