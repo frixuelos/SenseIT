@@ -1,4 +1,4 @@
-package com.android.tfg.view;
+package com.android.tfg.view.More;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -48,7 +48,9 @@ public class HumChartFragment extends Fragment {
         moreViewModel = new ViewModelProvider(getActivity()).get(getString(R.string.moreViewModel), MoreViewModel.class);
         final Observer<LinkedList<MessageModel>> obs = messages -> {
             // añadir datos al grafico
-            setData(messages);
+            if(!messages.isEmpty()){
+                setData(messages);
+            }
         };
         moreViewModel.getMessages().observe(getViewLifecycleOwner(), obs); // mensajes
     }

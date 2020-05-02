@@ -1,4 +1,4 @@
-package com.android.tfg.view;
+package com.android.tfg.view.Main;
 
 import android.content.Context;
 import android.content.SharedPreferences;

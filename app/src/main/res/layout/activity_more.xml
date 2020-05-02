@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -12,7 +12,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardCornerRadius="0dp"
-    style="@style/CardView.Light">
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintRight_toRightOf="parent"
+    style="@style/CardView.Light"
+    android:id="@+id/charts">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
@@ -39,21 +43,21 @@
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/tempTitle" />
+                android:text="@string/tempTitleShort" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/toggleHum"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/humTitle" />
+                android:text="@string/humTitleShort" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/togglePres"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/presTitle" />
+                android:text="@string/presTitleShort" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/toggleUV"
@@ -68,13 +72,26 @@
 
 </androidx.cardview.widget.CardView>
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scrollbars="vertical"
         android:id="@+id/moreRecyclerView"
-        android:theme="@style/AppTheme.RecyclerMore"/>
+        android:theme="@style/AppTheme.RecyclerMore"
+        app:layout_constraintTop_toBottomOf="@+id/charts"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fbDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        style="@style/Widget.Design.FloatingActionButton"
+        app:tint="@color/titleColor"
+        android:src="@drawable/ic_date_range_24dp"/>
 
-</androidx.appcompat.widget.LinearLayoutCompat>
+</androidx.constraintlayout.widget.ConstraintLayout>

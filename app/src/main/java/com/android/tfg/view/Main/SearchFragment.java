@@ -1,4 +1,4 @@
-package com.android.tfg.view;
+package com.android.tfg.view.Main;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -79,6 +79,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         mainViewModel = new ViewModelProvider(getActivity()).get(getString(R.string.mainViewModel), MainViewModel.class);
         final Observer<LinkedList<DeviceModel>> obs = deviceModels -> {
             // configurar recycler view con los datos
+            if(deviceModels.isEmpty()){return;}
             configRecyclerView(deviceModels);
         };
         mainViewModel.getDevices().observe(getActivity(), obs); // TEST dispositivos

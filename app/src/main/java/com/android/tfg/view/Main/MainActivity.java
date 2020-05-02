@@ -1,4 +1,4 @@
-package com.android.tfg.view;
+package com.android.tfg.view.Main;
 
 
 import androidx.appcompat.app.AppCompatActivity;

@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".view.MainActivity"
+        <activity android:name=".view.Main.MainActivity"
             android:windowSoftInputMode="adjustPan"
             android:theme="@style/AppTheme.Launcher">
             <!--android:screenOrientation="portrait"
@@ -33,7 +33,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".view.MoreActivity"/>
+        <activity android:name=".view.More.MoreActivity"/>
             <!--android:screenOrientation="landscape"
             android:configChanges="orientation|keyboardHidden"
             tools:ignore="LockedOrientationActivity"/-->

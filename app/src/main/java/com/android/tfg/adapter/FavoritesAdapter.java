@@ -1,31 +1,16 @@
 package com.android.tfg.adapter;
 
-import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.tfg.R;
 import com.android.tfg.databinding.ItemFavoritesBinding;
 import com.android.tfg.model.DeviceModel;
-import com.android.tfg.view.MoreActivity;
 import com.android.tfg.viewholder.FavoritesViewHolder;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
 
 public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesViewHolder> {
 

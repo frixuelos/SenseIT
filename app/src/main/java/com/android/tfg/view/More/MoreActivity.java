@@ -1,4 +1,4 @@
-package com.android.tfg.view;
+package com.android.tfg.view.More;
 
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -7,15 +7,19 @@ import android.os.Bundle;
 import android.os.Message;
 import android.os.PersistableBundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.WorkerThread;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.util.Pair;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -31,9 +35,13 @@ import com.android.tfg.model.DeviceModel;
 import com.android.tfg.model.MessageModel;
 import com.android.tfg.viewholder.SearchViewHolder;
 import com.android.tfg.viewmodel.MoreViewModel;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButtonToggleGroup;
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialStyledDatePickerDialog;
 import com.google.android.material.tabs.TabLayout;
 
+import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.Objects;
 
@@ -58,7 +66,10 @@ public class MoreActivity extends AppCompatActivity {
         moreViewModel = new ViewModelProvider(this).get(getString(R.string.moreViewModel), MoreViewModel.class);
         moreViewModel.registerMessagesFromDevice(device); // primera llamada para todos los mensajes
         // añadir datos al recyclerview
-        final Observer<LinkedList<MessageModel>> obs = this::configRecyclerView;
+        final Observer<LinkedList<MessageModel>> obs = messageModels -> {
+            if(messageModels.isEmpty()){binding.moreRecyclerView.setBackgroundColor(Color.GRAY);return;}
+            configRecyclerView(messageModels);
+        };
         moreViewModel.getMessages().observe(this, obs); // mensajes
     }
 
@@ -109,6 +120,20 @@ public class MoreActivity extends AppCompatActivity {
                                         CHART_SELECTED=SELECTION.U;
                                         break;
             }
+        });
+
+        /**************************
+         * FLOATING ACTION BUTTON *
+         **************************/
+        binding.fbDate.setOnClickListener(v -> {
+            MaterialDatePicker.Builder<Pair<Long,Long>> builder = MaterialDatePicker.Builder.dateRangePicker();
+            long currentTimeMillis = Calendar.getInstance().getTimeInMillis();
+            builder.setSelection(new Pair<Long,Long>(currentTimeMillis-(24*60*60*1000), currentTimeMillis));
+            TypedValue value = new TypedValue();
+            getTheme().resolveAttribute(R.attr.materialCalendarTheme, value,true);
+            builder.setTheme(value.resourceId);
+            MaterialDatePicker<Pair<Long,Long>> picker = builder.build();
+            picker.show(getSupportFragmentManager(), picker.toString());
         });
 
     }

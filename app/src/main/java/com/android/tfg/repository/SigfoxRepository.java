@@ -58,8 +58,11 @@ public class SigfoxRepository {
                 Geocoder geocoder = new Geocoder(context, Locale.getDefault());
                 try {
                     List<Address> addresses = geocoder.getFromLocation(device.getSite().latitude, device.getSite().longitude, 1);
-                    if(addresses.get(0).getLocality()==null || addresses.get(0).getSubAdminArea()==null){throw new IOException();}
-                    device.setName(String.format(context.getString(R.string.locationFormat), addresses.get(0).getLocality(), addresses.get(0).getSubAdminArea()));
+                    if(addresses.isEmpty()){
+                        device.setName(deviceID);
+                    }else{
+                        device.setName(String.format(context.getString(R.string.locationFormat), addresses.get(0).getLocality(), addresses.get(0).getSubAdminArea()));
+                    }
                 } catch (IOException exc) {
                     // No se pudo encontrar una dirección se establece nulo
                     Log.w("DATABASE", "allDevicesListener (SigfoxRepository) can't get device name");
@@ -131,7 +134,8 @@ public class SigfoxRepository {
 
         // Filtro por defecto (24 ultimas horas)
         if(since==null && until==null){
-            Date lastDay = new Date((new Date()).getTime()/1000L-(24*60*60));
+            Date lastDay = new Date((new Date()).getTime()-(24*60*60*1000));
+            Log.v("since", new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault()).format(lastDay));
             messagesRegistration=databaseReference.document(device)
                     .collection("messages")
                     .orderBy("date", Query.Direction.ASCENDING)
@@ -148,6 +152,7 @@ public class SigfoxRepository {
                                 query.add(doc.toObject(MessageModel.class));
                             }
                             messages.setValue(query);
+                            Log.v("Size", String.valueOf(messages.getValue().size()));
                         }
                     });
         }else if(until==null){ // Si solo se filtra por inicio

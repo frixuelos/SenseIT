@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory app:title="@string/setUnitTitle">
+        <ListPreference
+            app:key="@string/keyUnitTemp"
+            app:title="@string/tempTitle"
+            app:summary="@string/sumTemp"
+            app:entries="@array/unit_temp"
+            app:icon="@drawable/ic_temp"
+            app:entryValues="@array/unit_temp"
+            app:defaultValue="ºC"/>
+
+        <ListPreference
+            app:key="@string/keyUnitPres"
+            app:title="@string/presTitle"
+            app:summary="@string/sumPres"
+            app:entries="@array/unit_pres"
+            app:icon="@drawable/ic_pres"
+            app:entryValues="@array/unit_pres"
+            app:defaultValue="hPa"/>
+
+        <ListPreference
+            app:key="@string/keyUnitUV"
+            app:title="@string/uvTitle"
+            app:summary="@string/sumUV"
+            app:entries="@array/unit_uv"
+            app:icon="@drawable/ic_uv"
+            app:entryValues="@array/unit_uv"
+            android:defaultValue="mW/cm2"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/setLocTitle">
+        <ListPreference
+            app:key="@string/keyLang"
+            app:title="@string/setLangTitle"
+            app:summary="@string/sumLang"
+            app:icon="@drawable/ic_lang"
+            app:entries="@array/lang"
+            app:entryValues="@array/lang"
+            app:defaultValue="English" />
+    </PreferenceCategory>
+</PreferenceScreen>

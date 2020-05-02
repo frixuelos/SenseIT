@@ -9,11 +9,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.android.tfg.R;
-import com.android.tfg.view.HumChartFragment;
-import com.android.tfg.view.PresChartFragment;
-import com.android.tfg.view.TempChartFragment;
-import com.android.tfg.view.UVChartFragment;
-import com.google.android.gms.maps.SupportMapFragment;
+import com.android.tfg.view.More.HumChartFragment;
+import com.android.tfg.view.More.PresChartFragment;
+import com.android.tfg.view.More.TempChartFragment;
+import com.android.tfg.view.More.UVChartFragment;
 
 public class MorePagerAdapter extends FragmentStatePagerAdapter {
 

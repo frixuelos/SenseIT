@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <array name="unit_temp">
+        <item>ºC</item>
+        <item>ºK</item>
+    </array>
+
+    <array name="unit_pres">
+        <item>Atm</item>
+        <item>hPa</item>
+    </array>
+
+    <array name="unit_uv">
+        <item>mW/cm2</item>
+        <item>W/m2</item>
+    </array>
+
+    <array name="lang">
+        <item>English</item>
+        <item>Español</item>
+    </array>
+
+</resources>

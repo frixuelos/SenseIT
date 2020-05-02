@@ -1,20 +1,15 @@
 package com.android.tfg.viewholder;
 
 import android.content.Intent;
-import android.view.View;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.tfg.R;
 import com.android.tfg.databinding.ItemFavoritesBinding;
 import com.android.tfg.model.DeviceModel;
-import com.android.tfg.view.MoreActivity;
+import com.android.tfg.view.More.MoreActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.text.SimpleDateFormat;

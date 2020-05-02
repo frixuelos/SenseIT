@@ -7,7 +7,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragment_favorites"
     android:orientation="vertical"
-    tools:context="view.FavoritesFragment">
+    tools:context=".view.Main.FavoritesFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/favoriteRecyclerView"

@@ -1,29 +1,22 @@
-package com.android.tfg.view;
+package com.android.tfg.view.Main;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
-import android.view.View;
 
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.android.tfg.R;
 import com.android.tfg.model.DeviceModel;
+import com.android.tfg.view.More.MoreActivity;
 import com.android.tfg.viewmodel.MainViewModel;
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import java.io.IOException;
+
 import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
 
 public class MapFragment extends SupportMapFragment {
 

@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="bottomNavigationStyle">@style/bottomNavStyle</item>
         <item name="fontFamily">@font/rubik</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
     </style>
 
     <style name="AppTheme.Launcher">

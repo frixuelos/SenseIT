@@ -1,11 +1,6 @@
 package com.android.tfg.adapter;
 
-import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
@@ -13,24 +8,12 @@ import android.widget.Filterable;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.tfg.R;
 import com.android.tfg.databinding.ItemSearchBinding;
 import com.android.tfg.model.DeviceModel;
-import com.android.tfg.view.MoreActivity;
 import com.android.tfg.viewholder.SearchViewHolder;
 import com.android.tfg.viewmodel.MainViewModel;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.rpc.Help;
 
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> implements Filterable {
 

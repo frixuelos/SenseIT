@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:id="@+id/fragment_search"
-    tools:context="view.SearchFragment">
+    tools:context=".view.Main.SearchFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/searchsRecyclerView"

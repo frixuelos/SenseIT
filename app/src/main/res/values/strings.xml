@@ -34,47 +34,36 @@
 
     <!-- MORE -->
     <string name="tempTitle">Temperature</string>
+    <string name="tempTitleShort">Temp</string>
     <string name="humTitle">Humidity</string>
+    <string name="humTitleShort">Hum</string>
     <string name="presTitle">Pressure</string>
+    <string name="presTitleShort">Pres</string>
     <string name="uvTitle">UV</string>
     <string name="favoriteEvent">Favorite</string>
     <string name="remove_from_favorites">Removed from favorites</string>
     <string name="add_to_favorites">Added to favorites</string>
+    <string name="moreNoData">No data.</string>
 
     <!-- FAVORITES -->
     <string name="no_fav_text">Empty favorites list.</string>
     <string name="remove_fav">Remove favorites</string>
 
-    <!-- LOGIN -->
-    <string name="btnLogin">Login</string>
-    <string name="txtRegister">Create an account</string>
-    <string name="hintEmail">E-mail</string>
-    <string name="hintPasswd">Password</string>
+    <!-- SETTINGS -->
+    <string name="setUnitTitle">Measurement units</string>
+    <string name="sumTemp">Set the units for temperature</string>
+    <string name="sumPres">Set the units for pressure</string>
+    <string name="sumUV">Set the units for UV</string>
+    <string name="keyUnitTemp">units_temp</string>
+    <string name="keyUnitPres">units_pres</string>
+    <string name="keyUnitUV">units_uv</string>
+    <string name="setLocTitle">Location</string>
+    <string name="setLangTitle">Language</string>
+    <string name="sumLang">Change the language</string>
+    <string name="keyLang">lang</string>
 
-    <!-- REGISTER -->
-    <string name="hintRePasswd">Confirm password</string>
-    <string name="btnRegister">Sign up</string>
-
-    <!-- MORE -->
-    <string name="moreNoData">No data.</string>
 
 
     <!-- ERRORES -->
-    <!-- LOGIN -->
-    <string name="errorTextEmail">Invalid e-mail or empty</string>
-    <string name="errorTextPasswd">Password too short or empty</string>
-    <string name="errorLoginInvalidUser">Invalid e-mail</string>
-    <string name="errorLoginInvalidPassword">Wrong password</string>
-    <string name="errorLogin">ERROR: Can\'t login, please try again later</string>
-    <string name="errorEmptyLogin">E-mail or password empty</string>
-
-    <!-- REGISTER -->
-    <string name="errEqualPasswd">Password must be the same</string>
-    <string name="errorEmptyEmail">E-mail is empty</string>
-    <string name="errorEmptyPasswd">E-mail is empty</string>
-    <string name="errorWeakPasswd">Password too weak</string>
-    <string name="errorRegisterCollision">This user already exists</string>
-    <string name="errorRegister">ERROR: Can\'t sign up, please try again later</string>
-
 
 </resources>
