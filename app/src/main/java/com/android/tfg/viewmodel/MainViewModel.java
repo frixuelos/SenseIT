@@ -133,4 +133,31 @@ public class MainViewModel extends AndroidViewModel {
         updateFavDevices();
     }
 
+    /************
+     * UNIDADES *
+     ************/
+    public double convertTemp(double temp){
+        Context context = getApplication().getApplicationContext();
+        if(this.sharedPreferences.getString(context.getString(R.string.keyUnitTemp), context.getString(R.string.defUnitTemp)).equals("ºF")){
+            return Math.round((9*temp/5+32.0)*100)/100.0;
+        }
+        return temp;
+    }
+
+    public double convertPres(double pres){
+        Context context = getApplication().getApplicationContext();
+        if(this.sharedPreferences.getString(context.getString(R.string.keyUnitPres), context.getString(R.string.defUnitPres)).equals("atm")){
+            return Math.round(0.000987*pres*100)/100.0;
+        }
+        return pres;
+    }
+
+    public double convertUv(double uv){
+        Context context = getApplication().getApplicationContext();
+        if(this.sharedPreferences.getString(context.getString(R.string.keyUnitUV), context.getString(R.string.defUnitUV)).equals("W/m2")){
+            return Math.round(uv*10.0*100)/100.0;
+        }
+        return uv;
+    }
+
 }
