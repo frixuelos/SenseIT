@@ -96,7 +96,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> implem
 
     public void updateItem(String device){
         for(DeviceModel deviceModel : this.devices){
-            if(deviceModel.getDeviceID().equals(device)){
+            if(deviceModel.getId().equals(device)){
                 notifyItemChanged(devices.indexOf(deviceModel));
             }
         }

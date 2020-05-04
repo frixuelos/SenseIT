@@ -29,7 +29,7 @@ public class FavoritesViewHolder extends RecyclerView.ViewHolder {
         /***************
          * DEVICE INFO *
          ***************/
-        binding.itemTitleFav.setText(device.getDeviceID());
+        binding.itemTitleFav.setText(device.getId());
         binding.itemLocationFav.setText(device.getName());
         binding.itemTempFav.setText(String.valueOf(device.getLastMessage().getTemp()));
         binding.itemHumFav.setText(String.valueOf(device.getLastMessage().getHum()));
@@ -60,7 +60,7 @@ public class FavoritesViewHolder extends RecyclerView.ViewHolder {
          **********************/
         binding.cardViewFav.setOnClickListener(v -> {
             Intent i = new Intent(v.getContext(), MoreActivity.class);
-            i.putExtra("device", device.getDeviceID());
+            i.putExtra("device", device.getId());
             v.getContext().startActivity(i);
         });
     }

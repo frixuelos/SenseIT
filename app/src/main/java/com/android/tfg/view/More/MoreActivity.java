@@ -17,9 +17,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.WorkerThread;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.util.Pair;
+import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -37,8 +39,13 @@ import com.android.tfg.viewholder.SearchViewHolder;
 import com.android.tfg.viewmodel.MoreViewModel;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButtonToggleGroup;
+import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.datepicker.MaterialStyledDatePickerDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.Calendar;
@@ -47,6 +54,7 @@ import java.util.Objects;
 
 public class MoreActivity extends AppCompatActivity {
 
+    private long since=0, until=0;
     private String device;
     private MoreViewModel moreViewModel;
     private ActivityMoreBinding binding;
@@ -64,7 +72,7 @@ public class MoreActivity extends AppCompatActivity {
          * MODEL VIEW *
          **************/
         moreViewModel = new ViewModelProvider(this).get(getString(R.string.moreViewModel), MoreViewModel.class);
-        moreViewModel.registerMessagesFromDevice(device); // primera llamada para todos los mensajes
+        moreViewModel.registerMessagesFromDevice(device, since, until); // primera llamada para todos los mensajes
         // añadir datos al recyclerview
         final Observer<LinkedList<MessageModel>> obs = messageModels -> {
             if(messageModels.isEmpty()){binding.moreRecyclerView.setBackgroundColor(Color.GRAY);return;}
@@ -125,14 +133,41 @@ public class MoreActivity extends AppCompatActivity {
         /**************************
          * FLOATING ACTION BUTTON *
          **************************/
+        long timeInMillis = Calendar.getInstance().getTimeInMillis(); // Filtros por defecto
+        since=timeInMillis - (24 * 60 * 60 * 1000);
+        until=timeInMillis;
         binding.fbDate.setOnClickListener(v -> {
+            // Current time
+            long currentTimeInMillis = Calendar.getInstance().getTimeInMillis();
+
+            // Builder
             MaterialDatePicker.Builder<Pair<Long,Long>> builder = MaterialDatePicker.Builder.dateRangePicker();
-            long currentTimeMillis = Calendar.getInstance().getTimeInMillis();
-            builder.setSelection(new Pair<Long,Long>(currentTimeMillis-(24*60*60*1000), currentTimeMillis));
+            builder.setSelection(new Pair<Long, Long>(since, until));
             TypedValue value = new TypedValue();
             getTheme().resolveAttribute(R.attr.materialCalendarTheme, value,true);
             builder.setTheme(value.resourceId);
+            builder.setTitleText(R.string.titleDateRange);
+
+            // Restricciones fechas
+            CalendarConstraints.Builder calendarConstraintsBuilder = new CalendarConstraints.Builder();
+            calendarConstraintsBuilder.setEnd(currentTimeInMillis);
+            CalendarConstraints calendarConstraints = calendarConstraintsBuilder.build();
+            builder.setCalendarConstraints(calendarConstraints);
+
+            // Picker
             MaterialDatePicker<Pair<Long,Long>> picker = builder.build();
+            picker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Pair<Long, Long>>() {
+                @Override
+                public void onPositiveButtonClick(Pair<Long, Long> selection) {
+                    if(selection.first>currentTimeInMillis || selection.second>currentTimeInMillis){
+                        new MaterialAlertDialogBuilder(MoreActivity.this).setTitle("ERROR").setMessage("Can't select this range !").setNeutralButton("OK", null).show();
+                        return;
+                    }
+                    since=selection.first;
+                    until=selection.second;
+                    moreViewModel.registerMessagesFromDevice(device, since, until);
+                }
+            });
             picker.show(getSupportFragmentManager(), picker.toString());
         });
 

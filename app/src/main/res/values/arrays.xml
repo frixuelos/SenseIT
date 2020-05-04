@@ -3,7 +3,7 @@
 
     <array name="unit_temp">
         <item>ºC</item>
-        <item>ºK</item>
+        <item>ºF</item>
     </array>
 
     <array name="unit_pres">

@@ -10,21 +10,32 @@ public class MessageModel {
     private double pres;
     private double hum;
     private double batt;
-    private double fixedLat;
-    private double fixedLng;
     private double uv;
-    private int seqNumber;
+    private long seqNumber;
     private Timestamp date;
-    private int countryCode;
-    private String operatorName, lqi;
-    private ComputedLocationModel computedLocation;
+    private String lqi;
 
-    public int getSeqNumber() {
+
+    public String getOperatorName() {
+        return operatorName;
+    }
+
+    public void setOperatorName(String operatorName) {
+        this.operatorName = operatorName;
+    }
+
+    private String operatorName;
+
+    public long getSeqNumber() {
         return seqNumber;
     }
 
-    public void setSeqNumber(String seqNumber) {
-        this.seqNumber = Integer.parseInt(seqNumber);
+    public void setSeqNumber(Object seqNumber) {
+        if(seqNumber instanceof String){
+            this.seqNumber = Long.parseLong((String)seqNumber);
+        }else if(seqNumber instanceof Long){
+            this.seqNumber = (long)seqNumber;
+        }
     }
 
     public double getUv() {
@@ -67,22 +78,6 @@ public class MessageModel {
         this.batt = batt;
     }
 
-    public double getFixedLat() {
-        return fixedLat;
-    }
-
-    public void setFixedLat(double fixedLat) {
-        this.fixedLat = fixedLat;
-    }
-
-    public double getFixedLng() {
-        return fixedLng;
-    }
-
-    public void setFixedLng(double fixedLng) {
-        this.fixedLng = fixedLng;
-    }
-
     public Timestamp getDate() {
         return date;
     }
@@ -91,36 +86,12 @@ public class MessageModel {
         this.date = date;
     }
 
-    public int getCountryCode() {
-        return countryCode;
-    }
-
-    public void setCountryCode(int countryCode) {
-        this.countryCode = countryCode;
-    }
-
-    public String getOperatorName() {
-        return operatorName;
-    }
-
-    public void setOperatorName(String operatorName) {
-        this.operatorName = operatorName;
-    }
-
     public String getLqi() {
         return lqi;
     }
 
     public void setLqi(String lqi) {
         this.lqi = lqi;
-    }
-
-    public ComputedLocationModel getComputedLocation() {
-        return computedLocation;
-    }
-
-    public void setComputedLocation(ComputedLocationModel computedLocation) {
-        this.computedLocation = computedLocation;
     }
 
     @NonNull

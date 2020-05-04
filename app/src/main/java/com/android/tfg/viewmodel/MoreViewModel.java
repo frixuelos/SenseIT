@@ -44,6 +44,7 @@ public class MoreViewModel extends AndroidViewModel {
             messages.setValue(messageModels);
         }
     };
+    private boolean MESSAGES_INIT;
 
 
     public MoreViewModel(@NonNull Application application) {
@@ -51,16 +52,19 @@ public class MoreViewModel extends AndroidViewModel {
         sigfoxRepository=SigfoxRepository.getInstance(getApplication().getApplicationContext());
         sharedPreferences=application.getApplicationContext().getSharedPreferences(application.getApplicationContext().getString(R.string.favoritesPreferences), Context.MODE_PRIVATE);
         messages=new MutableLiveData<>();
+        MESSAGES_INIT=false;
     }
 
     public MutableLiveData<LinkedList<MessageModel>> getMessages(){
         return messages;
     }
 
-    public void registerMessagesFromDevice(String device){
+    public void registerMessagesFromDevice(String device, long since, long until){
         if(device==null){return;} // por si el string esta vacio
         sigfoxRepository.registerMessagesFromDevice(device, null, null);
-        sigfoxRepository.getMessages().observeForever(messagesObserver);
+        if(!MESSAGES_INIT){
+            sigfoxRepository.getMessages().observeForever(messagesObserver);
+        }
     }
 
     public void unregisterMessagesFromDevice(String device){

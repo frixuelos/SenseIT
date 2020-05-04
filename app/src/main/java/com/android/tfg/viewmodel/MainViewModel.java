@@ -55,7 +55,7 @@ public class MainViewModel extends AndroidViewModel {
             // actualizar datos
             LinkedList<DeviceModel> query = new LinkedList<>();
             for(DeviceModel deviceModel : deviceModels){
-                if(sharedPreferences.getAll().containsKey(deviceModel.getDeviceID())){
+                if(sharedPreferences.getAll().containsKey(deviceModel.getId())){
                     query.add(deviceModel);
                 }
             }
@@ -102,7 +102,7 @@ public class MainViewModel extends AndroidViewModel {
         // actualizar datos
         LinkedList<DeviceModel> query = new LinkedList<>();
         for(DeviceModel deviceModel : devices.getValue()){
-            if(sharedPreferences.getAll().containsKey(deviceModel.getDeviceID())){
+            if(sharedPreferences.getAll().containsKey(deviceModel.getId())){
                 query.add(deviceModel);
             }
         }

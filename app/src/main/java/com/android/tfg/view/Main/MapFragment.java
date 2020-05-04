@@ -41,7 +41,7 @@ public class MapFragment extends SupportMapFragment {
                             MarkerOptions marker = new MarkerOptions().position(device.getSite()); // Crear marca
 
                             //Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault()); // Obtener nombre de posicion
-                            marker.title(device.getDeviceID());
+                            marker.title(device.getId());
                             googleMap.addMarker(marker);
                         }
 

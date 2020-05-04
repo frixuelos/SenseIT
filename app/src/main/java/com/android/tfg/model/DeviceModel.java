@@ -1,44 +1,51 @@
 package com.android.tfg.model;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.firestore.Exclude;
+
+import java.io.Serializable;
 
 public class DeviceModel {
 
-    private String deviceID, deviceType, name;
+    @Exclude // Excluir el ID para el update
+    private String id;
+
+    private String type, name;
+    private ComputedLocationModel computedLocation;
     private MessageModel lastMessage;
 
-    public DeviceModel(String deviceID, String deviceType, String name, MessageModel lastMessage){
-        this.deviceID=deviceID;
-        this.deviceType=deviceType;
-        this.name=name;
-        this.lastMessage=lastMessage;
+    public DeviceModel(){}
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public ComputedLocationModel getComputedLocation() {
+        return computedLocation;
+    }
+
+    public void setComputedLocation(ComputedLocationModel computedLocation) {
+        this.computedLocation = computedLocation;
     }
 
     public LatLng getSite(){
-        return new LatLng(this.lastMessage.getComputedLocation().getLat(), this.lastMessage.getComputedLocation().getLng());
-    }
-
-    public String getDeviceID() {
-        return deviceID;
-    }
-
-    public void setDeviceID(String deviceID) {
-        this.deviceID = deviceID;
-    }
-
-    public String getDeviceType() {
-        return deviceType;
-    }
-
-    public void setDeviceType(String deviceType) {
-        this.deviceType = deviceType;
+        return new LatLng(this.computedLocation.getLat(), this.computedLocation.getLng());
     }
 
     public String getName() {
-        if(name!=null){
-            return name;
-        }
-        return deviceID;
+        return this.name;
     }
 
     public void setName(String name) {

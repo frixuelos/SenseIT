@@ -161,6 +161,7 @@ public class TempChartFragment extends Fragment {
          **************/
         moreViewModel = new ViewModelProvider(getActivity()).get(getString(R.string.moreViewModel), MoreViewModel.class);
         final Observer<LinkedList<MessageModel>> obs = messages -> {
+            Log.w("SALTA", "CONMIGO");
             // añadir datos al grafico
             if(!messages.isEmpty()){
                 setData(messages);

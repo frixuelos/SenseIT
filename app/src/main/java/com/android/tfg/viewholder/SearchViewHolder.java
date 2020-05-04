@@ -35,7 +35,7 @@ public class SearchViewHolder extends RecyclerView.ViewHolder {
         /***************
          * DEVICE INFO *
          ***************/
-        binding.itemTitle.setText(device.getDeviceID());
+        binding.itemTitle.setText(device.getId());
         binding.itemLocation.setText(device.getName());
         binding.itemTemp.setText(String.valueOf(device.getLastMessage().getTemp()));
         binding.itemHum.setText(String.valueOf(device.getLastMessage().getHum()));
@@ -64,18 +64,18 @@ public class SearchViewHolder extends RecyclerView.ViewHolder {
         /**************
          * DEVICE FAV *
          **************/
-        if(mainViewModel.isFavorite(device.getDeviceID())){
+        if(mainViewModel.isFavorite(device.getId())){
             binding.itemFav.setColorFilter(Color.RED);
         }else{
             binding.itemFav.setColorFilter(Color.LTGRAY);
         }
         binding.itemFav.setOnClickListener(v -> {
-            if(mainViewModel.isFavorite(device.getDeviceID())){
-                mainViewModel.removeFromFavorites(device.getDeviceID());
+            if(mainViewModel.isFavorite(device.getId())){
+                mainViewModel.removeFromFavorites(device.getId());
                 binding.itemFav.setColorFilter(Color.LTGRAY);
                 Toast.makeText(binding.getRoot().getContext(), binding.getRoot().getContext().getString(R.string.remove_from_favorites), Toast.LENGTH_SHORT).show();
             }else{
-                mainViewModel.add2Favorites(device.getDeviceID());
+                mainViewModel.add2Favorites(device.getId());
                 binding.itemFav.setColorFilter(Color.RED);
                 Toast.makeText(binding.getRoot().getContext(), binding.getRoot().getContext().getString(R.string.add_to_favorites), Toast.LENGTH_SHORT).show();
             }
@@ -86,7 +86,7 @@ public class SearchViewHolder extends RecyclerView.ViewHolder {
          **********************/
         binding.cardViewSearch.setOnClickListener(v -> {
             Intent i = new Intent(v.getContext(), MoreActivity.class);
-            i.putExtra("device", device.getDeviceID());
+            i.putExtra("device", device.getId());
             v.getContext().startActivity(i);
         });
     }

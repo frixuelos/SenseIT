@@ -58,14 +58,13 @@ public class FavoritesFragment extends Fragment {
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i){
                 int pos = viewHolder.getAdapterPosition();
                 DeviceModel removed = favoritesAdapter.removeItem(pos);
-                mainViewModel.removeFromFavorites(removed.getDeviceID());
+                mainViewModel.removeFromFavorites(removed.getId());
 
-                Snackbar snackbar = Snackbar.make(binding.getRoot(), getString(R.string.remove_from_favorites), Snackbar.LENGTH_LONG);
-                snackbar.getView().setBottom(56);
+                Snackbar snackbar = Snackbar.make(binding.coordinator, getString(R.string.remove_from_favorites), Snackbar.LENGTH_LONG).setActionTextColor(getResources().getColor(R.color.colorAccent));
                 snackbar.setAction(getString(R.string.undo), v -> {
                     favoritesAdapter.insertItem(removed, pos);
                     binding.favoriteRecyclerView.scrollToPosition(pos);
-                    mainViewModel.add2Favorites(removed.getDeviceID());
+                    mainViewModel.add2Favorites(removed.getId());
                     binding.noFavText.setVisibility(View.GONE); // Ocultar el texto de favoritos vacio
                 });
                 snackbar.show();

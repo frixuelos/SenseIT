@@ -22,6 +22,7 @@ import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.MetadataChanges;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -51,21 +52,36 @@ public class SigfoxRepository {
             LinkedList<DeviceModel> query = new LinkedList<>();
             for(DocumentSnapshot doc : value.getDocuments()){
                 String deviceID = doc.getId();
-                MessageModel lastMessage = doc.get("lastMessage", MessageModel.class);
-                DeviceModel device = new DeviceModel(deviceID, null, null, lastMessage);
+                /* si se ha establecido un nombre
+                String name = null;
+                if(doc.contains("name")){
+                    name=doc.getString("name");
+                }
+                DeviceModel device = new DeviceModel(deviceID, doc.getString("type"), name, lastMessage);*/
+                DeviceModel device = doc.toObject(DeviceModel.class);
+                if(device==null){ // Si es nulo mostramos error
+                    Log.e("DATABASE", "allDevicesListener (SigfoxRepository) can't get device");
+                    return;
+                }
+                device.setId(deviceID);
 
-                // Se trata de descubrir el nombre de la posicion
-                Geocoder geocoder = new Geocoder(context, Locale.getDefault());
-                try {
-                    List<Address> addresses = geocoder.getFromLocation(device.getSite().latitude, device.getSite().longitude, 1);
-                    if(addresses.isEmpty()){
-                        device.setName(deviceID);
-                    }else{
-                        device.setName(String.format(context.getString(R.string.locationFormat), addresses.get(0).getLocality(), addresses.get(0).getSubAdminArea()));
+                if(device.getName()==null) {
+                    // Se trata de descubrir el nombre de la posicion si no tiene nombre
+                    Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+                    try {
+                        List<Address> addresses = geocoder.getFromLocation(device.getSite().latitude, device.getSite().longitude, 1);
+                        Log.w("ADDRESSES", addresses.toString());
+                        if (addresses.isEmpty()) {
+                            device.setName(deviceID);
+                        } else {
+                            device.setName(String.format(context.getString(R.string.locationFormat), addresses.get(0).getLocality(), addresses.get(0).getSubAdminArea()));
+                            // Tambien lo guardamos en la BBDD
+                            doc.getReference().update("name", device.getName());
+                        }
+                    } catch (IOException exc) {
+                        // No se pudo encontrar una dirección se establece nulo
+                        Log.w("DATABASE", "allDevicesListener (SigfoxRepository) can't get device location-based name");
                     }
-                } catch (IOException exc) {
-                    // No se pudo encontrar una dirección se establece nulo
-                    Log.w("DATABASE", "allDevicesListener (SigfoxRepository) can't get device name");
                 }
 
                 query.add(device);
@@ -198,7 +214,9 @@ public class SigfoxRepository {
     }
 
     public void unregisterMessagesFromDevice(){
-        messagesRegistration.remove();
+        if(messagesRegistration!=null){
+            messagesRegistration.remove();
+        }
     }
 
 
