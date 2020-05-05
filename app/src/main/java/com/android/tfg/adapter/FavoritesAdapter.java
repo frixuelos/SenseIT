@@ -9,15 +9,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.tfg.databinding.ItemFavoritesBinding;
 import com.android.tfg.model.DeviceModel;
 import com.android.tfg.viewholder.FavoritesViewHolder;
+import com.android.tfg.viewmodel.MainViewModel;
 
 import java.util.LinkedList;
 
 public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesViewHolder> {
 
     private LinkedList<DeviceModel> devices;
+    private MainViewModel mainViewModel;
 
-    public FavoritesAdapter(LinkedList<DeviceModel> devices){
+    public FavoritesAdapter(LinkedList<DeviceModel> devices, MainViewModel mainViewModel){
         this.devices=devices;
+        this.mainViewModel=mainViewModel;
     }
 
     @NonNull
@@ -27,7 +30,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesViewHolder> 
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         ItemFavoritesBinding binding = ItemFavoritesBinding.inflate(layoutInflater, parent, false);
 
-        return new FavoritesViewHolder(binding);
+        return new FavoritesViewHolder(binding, mainViewModel);
     }
 
     @Override

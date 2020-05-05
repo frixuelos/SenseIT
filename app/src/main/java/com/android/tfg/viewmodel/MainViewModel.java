@@ -1,35 +1,18 @@
 package com.android.tfg.viewmodel;
 
 import android.app.Application;
-import android.bluetooth.BluetoothClass;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Message;
-import android.provider.ContactsContract;
-import android.util.Log;
-import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
+import androidx.preference.PreferenceManager;
 
 import com.android.tfg.R;
 import com.android.tfg.model.DeviceModel;
-import com.android.tfg.model.MessageModel;
 import com.android.tfg.repository.SigfoxRepository;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.tasks.TaskCompletionSource;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.gson.JsonParser;
-import com.google.rpc.Help;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.LinkedList;
 
@@ -37,7 +20,7 @@ public class MainViewModel extends AndroidViewModel {
 
     private SigfoxRepository sigfoxRepository;
     private MutableLiveData<LinkedList<DeviceModel>> devices, favDevices;
-    private SharedPreferences sharedPreferences;
+    private SharedPreferences sharedPreferencesFav;
 
     /*************
      * OBSERVERS *
@@ -55,7 +38,7 @@ public class MainViewModel extends AndroidViewModel {
             // actualizar datos
             LinkedList<DeviceModel> query = new LinkedList<>();
             for(DeviceModel deviceModel : deviceModels){
-                if(sharedPreferences.getAll().containsKey(deviceModel.getId())){
+                if(sharedPreferencesFav.getAll().containsKey(deviceModel.getId())){
                     query.add(deviceModel);
                 }
             }
@@ -69,7 +52,7 @@ public class MainViewModel extends AndroidViewModel {
         sigfoxRepository=SigfoxRepository.getInstance(getApplication().getApplicationContext());
         devices=new MutableLiveData<>();
         favDevices=new MutableLiveData<>();
-        sharedPreferences=application.getApplicationContext().getSharedPreferences(application.getApplicationContext().getString(R.string.favoritesPreferences), Context.MODE_PRIVATE);
+        sharedPreferencesFav =application.getApplicationContext().getSharedPreferences(application.getApplicationContext().getString(R.string.favoritesPreferences), Context.MODE_PRIVATE);
     }
 
     /***************
@@ -102,7 +85,7 @@ public class MainViewModel extends AndroidViewModel {
         // actualizar datos
         LinkedList<DeviceModel> query = new LinkedList<>();
         for(DeviceModel deviceModel : devices.getValue()){
-            if(sharedPreferences.getAll().containsKey(deviceModel.getId())){
+            if(sharedPreferencesFav.getAll().containsKey(deviceModel.getId())){
                 query.add(deviceModel);
             }
         }
@@ -110,12 +93,12 @@ public class MainViewModel extends AndroidViewModel {
     }
 
     public boolean isFavorite(String device){
-        return sharedPreferences.getBoolean(device, false);
+        return sharedPreferencesFav.getBoolean(device, false);
     }
 
     public void add2Favorites(String device){
         // Añadir localmente a favoritos
-        sharedPreferences
+        sharedPreferencesFav
                 .edit()
                 .putBoolean(device, true)
                 .apply();
@@ -125,7 +108,7 @@ public class MainViewModel extends AndroidViewModel {
 
     public void removeFromFavorites(String device){
         // Eliminar localmente a favoritos
-        sharedPreferences
+        sharedPreferencesFav
                 .edit()
                 .remove(device)
                 .apply();
@@ -138,7 +121,7 @@ public class MainViewModel extends AndroidViewModel {
      ************/
     public double convertTemp(double temp){
         Context context = getApplication().getApplicationContext();
-        if(this.sharedPreferences.getString(context.getString(R.string.keyUnitTemp), context.getString(R.string.defUnitTemp)).equals("ºF")){
+        if(PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(R.string.keyUnitTemp), context.getString(R.string.defUnitTemp)).equals("ºF")){
             return Math.round((9*temp/5+32.0)*100)/100.0;
         }
         return temp;
@@ -146,7 +129,7 @@ public class MainViewModel extends AndroidViewModel {
 
     public double convertPres(double pres){
         Context context = getApplication().getApplicationContext();
-        if(this.sharedPreferences.getString(context.getString(R.string.keyUnitPres), context.getString(R.string.defUnitPres)).equals("atm")){
+        if(PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(R.string.keyUnitPres), context.getString(R.string.defUnitPres)).equals("atm")){
             return Math.round(0.000987*pres*100)/100.0;
         }
         return pres;
@@ -154,7 +137,7 @@ public class MainViewModel extends AndroidViewModel {
 
     public double convertUv(double uv){
         Context context = getApplication().getApplicationContext();
-        if(this.sharedPreferences.getString(context.getString(R.string.keyUnitUV), context.getString(R.string.defUnitUV)).equals("W/m2")){
+        if(PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(R.string.keyUnitUV), context.getString(R.string.defUnitUV)).equals("W/m2")){
             return Math.round(uv*10.0*100)/100.0;
         }
         return uv;

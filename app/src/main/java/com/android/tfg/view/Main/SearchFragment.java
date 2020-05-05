@@ -19,6 +19,7 @@ import android.widget.Filter;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.android.tfg.R;
@@ -42,6 +43,15 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
             if(binding.searchsRecyclerView.getAdapter()!=null){
                 // Se actualiza el elemento que ha cambiado
                 searchAdapter.updateItem(key);
+            }
+        }
+    };
+    // Listener para el cambio de preferencias (global, unidades)
+    private SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+            if(key.contains("units")){ // por si se trata de otra preferencia no actualizar innecesariamente
+                searchAdapter.notifyDataSetChanged();
             }
         }
     };
@@ -97,7 +107,8 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         configViewModel(); // Configuramos el viewmodel aqui para que cargue los datos antes
-        getActivity().getSharedPreferences("fav", Context.MODE_PRIVATE).registerOnSharedPreferenceChangeListener(preferenceChangeListenerFav);
+        getActivity().getSharedPreferences("fav", Context.MODE_PRIVATE).registerOnSharedPreferenceChangeListener(preferenceChangeListenerFav); // Favoritos
+        PreferenceManager.getDefaultSharedPreferences(binding.getRoot().getContext()).registerOnSharedPreferenceChangeListener(preferenceChangeListener); // Preferencias
         super.onActivityCreated(savedInstanceState);
     }
 

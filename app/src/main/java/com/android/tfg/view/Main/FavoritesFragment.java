@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -43,10 +44,20 @@ public class FavoritesFragment extends Fragment {
     private SwipeRemoveCallback swipeRemoveCallback;
 
     // Listener para el cambio de preferencias (actualiza los favoritos)
-    private SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+    private SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListenerFav = new SharedPreferences.OnSharedPreferenceChangeListener() {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
             mainViewModel.updateFavDevices(); // Se actualizan los favoritos
+        }
+    };
+
+    // Listener para el cambio de preferencias (global, unidades)
+    private SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+            if(key.contains("units")){ // por si se trata de otra preferencia no actualizar innecesariamente
+                favoritesAdapter.notifyDataSetChanged();
+            }
         }
     };
 
@@ -91,7 +102,7 @@ public class FavoritesFragment extends Fragment {
 
         // Actualizar recyclerview
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        favoritesAdapter = new FavoritesAdapter(devices);
+        favoritesAdapter = new FavoritesAdapter(devices, mainViewModel);
         binding.favoriteRecyclerView.setHasFixedSize(true);
         binding.favoriteRecyclerView.setAdapter(favoritesAdapter);
         binding.favoriteRecyclerView.setLayoutManager(layoutManager);
@@ -142,7 +153,8 @@ public class FavoritesFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         if(getActivity()==null){return;}
         configViewModel(); // Configuramos el viewmodel aqui para que cargue los datos antes
-        getActivity().getSharedPreferences("fav", Context.MODE_PRIVATE).registerOnSharedPreferenceChangeListener(preferenceChangeListener);
+        getActivity().getSharedPreferences("fav", Context.MODE_PRIVATE).registerOnSharedPreferenceChangeListener(preferenceChangeListenerFav); // favoritos
+        PreferenceManager.getDefaultSharedPreferences(binding.getRoot().getContext()).registerOnSharedPreferenceChangeListener(preferenceChangeListener); // Preferencias
         super.onActivityCreated(savedInstanceState);
     }
 

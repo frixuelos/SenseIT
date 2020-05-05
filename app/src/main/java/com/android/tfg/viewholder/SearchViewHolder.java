@@ -6,6 +6,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.tfg.R;
@@ -36,7 +37,6 @@ public class SearchViewHolder extends RecyclerView.ViewHolder {
         /***************
          * DEVICE INFO *
          ***************/
-        Log.w("TEMP", String.valueOf(mainViewModel.convertTemp(device.getLastMessage().getTemp())));
         binding.itemTitle.setText(device.getId());
         binding.itemLocation.setText(device.getName());
         binding.itemTemp.setText(String.valueOf(mainViewModel.convertTemp(device.getLastMessage().getTemp())));
