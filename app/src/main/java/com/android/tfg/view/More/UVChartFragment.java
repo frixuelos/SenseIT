@@ -162,6 +162,8 @@ public class UVChartFragment extends Fragment {
         final Observer<LinkedList<MessageModel>> obs = messages -> {
             if(!messages.isEmpty()){
                 setData(messages);
+            }else{
+                binding.uvChart.setVisibility(View.GONE);
             }
         };
         moreViewModel.getMessages().observe(getViewLifecycleOwner(), obs); // mensajes

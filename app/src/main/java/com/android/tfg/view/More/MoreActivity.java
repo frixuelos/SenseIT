@@ -79,7 +79,10 @@ public class MoreActivity extends AppCompatActivity {
         moreViewModel.registerMessagesFromDevice(device, since, until); // primera llamada para todos los mensajes
         // añadir datos al recyclerview
         final Observer<LinkedList<MessageModel>> obs = messageModels -> {
-            if(messageModels.isEmpty()){binding.moreRecyclerView.setBackgroundColor(Color.GRAY); moreAdapter.clear(); return; }
+            if(messageModels.isEmpty()){
+                binding.moreRecyclerView.setBackgroundColor(Color.GRAY);
+                if(moreAdapter!=null){moreAdapter.clear();}
+                return; }
             configRecyclerView(messageModels);
         };
         moreViewModel.getMessages().observe(this, obs); // mensajes

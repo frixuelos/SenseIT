@@ -50,6 +50,8 @@ public class HumChartFragment extends Fragment {
             // añadir datos al grafico
             if(!messages.isEmpty()){
                 setData(messages);
+            }else{
+                binding.humChart.setVisibility(View.GONE);
             }
         };
         moreViewModel.getMessages().observe(getViewLifecycleOwner(), obs); // mensajes

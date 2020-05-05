@@ -163,6 +163,8 @@ public class PresChartFragment extends Fragment {
             // añadir datos al grafico
             if(!messages.isEmpty()){
                 setData(messages);
+            }else{
+                binding.presChart.setVisibility(View.GONE);
             }
         };
         moreViewModel.getMessages().observe(getViewLifecycleOwner(), obs); // mensajes
