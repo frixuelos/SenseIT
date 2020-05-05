@@ -1,7 +1,5 @@
 package com.android.tfg.view.Main;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -10,29 +8,25 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import android.view.inputmethod.InputMethodManager;
 import androidx.appcompat.widget.SearchView;
-import android.widget.EditText;
+
 import android.widget.Filter;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.tfg.R;
 import com.android.tfg.adapter.SearchAdapter;
 import com.android.tfg.databinding.FragmentSearchBinding;
 import com.android.tfg.model.DeviceModel;
 import com.android.tfg.viewmodel.MainViewModel;
 import java.util.LinkedList;
-import java.util.Objects;
 
 public class SearchFragment extends Fragment implements SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener{
 
@@ -42,7 +36,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     private SearchAdapter searchAdapter;
     private FragmentSearchBinding binding;
     // Listener para el cambio de preferencias (actualiza los favoritos)
-    private SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+    private SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListenerFav = new SharedPreferences.OnSharedPreferenceChangeListener() {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
             if(binding.searchsRecyclerView.getAdapter()!=null){
@@ -103,7 +97,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         configViewModel(); // Configuramos el viewmodel aqui para que cargue los datos antes
-        getActivity().getSharedPreferences("fav", Context.MODE_PRIVATE).registerOnSharedPreferenceChangeListener(preferenceChangeListener);
+        getActivity().getSharedPreferences("fav", Context.MODE_PRIVATE).registerOnSharedPreferenceChangeListener(preferenceChangeListenerFav);
         super.onActivityCreated(savedInstanceState);
     }
 

@@ -149,13 +149,13 @@ public class SigfoxRepository {
         if(messagesRegistration!=null){messagesRegistration.remove();}
 
         // Filtro por defecto (24 ultimas horas)
-        if(since==null && until==null){
+        if(since==null || until==null){
             Date lastDay = new Date((new Date()).getTime()-(24*60*60*1000));
             Log.v("since", new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault()).format(lastDay));
             messagesRegistration=databaseReference.document(device)
                     .collection("messages")
                     .orderBy("date", Query.Direction.ASCENDING)
-                    .whereGreaterThan("date", lastDay)
+                    .whereGreaterThanOrEqualTo("date", lastDay)
                     .addSnapshotListener(new EventListener<QuerySnapshot>() {
                         @Override
                         public void onEvent(@Nullable QuerySnapshot querySnapshots, @Nullable FirebaseFirestoreException e) {
@@ -171,31 +171,12 @@ public class SigfoxRepository {
                             Log.v("Size", String.valueOf(messages.getValue().size()));
                         }
                     });
-        }else if(until==null){ // Si solo se filtra por inicio
+        }else{ // Rango valido
             messagesRegistration=databaseReference.document(device)
                     .collection("messages")
                     .orderBy("date", Query.Direction.ASCENDING)
-                    .whereGreaterThan("date", since)
-                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                        @Override
-                        public void onEvent(@Nullable QuerySnapshot querySnapshots, @Nullable FirebaseFirestoreException e) {
-                            if(e!=null || querySnapshots==null){
-                                Log.w("SigfoxRepository", "Listen failed", e);
-                                return;
-                            }
-                            LinkedList<MessageModel> query = new LinkedList<>();
-                            for(DocumentSnapshot doc : querySnapshots.getDocuments()){
-                                query.add(doc.toObject(MessageModel.class));
-                            }
-                            messages.setValue(query);
-                        }
-                    });
-
-        }else if(since==null){ // Si solo se filtra por final ( se limita a
-            messagesRegistration=databaseReference.document(device)
-                    .collection("messages")
-                    .orderBy("date", Query.Direction.ASCENDING)
-                    .whereGreaterThan("date", since)
+                    .whereGreaterThanOrEqualTo("date", since)
+                    .whereLessThanOrEqualTo("date", until)
                     .addSnapshotListener(new EventListener<QuerySnapshot>() {
                         @Override
                         public void onEvent(@Nullable QuerySnapshot querySnapshots, @Nullable FirebaseFirestoreException e) {

@@ -56,8 +56,11 @@
     <string name="sumPres">Set the units for pressure</string>
     <string name="sumUV">Set the units for UV</string>
     <string name="keyUnitTemp">units_temp</string>
+    <string name="defUnitTemp">ºC</string>
     <string name="keyUnitPres">units_pres</string>
+    <string name="defUnitPres">hPa</string>
     <string name="keyUnitUV">units_uv</string>
+    <string name="defUnitUV">mW/cm2</string>
     <string name="setLocTitle">Location</string>
     <string name="setLangTitle">Language</string>
     <string name="sumLang">Change the language</string>

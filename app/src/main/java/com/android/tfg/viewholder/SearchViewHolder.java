@@ -2,6 +2,7 @@ package com.android.tfg.viewholder;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -35,12 +36,13 @@ public class SearchViewHolder extends RecyclerView.ViewHolder {
         /***************
          * DEVICE INFO *
          ***************/
+        Log.w("TEMP", String.valueOf(mainViewModel.convertTemp(device.getLastMessage().getTemp())));
         binding.itemTitle.setText(device.getId());
         binding.itemLocation.setText(device.getName());
-        binding.itemTemp.setText(String.valueOf(device.getLastMessage().getTemp()));
+        binding.itemTemp.setText(String.valueOf(mainViewModel.convertTemp(device.getLastMessage().getTemp())));
         binding.itemHum.setText(String.valueOf(device.getLastMessage().getHum()));
-        binding.itemPres.setText(String.valueOf(device.getLastMessage().getPres()));
-        binding.itemUv.setText(String.valueOf(device.getLastMessage().getUv()));
+        binding.itemPres.setText(String.valueOf(mainViewModel.convertPres(device.getLastMessage().getPres())));
+        binding.itemUv.setText(String.valueOf(mainViewModel.convertUv(device.getLastMessage().getUv())));
         Date lastUpdated = new Date(device.getLastMessage().getDate().getSeconds()*1000L);
         SimpleDateFormat mFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
         binding.itemLastUpdate.setText(mFormat.format(lastUpdated));

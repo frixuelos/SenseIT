@@ -2,17 +2,17 @@
 <resources>
 
     <array name="unit_temp">
-        <item>ºC</item>
+        <item>@string/defUnitTemp</item>
         <item>ºF</item>
     </array>
 
     <array name="unit_pres">
-        <item>Atm</item>
-        <item>hPa</item>
+        <item>atm</item>
+        <item>@string/defUnitPres</item>
     </array>
 
     <array name="unit_uv">
-        <item>mW/cm2</item>
+        <item>@string/defUnitUV</item>
         <item>W/m2</item>
     </array>
 

@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.preference.PreferenceManager;
 
 import com.android.tfg.R;
 import com.android.tfg.view.More.HumChartFragment;
@@ -19,9 +20,13 @@ public class MorePagerAdapter extends FragmentStatePagerAdapter {
     private static final int NUM_PAGES = 4;
     private Context context;
     private String device;
+    private TempChartFragment tempChartFragment;
+    private HumChartFragment humChartFragment;
+    private PresChartFragment presChartFragment;
+    private UVChartFragment uvChartFragment;
 
     public MorePagerAdapter(@NonNull FragmentManager fm, Context c, String d){
-        super(fm);
+        super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         context=c;
         device=d;
     }
@@ -36,10 +41,14 @@ public class MorePagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
 
         switch (position){
-            default: return new TempChartFragment();
-            case 1: return new HumChartFragment();
-            case 2: return new PresChartFragment();
-            case 3: return new UVChartFragment();
+            default: if(tempChartFragment==null){tempChartFragment=new TempChartFragment();}
+                    return tempChartFragment;
+            case 1: if(humChartFragment==null){humChartFragment=new HumChartFragment();}
+                    return humChartFragment;
+            case 2: if(presChartFragment==null){presChartFragment=new PresChartFragment();}
+                    return presChartFragment;
+            case 3: if(uvChartFragment==null){uvChartFragment=new UVChartFragment();}
+                    return uvChartFragment;
         }
     }
 

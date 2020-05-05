@@ -9,7 +9,7 @@
             app:entries="@array/unit_temp"
             app:icon="@drawable/ic_temp"
             app:entryValues="@array/unit_temp"
-            app:defaultValue="ºC"/>
+            app:defaultValue="defUnitTemp"/>
 
         <ListPreference
             app:key="@string/keyUnitPres"
@@ -18,7 +18,7 @@
             app:entries="@array/unit_pres"
             app:icon="@drawable/ic_pres"
             app:entryValues="@array/unit_pres"
-            app:defaultValue="hPa"/>
+            app:defaultValue="@string/defUnitPres"/>
 
         <ListPreference
             app:key="@string/keyUnitUV"
@@ -27,7 +27,7 @@
             app:entries="@array/unit_uv"
             app:icon="@drawable/ic_uv"
             app:entryValues="@array/unit_uv"
-            android:defaultValue="mW/cm2"/>
+            android:defaultValue="@string/defUnitUV"/>
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/setLocTitle">

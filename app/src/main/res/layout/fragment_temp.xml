@@ -9,4 +9,10 @@
         android:layout_height="match_parent"
         android:layout_margin="5dp" />
 
+    <ViewStub
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/tempStub"
+        android:layout="@layout/load" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -48,7 +48,7 @@ public class UVChartFragment extends Fragment {
          **************************************/
         ArrayList<Entry> uv = new ArrayList<>();
         for (MessageModel m : messages) {
-            uv.add(new Entry(m.getDate().getSeconds(), (float) m.getUv()));
+            uv.add(new Entry(m.getDate().getSeconds(), (float) moreViewModel.convertUv(m.getUv())));
         }
 
         /*****************

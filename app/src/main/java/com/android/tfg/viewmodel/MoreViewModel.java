@@ -1,38 +1,29 @@
 package com.android.tfg.viewmodel;
 
 import android.app.Application;
-import android.bluetooth.BluetoothClass;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Message;
-import android.renderscript.Sampler;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
+import androidx.preference.PreferenceManager;
 
 import com.android.tfg.R;
-import com.android.tfg.model.DeviceModel;
 import com.android.tfg.model.MessageModel;
 import com.android.tfg.repository.SigfoxRepository;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.rpc.Help;
 
-import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.Date;
 import java.util.LinkedList;
-import java.util.Locale;
 
 public class MoreViewModel extends AndroidViewModel {
 
     private SigfoxRepository sigfoxRepository;
     private MutableLiveData<LinkedList<MessageModel>> messages;
+    private SharedPreferences sharedPreferencesFav;
     private SharedPreferences sharedPreferences;
 
     /*************
@@ -50,7 +41,8 @@ public class MoreViewModel extends AndroidViewModel {
     public MoreViewModel(@NonNull Application application) {
         super(application);
         sigfoxRepository=SigfoxRepository.getInstance(getApplication().getApplicationContext());
-        sharedPreferences=application.getApplicationContext().getSharedPreferences(application.getApplicationContext().getString(R.string.favoritesPreferences), Context.MODE_PRIVATE);
+        sharedPreferencesFav=application.getApplicationContext().getSharedPreferences(application.getApplicationContext().getString(R.string.favoritesPreferences), Context.MODE_PRIVATE);
+        sharedPreferences=PreferenceManager.getDefaultSharedPreferences(application.getApplicationContext());
         messages=new MutableLiveData<>();
         MESSAGES_INIT=false;
     }
@@ -61,7 +53,13 @@ public class MoreViewModel extends AndroidViewModel {
 
     public void registerMessagesFromDevice(String device, long since, long until){
         if(device==null){return;} // por si el string esta vacio
-        sigfoxRepository.registerMessagesFromDevice(device, null, null);
+
+        if(since==until){ // Se ha seleccionado un dia unicamente
+            sigfoxRepository.registerMessagesFromDevice(device, new Date(since), new Date(since+24*60*60*1000L));
+        }else{
+            sigfoxRepository.registerMessagesFromDevice(device, new Date(since), new Date(until));
+        }
+
         if(!MESSAGES_INIT){
             sigfoxRepository.getMessages().observeForever(messagesObserver);
         }
@@ -77,12 +75,12 @@ public class MoreViewModel extends AndroidViewModel {
      * FAVORITOS *
      *************/
     public boolean isFavorite(String device){
-        return sharedPreferences.getBoolean(device, false);
+        return sharedPreferencesFav.getBoolean(device, false);
     }
 
     public void add2Favorites(String device){
         // Añadir localmente a favoritos
-        sharedPreferences
+        sharedPreferencesFav
                 .edit()
                 .putBoolean(device, true)
                 .apply();
@@ -90,10 +88,37 @@ public class MoreViewModel extends AndroidViewModel {
 
     public void removeFromFavorites(String device){
         // Eliminar localmente a favoritos
-        sharedPreferences
+        sharedPreferencesFav
                 .edit()
                 .remove(device)
                 .apply();
+    }
+
+    /************
+     * UNIDADES *
+     ************/
+    public double convertTemp(double temp){
+        Context context = getApplication().getApplicationContext();
+        if(this.sharedPreferences.getString(context.getString(R.string.keyUnitTemp), context.getString(R.string.defUnitTemp)).equals("ºF")){
+            return Math.round((9*temp/5+32.0)*100)/100.0;
+        }
+        return temp;
+    }
+
+    public double convertPres(double pres){
+        Context context = getApplication().getApplicationContext();
+        if(this.sharedPreferences.getString(context.getString(R.string.keyUnitPres), context.getString(R.string.defUnitPres)).equals("atm")){
+            return Math.round(0.000987*pres*100)/100.0;
+        }
+        return pres;
+    }
+
+    public double convertUv(double uv){
+        Context context = getApplication().getApplicationContext();
+        if(this.sharedPreferences.getString(context.getString(R.string.keyUnitUV), context.getString(R.string.defUnitUV)).equals("W/m2")){
+            return Math.round(uv*10.0*100)/100.0;
+        }
+        return uv;
     }
 
 }

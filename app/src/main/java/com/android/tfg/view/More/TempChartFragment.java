@@ -1,5 +1,6 @@
 package com.android.tfg.view.More;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
 
 import com.android.tfg.R;
 import com.android.tfg.databinding.FragmentTempBinding;
@@ -38,6 +40,7 @@ public class TempChartFragment extends Fragment {
 
     private MoreViewModel moreViewModel;
     private FragmentTempBinding binding;
+    private String units;
 
     public TempChartFragment(){
 
@@ -50,7 +53,7 @@ public class TempChartFragment extends Fragment {
          **************************************/
         ArrayList<Entry> temp = new ArrayList<>();
         for (MessageModel m : messages) {
-            temp.add(new Entry(m.getDate().getSeconds(), (float) m.getTemp()));
+            temp.add(new Entry(m.getDate().getSeconds(), (float) moreViewModel.convertTemp(m.getTemp())));
         }
 
         /*********************
@@ -93,7 +96,12 @@ public class TempChartFragment extends Fragment {
         binding.tempChart.moveViewToX(new Date().getTime() - (2 * 60 * 60));
 
         // Animar
-        binding.tempChart.animateX(500);
+        binding.tempChart.animateX(1000);
+
+        // Terminar pantalla de carga
+        binding.tempStub.setVisibility(View.GONE);
+        binding.tempChart.setVisibility(View.VISIBLE);
+
     }
 
     private void setupChart(){
@@ -118,7 +126,7 @@ public class TempChartFragment extends Fragment {
         // fondo
         binding.tempChart.setGridBackgroundColor(Color.TRANSPARENT);
         // animacion
-        binding.tempChart.animateY(1000);
+        //binding.tempChart.animateY(1000);
          // leyenda
         Legend l = binding.tempChart.getLegend();
         l.setEnabled(false);
@@ -161,10 +169,11 @@ public class TempChartFragment extends Fragment {
          **************/
         moreViewModel = new ViewModelProvider(getActivity()).get(getString(R.string.moreViewModel), MoreViewModel.class);
         final Observer<LinkedList<MessageModel>> obs = messages -> {
-            Log.w("SALTA", "CONMIGO");
             // añadir datos al grafico
             if(!messages.isEmpty()){
                 setData(messages);
+            }else{
+                binding.tempChart.setVisibility(View.GONE);
             }
         };
         moreViewModel.getMessages().observe(getViewLifecycleOwner(), obs); // mensajes
@@ -174,6 +183,10 @@ public class TempChartFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentTempBinding.inflate(inflater, container, false);
+
+        // Comenzar pantalla carga
+        binding.tempStub.inflate();
+        binding.tempChart.setVisibility(View.GONE);
 
         /***********
          * GRAFICO *
@@ -188,4 +201,5 @@ public class TempChartFragment extends Fragment {
         configViewModel(); // Configuramos el viewmodel aqui para que cargue los datos antes
         super.onActivityCreated(savedInstanceState);
     }
+
 }

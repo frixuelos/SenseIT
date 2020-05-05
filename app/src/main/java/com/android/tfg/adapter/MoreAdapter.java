@@ -11,15 +11,18 @@ import com.android.tfg.databinding.ItemMoreBinding;
 import com.android.tfg.model.DeviceModel;
 import com.android.tfg.model.MessageModel;
 import com.android.tfg.viewholder.MoreViewHolder;
+import com.android.tfg.viewmodel.MoreViewModel;
 
 import java.util.LinkedList;
 
 public class MoreAdapter extends RecyclerView.Adapter<MoreViewHolder> {
 
     private LinkedList<MessageModel> messages;
+    private MoreViewModel moreViewModel;
 
-    public MoreAdapter(LinkedList<MessageModel> messages){
+    public MoreAdapter(LinkedList<MessageModel> messages, MoreViewModel moreViewModel){
         this.messages=messages;
+        this.moreViewModel=moreViewModel;
     }
 
     @NonNull
@@ -29,7 +32,7 @@ public class MoreAdapter extends RecyclerView.Adapter<MoreViewHolder> {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         ItemMoreBinding binding = ItemMoreBinding.inflate(layoutInflater, parent, false);
 
-        return new MoreViewHolder(binding);
+        return new MoreViewHolder(binding, moreViewModel);
     }
 
     @Override
@@ -58,6 +61,11 @@ public class MoreAdapter extends RecyclerView.Adapter<MoreViewHolder> {
     public void updateItems(LinkedList<MessageModel> messages){
         this.messages.clear();
         this.messages.addAll(messages);
+        notifyDataSetChanged();
+    }
+
+    public void clear(){
+        this.messages.clear();
         notifyDataSetChanged();
     }
 

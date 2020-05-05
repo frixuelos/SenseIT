@@ -1,5 +1,6 @@
 package com.android.tfg.view.More;
 
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -24,6 +25,7 @@ import androidx.core.util.Pair;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -49,6 +51,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Objects;
 
@@ -66,6 +69,7 @@ public class MoreActivity extends AppCompatActivity {
             P,
             U
     }
+    private HashMap<String, String> units;
 
     private void configViewModel(){
         /**************
@@ -75,7 +79,7 @@ public class MoreActivity extends AppCompatActivity {
         moreViewModel.registerMessagesFromDevice(device, since, until); // primera llamada para todos los mensajes
         // añadir datos al recyclerview
         final Observer<LinkedList<MessageModel>> obs = messageModels -> {
-            if(messageModels.isEmpty()){binding.moreRecyclerView.setBackgroundColor(Color.GRAY);return;}
+            if(messageModels.isEmpty()){binding.moreRecyclerView.setBackgroundColor(Color.GRAY); moreAdapter.clear(); return; }
             configRecyclerView(messageModels);
         };
         moreViewModel.getMessages().observe(this, obs); // mensajes
@@ -87,7 +91,7 @@ public class MoreActivity extends AppCompatActivity {
             moreAdapter.updateItems(moreViewModel.getMessages().getValue());
         }
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
-        moreAdapter = new MoreAdapter(messages);
+        moreAdapter = new MoreAdapter(messages, moreViewModel);
         binding.moreRecyclerView.setHasFixedSize(true);
         DividerItemDecoration divider = new DividerItemDecoration(binding.moreRecyclerView.getContext(), layoutManager.getOrientation());
         divider.getDrawable().setTint(Color.WHITE);
@@ -101,6 +105,11 @@ public class MoreActivity extends AppCompatActivity {
         // Device
         device=(String) Objects.requireNonNull(getIntent().getExtras()).get("device");
         setTitle(device);
+
+        /*********
+         * UNITS *
+         *********/
+        setupUnits();
 
         /*********
          * PAGER *
@@ -164,7 +173,7 @@ public class MoreActivity extends AppCompatActivity {
                         return;
                     }
                     since=selection.first;
-                    until=selection.second;
+                    until=selection.second; // Se le suma un dia puesto que de partida sera a las 00:00:00 (es decir un dia menos)
                     moreViewModel.registerMessagesFromDevice(device, since, until);
                 }
             });
@@ -279,4 +288,14 @@ public class MoreActivity extends AppCompatActivity {
         finish();
         return true;
     }
+
+    private void setupUnits(){
+        this.units=new HashMap<>();
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(binding.getRoot().getContext());
+        this.units.put(getString(R.string.keyUnitTemp), preferences.getString(getString(R.string.keyUnitTemp), getString(R.string.defUnitTemp)));
+        this.units.put(getString(R.string.keyUnitPres), preferences.getString(getString(R.string.keyUnitPres), getString(R.string.defUnitPres)));
+        this.units.put(getString(R.string.keyUnitUV), preferences.getString(getString(R.string.keyUnitUV), getString(R.string.defUnitUV)));
+    }
+
+    protected HashMap<String,String> getUnits(){return this.units;}
 }
