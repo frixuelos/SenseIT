@@ -163,7 +163,7 @@ public class UVChartFragment extends Fragment {
             if(!messages.isEmpty()){
                 setData(messages);
             }else{
-                binding.uvChart.setVisibility(View.GONE);
+                binding.uvChart.clear();
             }
         };
         moreViewModel.getMessages().observe(getViewLifecycleOwner(), obs); // mensajes

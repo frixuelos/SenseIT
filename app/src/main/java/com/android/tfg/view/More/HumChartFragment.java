@@ -51,7 +51,7 @@ public class HumChartFragment extends Fragment {
             if(!messages.isEmpty()){
                 setData(messages);
             }else{
-                binding.humChart.setVisibility(View.GONE);
+                binding.humChart.clear();
             }
         };
         moreViewModel.getMessages().observe(getViewLifecycleOwner(), obs); // mensajes

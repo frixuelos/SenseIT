@@ -164,7 +164,7 @@ public class PresChartFragment extends Fragment {
             if(!messages.isEmpty()){
                 setData(messages);
             }else{
-                binding.presChart.setVisibility(View.GONE);
+                binding.presChart.clear();
             }
         };
         moreViewModel.getMessages().observe(getViewLifecycleOwner(), obs); // mensajes

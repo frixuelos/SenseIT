@@ -26,6 +26,30 @@ public class MoreViewModel extends AndroidViewModel {
     private SharedPreferences sharedPreferencesFav;
     private SharedPreferences sharedPreferences;
 
+    /*********
+     * DATES *
+     *********/
+
+    private long since, until;
+
+    public long getSince() {
+        return since;
+    }
+
+    public void setSince(long since) {
+        this.since = since;
+    }
+
+    public long getUntil() {
+        return until;
+    }
+
+    public void setUntil(long until) {
+        this.until = until;
+    }
+
+
+
     /*************
      * OBSERVERS *
      *************/
@@ -45,19 +69,26 @@ public class MoreViewModel extends AndroidViewModel {
         sharedPreferences=PreferenceManager.getDefaultSharedPreferences(application.getApplicationContext());
         messages=new MutableLiveData<>();
         MESSAGES_INIT=false;
+        until=new Date().getTime();
+        since=new Date(until-24*60*60*1000L).getTime();
     }
 
     public MutableLiveData<LinkedList<MessageModel>> getMessages(){
         return messages;
     }
 
-    public void registerMessagesFromDevice(String device, long since, long until){
+    public void registerMessagesFromDevice(String device){
         if(device==null){return;} // por si el string esta vacio
 
+        // actualizar seleccion
+        setSince(since);
+
         if(since==until){ // Se ha seleccionado un dia unicamente
-            sigfoxRepository.registerMessagesFromDevice(device, new Date(since), new Date(since+24*60*60*1000L));
+            setUntil(since+24*60*60*1000L); // actualizar seleccion
+            sigfoxRepository.registerMessagesFromDevice(device, new Date(getSince()), new Date(getUntil()));
         }else{
-            sigfoxRepository.registerMessagesFromDevice(device, new Date(since), new Date(until));
+            setUntil(until); // actualizar seleccion
+            sigfoxRepository.registerMessagesFromDevice(device, new Date(getSince()), new Date(getUntil()));
         }
 
         if(!MESSAGES_INIT){

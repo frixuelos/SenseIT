@@ -16,9 +16,11 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 
 import com.android.tfg.R;
+import com.android.tfg.chart.CustomMarkerView;
 import com.android.tfg.databinding.FragmentTempBinding;
 import com.android.tfg.model.MessageModel;
 import com.android.tfg.viewmodel.MoreViewModel;
+import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
@@ -70,7 +72,9 @@ public class TempChartFragment extends Fragment {
         serieTemp.setCircleColor(Color.BLACK);
         serieTemp.setDrawCircleHole(false);
         serieTemp.setFillDrawable(binding.getRoot().getResources().getDrawable(R.drawable.gradient_temp));
-        serieTemp.setHighlightEnabled(false);
+        serieTemp.setHighlightEnabled(true);
+        serieTemp.setDrawHorizontalHighlightIndicator(false);
+        serieTemp.setDrawVerticalHighlightIndicator(false);
         serieTemp.setDrawFilled(true);
 
         // Se convierte a objeto con todos los datos
@@ -96,12 +100,7 @@ public class TempChartFragment extends Fragment {
         binding.tempChart.moveViewToX(new Date().getTime() - (2 * 60 * 60));
 
         // Animar
-        binding.tempChart.animateX(1000);
-
-        // Terminar pantalla de carga
-        binding.tempStub.setVisibility(View.GONE);
-        binding.tempChart.setVisibility(View.VISIBLE);
-
+        binding.tempChart.animateX(500);
     }
 
     private void setupChart(){
@@ -119,7 +118,7 @@ public class TempChartFragment extends Fragment {
         binding.tempChart.setScaleYEnabled(true);
         binding.tempChart.setHorizontalScrollBarEnabled(true);
         binding.tempChart.setDrawGridBackground(true);
-        binding.tempChart.setHighlightPerDragEnabled(true);
+        binding.tempChart.setMarker(new CustomMarkerView(getContext(), R.layout.marker_view));
         binding.tempChart.setPinchZoom(true);
         binding.tempChart.setNoDataTextColor(Color.BLACK);
         binding.tempChart.setNoDataText(getString(R.string.moreNoData));
@@ -131,7 +130,7 @@ public class TempChartFragment extends Fragment {
         Legend l = binding.tempChart.getLegend();
         l.setEnabled(false);
 
-         /*********
+        /*********
         * EJE X *
         *********/
         XAxis xAxis = binding.tempChart.getXAxis();
@@ -173,7 +172,7 @@ public class TempChartFragment extends Fragment {
             if(!messages.isEmpty()){
                 setData(messages);
             }else{
-                binding.tempChart.setVisibility(View.GONE);
+                binding.tempChart.clear();
             }
         };
         moreViewModel.getMessages().observe(getViewLifecycleOwner(), obs); // mensajes
@@ -183,10 +182,6 @@ public class TempChartFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentTempBinding.inflate(inflater, container, false);
-
-        // Comenzar pantalla carga
-        binding.tempStub.inflate();
-        binding.tempChart.setVisibility(View.GONE);
 
         /***********
          * GRAFICO *
@@ -200,6 +195,12 @@ public class TempChartFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         configViewModel(); // Configuramos el viewmodel aqui para que cargue los datos antes
         super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
+    public void onDestroy() {
+        binding.tempChart.clear();
+        super.onDestroy();
     }
 
 }

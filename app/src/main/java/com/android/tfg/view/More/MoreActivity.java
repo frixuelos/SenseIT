@@ -69,18 +69,16 @@ public class MoreActivity extends AppCompatActivity {
             P,
             U
     }
-    private HashMap<String, String> units;
 
     private void configViewModel(){
         /**************
          * MODEL VIEW *
          **************/
         moreViewModel = new ViewModelProvider(this).get(getString(R.string.moreViewModel), MoreViewModel.class);
-        moreViewModel.registerMessagesFromDevice(device, since, until); // primera llamada para todos los mensajes
+        moreViewModel.registerMessagesFromDevice(device); // primera llamada para todos los mensajes
         // añadir datos al recyclerview
         final Observer<LinkedList<MessageModel>> obs = messageModels -> {
             if(messageModels.isEmpty()){
-                binding.moreRecyclerView.setBackgroundColor(Color.GRAY);
                 if(moreAdapter!=null){moreAdapter.clear();}
                 return; }
             configRecyclerView(messageModels);
@@ -108,11 +106,6 @@ public class MoreActivity extends AppCompatActivity {
         // Device
         device=(String) Objects.requireNonNull(getIntent().getExtras()).get("device");
         setTitle(device);
-
-        /*********
-         * UNITS *
-         *********/
-        setupUnits();
 
         /*********
          * PAGER *
@@ -145,16 +138,13 @@ public class MoreActivity extends AppCompatActivity {
         /**************************
          * FLOATING ACTION BUTTON *
          **************************/
-        long timeInMillis = Calendar.getInstance().getTimeInMillis(); // Filtros por defecto
-        since=timeInMillis - (24 * 60 * 60 * 1000);
-        until=timeInMillis;
         binding.fbDate.setOnClickListener(v -> {
             // Current time
             long currentTimeInMillis = Calendar.getInstance().getTimeInMillis();
 
             // Builder
             MaterialDatePicker.Builder<Pair<Long,Long>> builder = MaterialDatePicker.Builder.dateRangePicker();
-            builder.setSelection(new Pair<Long, Long>(since, until));
+
             TypedValue value = new TypedValue();
             getTheme().resolveAttribute(R.attr.materialCalendarTheme, value,true);
             builder.setTheme(value.resourceId);
@@ -166,6 +156,9 @@ public class MoreActivity extends AppCompatActivity {
             CalendarConstraints calendarConstraints = calendarConstraintsBuilder.build();
             builder.setCalendarConstraints(calendarConstraints);
 
+            // Establecer seleccion
+            builder.setSelection(new Pair<Long,Long>(moreViewModel.getSince(), moreViewModel.getUntil()));
+
             // Picker
             MaterialDatePicker<Pair<Long,Long>> picker = builder.build();
             picker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Pair<Long, Long>>() {
@@ -175,9 +168,9 @@ public class MoreActivity extends AppCompatActivity {
                         new MaterialAlertDialogBuilder(MoreActivity.this).setTitle("ERROR").setMessage("Can't select this range !").setNeutralButton("OK", null).show();
                         return;
                     }
-                    since=selection.first;
-                    until=selection.second; // Se le suma un dia puesto que de partida sera a las 00:00:00 (es decir un dia menos)
-                    moreViewModel.registerMessagesFromDevice(device, since, until);
+                    moreViewModel.setSince(selection.first);
+                    moreViewModel.setUntil(selection.second);
+                    moreViewModel.registerMessagesFromDevice(device);
                 }
             });
             picker.show(getSupportFragmentManager(), picker.toString());
@@ -228,7 +221,7 @@ public class MoreActivity extends AppCompatActivity {
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-    // Cuando se guarda el estado de la actividad almacenamos el estado de los toggle
+        // Cuando se guarda el estado de la actividad almacenamos el estado de los toggle
         outState.putString("chart_selected", CHART_SELECTED.toString());
         super.onSaveInstanceState(outState);
     }
@@ -288,17 +281,9 @@ public class MoreActivity extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
+        if(moreAdapter!=null){moreAdapter.clear();}
         finish();
         return true;
     }
 
-    private void setupUnits(){
-        this.units=new HashMap<>();
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(binding.getRoot().getContext());
-        this.units.put(getString(R.string.keyUnitTemp), preferences.getString(getString(R.string.keyUnitTemp), getString(R.string.defUnitTemp)));
-        this.units.put(getString(R.string.keyUnitPres), preferences.getString(getString(R.string.keyUnitPres), getString(R.string.defUnitPres)));
-        this.units.put(getString(R.string.keyUnitUV), preferences.getString(getString(R.string.keyUnitUV), getString(R.string.defUnitUV)));
-    }
-
-    protected HashMap<String,String> getUnits(){return this.units;}
 }
