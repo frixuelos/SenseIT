@@ -3,6 +3,7 @@ package com.android.tfg.viewmodel;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.location.Location;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -141,6 +142,24 @@ public class MainViewModel extends AndroidViewModel {
             return Math.round(uv*10.0*100)/100.0;
         }
         return uv;
+    }
+
+    /*****************
+     * HOME FRAGMENT *
+     *****************/
+    public DeviceModel getNear(double lat, double lng){
+        if(devices.getValue()==null){return new DeviceModel();}
+        DeviceModel nearDev = null;
+        double diff = Double.MAX_VALUE;
+        for(DeviceModel device : devices.getValue()){
+            if(nearDev==null){nearDev=device;}
+            double diff_tmp = Math.abs(device.getComputedLocation().getLat()-lat)+Math.abs(device.getComputedLocation().getLng()-lng);
+            if(diff_tmp<=diff){
+                diff=diff_tmp;
+                nearDev=device;
+            }
+        }
+        return nearDev;
     }
 
 }

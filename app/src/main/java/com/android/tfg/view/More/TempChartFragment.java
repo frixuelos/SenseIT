@@ -16,7 +16,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 
 import com.android.tfg.R;
-import com.android.tfg.chart.CustomMarkerView;
 import com.android.tfg.databinding.FragmentTempBinding;
 import com.android.tfg.model.MessageModel;
 import com.android.tfg.viewmodel.MoreViewModel;
@@ -42,7 +41,6 @@ public class TempChartFragment extends Fragment {
 
     private MoreViewModel moreViewModel;
     private FragmentTempBinding binding;
-    private String units;
 
     public TempChartFragment(){
 
@@ -72,9 +70,7 @@ public class TempChartFragment extends Fragment {
         serieTemp.setCircleColor(Color.BLACK);
         serieTemp.setDrawCircleHole(false);
         serieTemp.setFillDrawable(binding.getRoot().getResources().getDrawable(R.drawable.gradient_temp));
-        serieTemp.setHighlightEnabled(true);
-        serieTemp.setDrawHorizontalHighlightIndicator(false);
-        serieTemp.setDrawVerticalHighlightIndicator(false);
+        serieTemp.setHighlightEnabled(false);
         serieTemp.setDrawFilled(true);
 
         // Se convierte a objeto con todos los datos
@@ -118,14 +114,14 @@ public class TempChartFragment extends Fragment {
         binding.tempChart.setScaleYEnabled(true);
         binding.tempChart.setHorizontalScrollBarEnabled(true);
         binding.tempChart.setDrawGridBackground(true);
-        binding.tempChart.setMarker(new CustomMarkerView(getContext(), R.layout.marker_view));
+        binding.tempChart.setHighlightPerDragEnabled(true);
         binding.tempChart.setPinchZoom(true);
         binding.tempChart.setNoDataTextColor(Color.BLACK);
         binding.tempChart.setNoDataText(getString(R.string.moreNoData));
         // fondo
         binding.tempChart.setGridBackgroundColor(Color.TRANSPARENT);
         // animacion
-        //binding.tempChart.animateY(1000);
+        binding.tempChart.animateY(1000);
          // leyenda
         Legend l = binding.tempChart.getLegend();
         l.setEnabled(false);
@@ -199,7 +195,7 @@ public class TempChartFragment extends Fragment {
 
     @Override
     public void onDestroy() {
-        binding.tempChart.clear();
+       //binding.tempChart.clear();
         super.onDestroy();
     }
 

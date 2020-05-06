@@ -9,7 +9,7 @@
             app:entries="@array/unit_temp"
             app:icon="@drawable/ic_temp"
             app:entryValues="@array/unit_temp"
-            app:defaultValue="defUnitTemp"/>
+            app:defaultValue="@string/defUnitTemp"/>
 
         <ListPreference
             app:key="@string/keyUnitPres"

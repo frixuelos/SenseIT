@@ -1,6 +1,7 @@
 package com.android.tfg.view.Main;
 
 import android.Manifest;
+import android.bluetooth.BluetoothClass;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -13,6 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
@@ -23,17 +26,83 @@ import android.view.ViewGroup;
 
 import com.android.tfg.R;
 import com.android.tfg.databinding.FragmentHomeBinding;
+import com.android.tfg.model.DeviceModel;
+import com.android.tfg.viewmodel.MainViewModel;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
+import java.util.LinkedList;
+
+import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
+    private FusedLocationProviderClient client;
+    private MainViewModel mainViewModel;
+
+    /**************
+     * MODEL VIEW *
+     **************/
+    private void configViewModel(){
+        mainViewModel = new ViewModelProvider(getActivity()).get(getString(R.string.mainViewModel), MainViewModel.class);
+        final Observer<LinkedList<DeviceModel>> obs = devices -> {
+            if(!devices.isEmpty()){
+                getLocation();
+            }
+        };
+        mainViewModel.getDevices().observe(getViewLifecycleOwner(), obs);
+    }
+
+    /************************
+     * OBTIENE LOCALIZACION *
+     ************************/
+    private void getLocation(){
+        client.getLastLocation().addOnSuccessListener(getActivity(), location -> {
+            if(location!=null){
+                showDevice(mainViewModel.getNear(location.getLatitude(), location.getLongitude())); // Muestra los datos
+            }
+        });
+    }
+
+    /**********************^***************
+     * MUESTRA EL DISPOSITIVO MAS CERCANO *
+     * @param device                      *
+     **************************************/
+    private void showDevice(DeviceModel device){
+        binding.textView.setText(device.getName());
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate(inflater, container, false);
 
+        client = LocationServices.getFusedLocationProviderClient(binding.getRoot().getContext());
+
+        configViewModel();
+
         return binding.getRoot();
     }
+
+    /**************************************
+     * COMPRUEBA PERMISOS DE LOCALIZACION *
+     **************************************/
+    private void checkPermissions(){
+        if(ActivityCompat.checkSelfPermission(getActivity(), ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                || ActivityCompat.checkSelfPermission(getActivity(), ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            requestPermissions(new String[]{ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION}, 1);
+        }
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        checkPermissions(); // Cuando se inicia la app comprobamos los permisos
+        super.onActivityCreated(savedInstanceState);
+    }
+
 
 }
