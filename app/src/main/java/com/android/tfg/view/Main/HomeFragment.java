@@ -64,6 +64,7 @@ public class HomeFragment extends Fragment {
         client.getLastLocation().addOnSuccessListener(getActivity(), location -> {
             if(location!=null){
                 showDevice(mainViewModel.getNear(location.getLatitude(), location.getLongitude())); // Muestra los datos
+                binding.loadStub.setVisibility(View.GONE); // load view gone
             }
         });
     }
@@ -80,6 +81,7 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate(inflater, container, false);
+        binding.loadStub.inflate(); // load view inflate
 
         client = LocationServices.getFusedLocationProviderClient(binding.getRoot().getContext());
 

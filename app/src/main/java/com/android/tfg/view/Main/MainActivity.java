@@ -53,19 +53,19 @@ public class MainActivity extends AppCompatActivity {
          *************************/
         binding.bottomBar.setOnNavigationItemSelectedListener(menuItem -> {
            switch(menuItem.getItemId()) {
-               case R.id.nav_home: binding.mainViewPager.setCurrentItem(0, true);
+               case R.id.nav_home: binding.mainViewPager.setCurrentItem(0, false);
                                    return true;
 
-               case R.id.nav_search:   binding.mainViewPager.setCurrentItem(1,true);
+               case R.id.nav_search:   binding.mainViewPager.setCurrentItem(1,false);
                                        return true;
 
-               case R.id.nav_map:  binding.mainViewPager.setCurrentItem(2, true);
+               case R.id.nav_map:  binding.mainViewPager.setCurrentItem(2, false);
                                    return true;
 
-               case R.id.nav_fav:  binding.mainViewPager.setCurrentItem(3,true);
+               case R.id.nav_fav:  binding.mainViewPager.setCurrentItem(3,false);
                                    return true;
 
-               case R.id.nav_config:   binding.mainViewPager.setCurrentItem(4, true);
+               case R.id.nav_config:   binding.mainViewPager.setCurrentItem(4, false);
                                        return true;
 
            }
