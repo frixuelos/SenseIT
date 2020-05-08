@@ -64,7 +64,6 @@ public class HomeFragment extends Fragment {
         client.getLastLocation().addOnSuccessListener(getActivity(), location -> {
             if(location!=null){
                 showDevice(mainViewModel.getNear(location.getLatitude(), location.getLongitude())); // Muestra los datos
-                binding.loadStub.setVisibility(View.GONE); // load view gone
             }
         });
     }
@@ -75,6 +74,7 @@ public class HomeFragment extends Fragment {
      **************************************/
     private void showDevice(DeviceModel device){
         binding.textView.setText(device.getName());
+        binding.loadStub.setVisibility(View.GONE); // load view gone
     }
 
     @Override

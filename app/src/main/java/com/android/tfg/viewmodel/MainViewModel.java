@@ -22,6 +22,7 @@ public class MainViewModel extends AndroidViewModel {
     private SigfoxRepository sigfoxRepository;
     private MutableLiveData<LinkedList<DeviceModel>> devices, favDevices;
     private SharedPreferences sharedPreferencesFav;
+    private DeviceModel nearDevice;
 
     /*************
      * OBSERVERS *
@@ -148,18 +149,18 @@ public class MainViewModel extends AndroidViewModel {
      * HOME FRAGMENT *
      *****************/
     public DeviceModel getNear(double lat, double lng){
+        if(nearDevice!=null){return nearDevice;}
         if(devices.getValue()==null){return new DeviceModel();}
-        DeviceModel nearDev = null;
         double diff = Double.MAX_VALUE;
         for(DeviceModel device : devices.getValue()){
-            if(nearDev==null){nearDev=device;}
+            if(nearDevice==null){nearDevice=device;}
             double diff_tmp = Math.abs(device.getComputedLocation().getLat()-lat)+Math.abs(device.getComputedLocation().getLng()-lng);
             if(diff_tmp<=diff){
                 diff=diff_tmp;
-                nearDev=device;
+                nearDevice=device;
             }
         }
-        return nearDev;
+        return nearDevice;
     }
 
 }
