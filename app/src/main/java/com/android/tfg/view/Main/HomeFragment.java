@@ -33,7 +33,10 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedList;
+import java.util.Locale;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
@@ -43,6 +46,13 @@ public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
     private FusedLocationProviderClient client;
     private MainViewModel mainViewModel;
+
+    // Necesario para mostrar nuevos datos en el dispositivo
+    final Observer<DeviceModel> obs = deviceModel -> {
+        if(deviceModel!=null){
+            showDevice(deviceModel);
+        }
+    };
 
     /**************
      * MODEL VIEW *
@@ -58,7 +68,7 @@ public class HomeFragment extends Fragment {
     private void getLocation(){
         client.getLastLocation().addOnSuccessListener(getActivity(), location -> {
             if(location!=null){
-                showDevice(mainViewModel.getNear(location.getLatitude(), location.getLongitude())); // Muestra los datos
+                mainViewModel.getNear(location.getLatitude(), location.getLongitude()).observe(getViewLifecycleOwner(), obs);
             }
         });
     }
@@ -68,8 +78,22 @@ public class HomeFragment extends Fragment {
      * @param device                      *
      **************************************/
     private void showDevice(DeviceModel device){
-        binding.textView.setText(device.getName());
-        binding.loadStub.setVisibility(View.GONE); // load view gone
+        binding.itemTitle.setText(device.getName());
+        binding.itemId.setText(device.getId());
+        binding.itemTemp.setText(String.valueOf(device.getLastMessage().getTemp()));
+        binding.itemHum.setText(String.valueOf(device.getLastMessage().getHum()));
+        binding.itemPres.setText(String.valueOf(device.getLastMessage().getPres()));
+        binding.itemUv.setText(String.valueOf(device.getLastMessage().getUv()));
+        String date = new SimpleDateFormat("dd/MM/yyy @ HH:mm:ss", Locale.getDefault())
+                        .format(new Date(device.getLastMessage().getDate().getSeconds()*1000L));
+        binding.itemLastUpdate.setText(date);
+        // load view gone
+        binding.loadStub.setVisibility(View.GONE);
+        binding.cardViewTitle.setVisibility(View.VISIBLE);
+        binding.cardViewTemp.setVisibility(View.VISIBLE);
+        binding.cardViewHum.setVisibility(View.VISIBLE);
+        binding.cardViewPres.setVisibility(View.VISIBLE);
+        binding.cardViewUv.setVisibility(View.VISIBLE);
     }
 
     @Override
