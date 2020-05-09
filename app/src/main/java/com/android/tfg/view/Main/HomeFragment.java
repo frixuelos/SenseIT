@@ -49,12 +49,7 @@ public class HomeFragment extends Fragment {
      **************/
     private void configViewModel(){
         mainViewModel = new ViewModelProvider(getActivity()).get(getString(R.string.mainViewModel), MainViewModel.class);
-        final Observer<LinkedList<DeviceModel>> obs = devices -> {
-            if(!devices.isEmpty()){
-                getLocation();
-            }
-        };
-        mainViewModel.getDevices().observe(getViewLifecycleOwner(), obs);
+
     }
 
     /************************
@@ -78,14 +73,33 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(requestCode==1){
+            if(permissions[1].equals(ACCESS_COARSE_LOCATION) && grantResults.length>0){
+                if(grantResults[0]==PackageManager.PERMISSION_GRANTED || grantResults[1]==PackageManager.PERMISSION_GRANTED){
+                    // Permitido
+
+                    getLocation();
+                }else{
+                    // No permitido ERROR
+                    new MaterialAlertDialogBuilder(getContext())
+                            .setTitle(getString(R.string.errorNoLocationGrantedTitle))
+                            .setMessage(getString(R.string.errorNoLocationGranted))
+                            .show();
+                }
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate(inflater, container, false);
+
         binding.loadStub.inflate(); // load view inflate
 
         client = LocationServices.getFusedLocationProviderClient(binding.getRoot().getContext());
-
-        configViewModel();
 
         return binding.getRoot();
     }
@@ -103,6 +117,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         checkPermissions(); // Cuando se inicia la app comprobamos los permisos
+        configViewModel(); // Configurar ViewModel
         super.onActivityCreated(savedInstanceState);
     }
 

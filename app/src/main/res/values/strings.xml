@@ -69,7 +69,9 @@
 
 
     <!-- ERRORES -->
-    <string name="errorDateRangeTitle"></string>
+    <string name="errorDateRangeTitle">DATE OUT OF RANGE</string>
     <string name="errorDateRange">Date range must be until today !</string>
+    <string name="errorNoLocationGrantedTitle">PERMISSION NOT GRANTED</string>
+    <string name="errorNoLocationGranted">Location is needed to display home screen !</string>
 
 </resources>
