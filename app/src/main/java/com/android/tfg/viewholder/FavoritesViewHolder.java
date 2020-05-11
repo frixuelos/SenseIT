@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.tfg.databinding.ItemFavoritesBinding;
 import com.android.tfg.model.DeviceModel;
-import com.android.tfg.view.More.MoreActivity;
+import com.android.tfg.view.more.MoreActivity;
 import com.android.tfg.viewmodel.MainViewModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;

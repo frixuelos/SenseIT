@@ -1,4 +1,4 @@
-package com.android.tfg.view.More;
+package com.android.tfg.view.more;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -13,10 +13,9 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.android.tfg.R;
-import com.android.tfg.databinding.FragmentUvBinding;
+import com.android.tfg.databinding.FragmentPresBinding;
 import com.android.tfg.model.MessageModel;
 import com.android.tfg.viewmodel.MoreViewModel;
-import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -30,14 +29,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.Locale;
-import java.util.Objects;
 
-public class UVChartFragment extends Fragment {
+public class PresChartFragment extends Fragment {
 
     private MoreViewModel moreViewModel;
-    private FragmentUvBinding binding;
+    private FragmentPresBinding binding;
 
-    public UVChartFragment(){
+    public PresChartFragment(){
 
     }
 
@@ -46,34 +44,34 @@ public class UVChartFragment extends Fragment {
         /**************************************
          * CONVIERTE MENSAJES A VALORES (X,Y) *
          **************************************/
-        ArrayList<Entry> uv = new ArrayList<>();
+        ArrayList<Entry> pres = new ArrayList<>();
         for (MessageModel m : messages) {
-            uv.add(new Entry(m.getDate().getSeconds(), (float) moreViewModel.convertUv(m.getUv())));
+            pres.add(new Entry(m.getDate().getSeconds(), (float) moreViewModel.convertPres(m.getPres())));
         }
 
         /*****************
          * SERIE PRESION *
          *****************/
-        LineDataSet serieUV = new LineDataSet(uv, getString(R.string.uvTitle));
-        serieUV.setAxisDependency(YAxis.AxisDependency.LEFT);
-        serieUV.enableDashedLine(50, 10, 0);
-        serieUV.setColor(Color.BLACK);
-        serieUV.setValueTextColor(Color.BLACK);
-        serieUV.setLineWidth(2F);
-        serieUV.setDrawCircles(true);
-        serieUV.setDrawValues(true);
-        serieUV.setCircleColor(Color.BLACK);
-        serieUV.setDrawCircleHole(false);
-        serieUV.setFillDrawable(binding.getRoot().getResources().getDrawable(R.drawable.gradient_uv));
-        serieUV.setHighlightEnabled(false);
-        serieUV.setDrawFilled(true);
+        LineDataSet seriePres = new LineDataSet(pres, getString(R.string.presTitle));
+        seriePres.setAxisDependency(YAxis.AxisDependency.LEFT);
+        seriePres.enableDashedLine(50, 10, 0);
+        seriePres.setColor(Color.BLACK);
+        seriePres.setValueTextColor(Color.BLACK);
+        seriePres.setLineWidth(2F);
+        seriePres.setDrawCircles(true);
+        seriePres.setDrawValues(true);
+        seriePres.setCircleColor(Color.BLACK);
+        seriePres.setDrawCircleHole(false);
+        seriePres.setFillDrawable(binding.getRoot().getResources().getDrawable(R.drawable.gradient_pres));
+        seriePres.setHighlightEnabled(false);
+        seriePres.setDrawFilled(true);
 
         // Se convierte a objeto con todos los datos
-        LineData uvData = new LineData(serieUV);
-        uvData.setValueTextColor(Color.BLACK);
-        uvData.setValueTextSize(12f);
+        LineData presData = new LineData(seriePres);
+        presData.setValueTextColor(Color.BLACK);
+        presData.setValueTextSize(12f);
         // Formatter para mostrar solo 2 decimales
-        uvData.setValueFormatter(new ValueFormatter() {
+        presData.setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
                 return String.valueOf(Math.round(value*100.0)/100.0);
@@ -81,50 +79,50 @@ public class UVChartFragment extends Fragment {
         });
 
         // Agregar datos
-        binding.uvChart.setData(uvData);
+        binding.presChart.setData(presData);
 
         // Actualizar grafico
-        binding.uvChart.invalidate();
+        binding.presChart.invalidate();
 
         // Visible 2 ultimas horas
-        binding.uvChart.setVisibleXRangeMaximum(2 * 60 * 60);
-        binding.uvChart.moveViewToX(new Date().getTime() - (2 * 60 * 60));
+        binding.presChart.setVisibleXRangeMaximum(2 * 60 * 60);
+        binding.presChart.moveViewToX(new Date().getTime() - (2 * 60 * 60));
 
         // Animar
-        binding.uvChart.animateX(500);
+        binding.presChart.animateX(500);
     }
 
     private void setupChart(){
-        binding.uvChart.getDescription().setTextSize(24f);
-        binding.uvChart.getDescription().setText(getString(R.string.uvTitle));
+        binding.presChart.getDescription().setTextSize(24f);
+        binding.presChart.getDescription().setText(getString(R.string.presTitle));
 
         // descripcion
-        binding.uvChart.getDescription().setEnabled(false);
+        binding.presChart.getDescription().setEnabled(false);
         // para las acciones al pulsar
-        binding.uvChart.setTouchEnabled(true);
-        binding.uvChart.setDragDecelerationFrictionCoef(0.9f);
+        binding.presChart.setTouchEnabled(true);
+        binding.presChart.setDragDecelerationFrictionCoef(0.9f);
         // escalado y arrastre
-        binding.uvChart.setDragEnabled(true);
-        binding.uvChart.setScaleEnabled(true);
-        binding.uvChart.setScaleYEnabled(true);
-        binding.uvChart.setHorizontalScrollBarEnabled(true);
-        binding.uvChart.setDrawGridBackground(true);
-        binding.uvChart.setHighlightPerDragEnabled(true);
-        binding.uvChart.setPinchZoom(true);
-        binding.uvChart.setNoDataTextColor(Color.BLACK);
-        binding.uvChart.setNoDataText(getString(R.string.moreNoData));
+        binding.presChart.setDragEnabled(true);
+        binding.presChart.setScaleEnabled(true);
+        binding.presChart.setScaleYEnabled(true);
+        binding.presChart.setHorizontalScrollBarEnabled(true);
+        binding.presChart.setDrawGridBackground(true);
+        binding.presChart.setHighlightPerDragEnabled(true);
+        binding.presChart.setPinchZoom(true);
+        binding.presChart.setNoDataTextColor(Color.BLACK);
+        binding.presChart.setNoDataText(getString(R.string.moreNoData));
         // fondo
-        binding.uvChart.setGridBackgroundColor(Color.TRANSPARENT);
+        binding.presChart.setGridBackgroundColor(Color.TRANSPARENT);
         // animacion
-        binding.uvChart.animateY(1000);
+        binding.presChart.animateY(1000);
          // leyenda
-        Legend l = binding.uvChart.getLegend();
+        Legend l = binding.presChart.getLegend();
         l.setEnabled(false);
 
        /*********
         * EJE X *
         *********/
-        XAxis xAxis = binding.uvChart.getXAxis();
+        XAxis xAxis = binding.presChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setTextSize(12f);
         xAxis.setDrawAxisLine(false);
@@ -132,7 +130,6 @@ public class UVChartFragment extends Fragment {
         xAxis.enableGridDashedLine(10,5,0);
         xAxis.setCenterAxisLabels(true);
         xAxis.setLabelRotationAngle(-45f);
-        xAxis.setAvoidFirstLastClipping(true);
         xAxis.setValueFormatter(new ValueFormatter() {
         private final SimpleDateFormat mFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
             @Override
@@ -145,12 +142,12 @@ public class UVChartFragment extends Fragment {
         /*********
          * EJE Y *
          *********/
-        YAxis leftAxis = binding.uvChart.getAxisLeft();
+        YAxis leftAxis = binding.presChart.getAxisLeft();
         leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
         leftAxis.setDrawGridLines(true);
         leftAxis.setEnabled(false);
         leftAxis.enableGridDashedLine(10,5,0);
-        YAxis rightAxis = binding.uvChart.getAxisRight();
+        YAxis rightAxis = binding.presChart.getAxisRight();
         rightAxis.setEnabled(false);
     }
 
@@ -160,10 +157,11 @@ public class UVChartFragment extends Fragment {
          **************/
         moreViewModel = new ViewModelProvider(getActivity()).get(getString(R.string.moreViewModel), MoreViewModel.class);
         final Observer<LinkedList<MessageModel>> obs = messages -> {
+            // añadir datos al grafico
             if(!messages.isEmpty()){
                 setData(messages);
             }else{
-                binding.uvChart.clear();
+                binding.presChart.clear();
             }
         };
         moreViewModel.getMessages().observe(getViewLifecycleOwner(), obs); // mensajes
@@ -172,7 +170,7 @@ public class UVChartFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentUvBinding.inflate(inflater, container, false);
+        binding = FragmentPresBinding.inflate(inflater, container, false);
 
         /***********
          * GRAFICO *

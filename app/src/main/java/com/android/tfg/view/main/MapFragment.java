@@ -1,4 +1,4 @@
-package com.android.tfg.view.Main;
+package com.android.tfg.view.main;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.android.tfg.R;
 import com.android.tfg.model.DeviceModel;
-import com.android.tfg.view.More.MoreActivity;
+import com.android.tfg.view.more.MoreActivity;
 import com.android.tfg.viewmodel.MainViewModel;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;

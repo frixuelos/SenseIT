@@ -7,13 +7,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.preference.PreferenceManager;
 
 import com.android.tfg.R;
-import com.android.tfg.view.More.HumChartFragment;
-import com.android.tfg.view.More.PresChartFragment;
-import com.android.tfg.view.More.TempChartFragment;
-import com.android.tfg.view.More.UVChartFragment;
+import com.android.tfg.view.more.HumChartFragment;
+import com.android.tfg.view.more.PresChartFragment;
+import com.android.tfg.view.more.TempChartFragment;
+import com.android.tfg.view.more.UVChartFragment;
 
 public class MorePagerAdapter extends FragmentStatePagerAdapter {
 

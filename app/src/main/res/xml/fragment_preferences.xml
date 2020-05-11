@@ -39,5 +39,19 @@
             app:entries="@array/lang"
             app:entryValues="@array/lang"
             app:defaultValue="English" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/adminTitle">
+        <Preference
+            app:key="@string/keyAdmin"
+            app:title="@string/adminTitle2"
+            app:icon="@drawable/ic_admin"
+            app:summary="@string/sumAdmin">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:targetPackage="com.android.tfg"
+                android:targetClass="com.android.tfg.view.admin.LoginActivity" />
+        </Preference>
     </PreferenceCategory>
 </PreferenceScreen>

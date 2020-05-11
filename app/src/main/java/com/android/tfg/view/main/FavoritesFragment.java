@@ -1,15 +1,11 @@
-package com.android.tfg.view.Main;
+package com.android.tfg.view.main;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,14 +19,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.tfg.R;
 import com.android.tfg.adapter.FavoritesAdapter;
-import com.android.tfg.adapter.SearchAdapter;
 import com.android.tfg.databinding.FragmentFavoritesBinding;
 import com.android.tfg.model.DeviceModel;
 import com.android.tfg.swipe.SwipeRemoveCallback;
 import com.android.tfg.viewmodel.MainViewModel;
 import com.google.android.material.snackbar.Snackbar;
-
-import org.w3c.dom.Text;
 
 import java.util.LinkedList;
 

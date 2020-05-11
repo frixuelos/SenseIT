@@ -5,11 +5,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
-import com.android.tfg.view.Main.FavoritesFragment;
-import com.android.tfg.view.Main.HomeFragment;
-import com.android.tfg.view.Main.MapFragment;
-import com.android.tfg.view.Main.SearchFragment;
-import com.android.tfg.view.Main.SettingsFragment;
+import com.android.tfg.view.main.FavoritesFragment;
+import com.android.tfg.view.main.HomeFragment;
+import com.android.tfg.view.main.MapFragment;
+import com.android.tfg.view.main.SearchFragment;
+import com.android.tfg.view.main.SettingsFragment;
 
 public class MainPagerAdapter extends FragmentStatePagerAdapter {
 

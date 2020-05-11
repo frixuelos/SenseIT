@@ -65,6 +65,16 @@
     <string name="setLangTitle">Language</string>
     <string name="sumLang">Change the language</string>
     <string name="keyLang">lang</string>
+    <string name="adminTitle">Administration</string>
+    <string name="adminTitle2">Go to admin area</string>
+    <string name="keyAdmin">admin</string>
+    <string name="sumAdmin">Administration tasks</string>
+
+    <!-- LOGIN -->
+    <string name="hintEmail">E-mail</string>
+    <string name="hintPasswd">Password</string>
+    <string name="btnLogin">LOGIN</string>
+    <string name="lostPasswd">Password lost?</string>
 
 
 

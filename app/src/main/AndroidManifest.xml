@@ -16,12 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".view.Main.MainActivity"
+        <activity android:name=".view.main.MainActivity"
             android:windowSoftInputMode="adjustPan"
             android:theme="@style/AppTheme.Launcher">
-            <!--android:screenOrientation="portrait"
-            android:configChanges="orientation|keyboardHidden"
-            tools:ignore="LockedOrientationActivity" -->
 
             <meta-data
                 android:name="android.app.searchable"
@@ -33,10 +30,12 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".view.More.MoreActivity"/>
-            <!--android:screenOrientation="landscape"
-            android:configChanges="orientation|keyboardHidden"
-            tools:ignore="LockedOrientationActivity"/-->
+        <activity android:name=".view.more.MoreActivity"/>
+
+        <activity android:name=".view.admin.LoginActivity"
+            android:theme="@style/AppTheme.Fullscreen"/>
+
+        <activity android:name=".view.admin.AdminActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
