@@ -1,11 +1,14 @@
 package com.android.tfg.view.admin;
 
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.tfg.databinding.ActivityAdminBinding;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 
 public class AdminActivity extends AppCompatActivity {
 
@@ -18,6 +21,14 @@ public class AdminActivity extends AppCompatActivity {
         // Binding
         binding = ActivityAdminBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        binding.button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                finish();
+            }
+        });
 
     }
 }
