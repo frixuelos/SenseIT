@@ -12,7 +12,9 @@ import com.android.tfg.databinding.ItemSearchBinding;
 import com.android.tfg.model.DeviceModel;
 import com.android.tfg.viewholder.SearchViewHolder;
 import com.android.tfg.viewmodel.MainViewModel;
+import com.google.gson.internal.UnsafeAllocator;
 
+import java.io.UncheckedIOException;
 import java.util.LinkedList;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> implements Filterable {
@@ -72,6 +74,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> implem
             }
 
             @Override
+            @SuppressWarnings("unchecked")
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 filteredDevices = (LinkedList<DeviceModel>) results.values;
                 notifyDataSetChanged();
