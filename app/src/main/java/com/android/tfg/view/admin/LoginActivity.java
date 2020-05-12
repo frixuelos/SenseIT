@@ -41,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
                 // Login ha fallado
                 binding.loadStub.setVisibility(View.GONE);
                 Snackbar.make(binding.getRoot(), authResultTask.getException().getMessage(), Snackbar.LENGTH_LONG)
-                        .setBackgroundTint(Color.RED)
+                        .setBackgroundTint(getResources().getColor(R.color.colorError))
                         .setTextColor(Color.WHITE)
                         .show(); // mostrar error
             }
@@ -62,7 +62,7 @@ public class LoginActivity extends AppCompatActivity {
                 // Envio fallido
                 binding.loadStub.setVisibility(View.GONE);
                 Snackbar.make(binding.getRoot(), resultTask.getException().getMessage(), Snackbar.LENGTH_LONG)
-                        .setBackgroundTint(Color.RED)
+                        .setBackgroundTint(getResources().getColor(R.color.colorError))
                         .setTextColor(Color.WHITE)
                         .show(); // mostrar error
             }

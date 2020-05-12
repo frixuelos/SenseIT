@@ -2,9 +2,9 @@
 <resources>
     <color name="colorPrimary">#232323</color>
     <color name="colorPrimaryDark">#232323</color>
+    <color name="colorPrimaryLight">#464646</color>
     <color name="colorAccent">#009688</color>
-    <color name="colorBottomChecked">#FFFFFF</color>
-    <color name="colorBottomNotChecked">#858585</color>
+    <color name="colorError">#B00020</color>
     <color name="titleColor">#FFFFFF</color>
     <color name="tempColor">#A6FF0000</color>
     <color name="humColor">#A60077FF</color>

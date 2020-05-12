@@ -30,7 +30,7 @@ public class SwipeRemoveCallback extends ItemTouchHelper.Callback {
     public SwipeRemoveCallback(Context context){
         this.context=context;
         this.background=new ColorDrawable();
-        this.backgroundColor=context.getResources().getColor(R.color.favColor);
+        this.backgroundColor=context.getResources().getColor(R.color.colorError);
         this.removePaint=new Paint();
         this.removePaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
         this.removeDrawable=context.getResources().getDrawable(R.drawable.ic_delete_sweep_24dp);

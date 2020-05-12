@@ -14,6 +14,7 @@ import com.android.tfg.databinding.ActivityMainBinding;
 import com.android.tfg.R;
 import com.android.tfg.adapter.MainPagerAdapter;
 import com.android.tfg.viewmodel.MainViewModel;
+import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         /*************************
          * BOTTOM NAVIGATION BAR *
          *************************/
+        binding.bottomBar.setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_SELECTED);
         binding.bottomBar.setOnNavigationItemSelectedListener(menuItem -> {
            switch(menuItem.getItemId()) {
                case R.id.nav_home: binding.mainViewPager.setCurrentItem(0, false);

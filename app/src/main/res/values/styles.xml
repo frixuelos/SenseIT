@@ -6,7 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="bottomNavigationStyle">@style/bottomNavStyle</item>
+        <item name="bottomNavigationStyle">@style/Widget.MaterialComponents.BottomNavigationView.Colored</item>
         <item name="fontFamily">@font/rubik</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
     </style>
@@ -14,12 +14,6 @@
     <style name="AppTheme.Launcher">
         <item name="android:windowBackground">@drawable/design_load</item>
         <!--<item name="android:windowFullscreen">true</item>-->
-    </style>
-
-    <style name="bottomNavStyle">
-        <item name="android:background">@color/colorPrimary</item>
-        <item name="itemIconTint">@color/bottom_nav_bar</item>
-        <item name="itemTextColor">@color/bottom_nav_bar</item>
     </style>
 
     <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.ActionBar">

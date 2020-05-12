@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout="@layout/loading"
-        android:id="@+id/loadStub" />
+        android:id="@+id/loadStub"/>
 
     <EditText
         android:id="@+id/email"
