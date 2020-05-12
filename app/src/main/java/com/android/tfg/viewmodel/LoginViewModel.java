@@ -14,6 +14,16 @@ import com.google.firebase.firestore.auth.User;
 public class LoginViewModel extends ViewModel {
 
     private UserRepository userRepository;
+
+    public LoginViewModel(){
+        userRepository= UserRepository.getInstance();
+        loginResult=new MutableLiveData<>();
+        resetPasswordResult=new MutableLiveData<>();
+    }
+
+    /*********
+     * LOGIN *
+     *********/
     private MutableLiveData<Task<AuthResult>> loginResult;
     private final Observer<Task<AuthResult>> loginResultObserver = new Observer<Task<AuthResult>>() {
         @Override
@@ -21,11 +31,6 @@ public class LoginViewModel extends ViewModel {
             loginResult.setValue(authResultTask); // actualizar resultado
         }
     };
-
-    public LoginViewModel(){
-        userRepository= UserRepository.getInstance();
-        loginResult=new MutableLiveData<>();
-    }
 
     public boolean isLoggedIn(){
         return userRepository.getCurrentUser()!=null;
@@ -38,6 +43,27 @@ public class LoginViewModel extends ViewModel {
 
     public MutableLiveData<Task<AuthResult>> getLogin(){
         return loginResult;
+    }
+
+
+    /******************
+     * RESET PASSWORD *
+     ******************/
+    private MutableLiveData<Task<Void>> resetPasswordResult;
+    private Observer<Task<Void>> resetPasswordResultObserver = new Observer<Task<Void>>() {
+        @Override
+        public void onChanged(Task<Void> voidTask) {
+            resetPasswordResult.setValue(voidTask);
+        }
+    };
+
+    public void resetPassword(String email){
+        userRepository.resetPassword(email);
+        userRepository.getResetPassword().observeForever(resetPasswordResultObserver);
+    }
+
+    public MutableLiveData<Task<Void>> getResetPassword(){
+        return resetPasswordResult;
     }
 
 }

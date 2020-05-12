@@ -3,7 +3,9 @@ package com.android.tfg.view.admin;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.PatternMatcher;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Toast;
 
@@ -16,8 +18,11 @@ import com.android.tfg.R;
 import com.android.tfg.databinding.ActivityLoginBinding;
 import com.android.tfg.viewmodel.LoginViewModel;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
+
+import java.util.regex.Pattern;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -26,18 +31,43 @@ public class LoginActivity extends AppCompatActivity {
 
     public void configViewModel(){
         loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
-        final Observer<Task<AuthResult>> obs = authResultTask -> {
+
+        // LOGIN
+        final Observer<Task<AuthResult>> loginObserver = authResultTask -> {
             if(authResultTask.isSuccessful()){
                 // Login ha tenido exito
                 go2Admin();
             }else{
                 // Login ha fallado
                 binding.loadStub.setVisibility(View.GONE);
-                Log.w("SUCCESS", String.valueOf(authResultTask.isSuccessful()));
-                Snackbar.make(binding.getRoot(), authResultTask.getException().getMessage(), Snackbar.LENGTH_LONG).setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show(); // mostrar error
+                Snackbar.make(binding.getRoot(), authResultTask.getException().getMessage(), Snackbar.LENGTH_LONG)
+                        .setBackgroundTint(Color.RED)
+                        .setTextColor(Color.WHITE)
+                        .show(); // mostrar error
             }
         };
-        loginViewModel.getLogin().observe(this, obs);
+        loginViewModel.getLogin().observe(this, loginObserver);
+
+        // RESET PASSWORD
+        final Observer<Task<Void>> resetPasswordObserver = resultTask -> {
+            if(resultTask.isSuccessful()){
+                // Envio del reset correcto
+                binding.loadStub.setVisibility(View.GONE);
+                new MaterialAlertDialogBuilder(this)
+                        .setTitle(getString(R.string.resetPasswordSentTitle))
+                        .setMessage(getString(R.string.resetPasswordSent))
+                        .setNeutralButton(getString(R.string.resetPasswordSentOK), null)
+                        .show();
+            }else{
+                // Envio fallido
+                binding.loadStub.setVisibility(View.GONE);
+                Snackbar.make(binding.getRoot(), resultTask.getException().getMessage(), Snackbar.LENGTH_LONG)
+                        .setBackgroundTint(Color.RED)
+                        .setTextColor(Color.WHITE)
+                        .show(); // mostrar error
+            }
+        };
+        loginViewModel.getResetPassword().observe(this, resetPasswordObserver);
     }
 
     public void go2Admin(){
@@ -59,10 +89,36 @@ public class LoginActivity extends AppCompatActivity {
 
             // Onclick login
             binding.loginButton.setOnClickListener(v -> {
+
+                if(binding.email.getText().toString().isEmpty()
+                        || !Patterns.EMAIL_ADDRESS.matcher(binding.email.getText().toString()).matches()
+                        || binding.passwd.getText().toString().isEmpty()){
+                    new MaterialAlertDialogBuilder(binding.getRoot().getContext()).setTitle(getString(R.string.errorLoginValuesInvalidTitle))
+                                                                .setMessage(getString(R.string.errorLoginValuesInvalid))
+                                                                .setNeutralButton(getString(R.string.errorLoginValuesInvalidOK),null)
+                                                                .show();
+                    return;
+                }
                 binding.loadStub.setVisibility(View.VISIBLE);
-                Log.w("PASSWD", binding.passwd.getText().toString());
                 loginViewModel.login(binding.email.getText().toString(), binding.passwd.getText().toString());
             });
+
+
+            // Onclick reset password
+            binding.txtLostPasswd.setOnClickListener(v -> {
+                if(binding.email.getText().toString().isEmpty()
+                        || !Patterns.EMAIL_ADDRESS.matcher(binding.email.getText().toString()).matches()){
+                    new MaterialAlertDialogBuilder(binding.getRoot().getContext())
+                            .setTitle(getString(R.string.errorResetPasswordTitle))
+                            .setMessage(getString(R.string.errorResetPassword))
+                            .setNeutralButton(getString(R.string.errorResetPasswordOK),null)
+                            .show();
+                    return;
+                }
+                binding.loadStub.setVisibility(View.VISIBLE);
+                loginViewModel.resetPassword(binding.email.getText().toString());
+            });
+
         }
     }
 
@@ -76,6 +132,9 @@ public class LoginActivity extends AppCompatActivity {
         // Binding
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        // Title
+        setTitle(getString(R.string.adminLoginTitle));
 
         // Vista loading
         binding.loadStub.inflate();

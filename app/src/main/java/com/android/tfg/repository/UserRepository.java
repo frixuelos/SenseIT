@@ -17,10 +17,12 @@ public class UserRepository {
     private FirebaseAuth firebaseAuth;
     private static UserRepository instance;
     private MutableLiveData<Task<AuthResult>> loginTask;
+    private MutableLiveData<Task<Void>> resetPasswordTask;
 
     public UserRepository(){
         firebaseAuth=FirebaseAuth.getInstance();
         loginTask=new MutableLiveData<>();
+        resetPasswordTask=new MutableLiveData<>();
     }
 
     /*************************************
@@ -49,6 +51,19 @@ public class UserRepository {
 
     public void logout(){
         firebaseAuth.signOut();
+    }
+
+    public void resetPassword(String email){
+        firebaseAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                resetPasswordTask.setValue(task);
+            }
+        });
+    }
+
+    public MutableLiveData<Task<Void>> getResetPassword(){
+        return resetPasswordTask;
     }
 
 }

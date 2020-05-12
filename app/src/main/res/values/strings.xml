@@ -71,11 +71,14 @@
     <string name="sumAdmin">Administration tasks</string>
 
     <!-- LOGIN -->
+    <string name="adminLoginTitle">Login</string>
     <string name="hintEmail">E-mail</string>
     <string name="hintPasswd">Password</string>
     <string name="btnLogin">LOGIN</string>
     <string name="lostPasswd">Password lost?</string>
-
+    <string name="resetPasswordSentTitle">Done</string>
+    <string name="resetPasswordSent">An email has been sent to reset your password.</string>
+    <string name="resetPasswordSentOK">OK</string>
 
 
     <!-- ERRORES -->
@@ -83,5 +86,11 @@
     <string name="errorDateRange">Date range must be until today !</string>
     <string name="errorNoLocationGrantedTitle">PERMISSION NOT GRANTED</string>
     <string name="errorNoLocationGranted">Location is needed to display home screen !</string>
+    <string name="errorLoginValuesInvalidTitle">Invalid e-mail or password</string>
+    <string name="errorLoginValuesInvalid">E-mail and password must not be empty and e-mail must be valid.</string>
+    <string name="errorLoginValuesInvalidOK">OK</string>
+    <string name="errorResetPasswordTitle">Invalid e-mail</string>
+    <string name="errorResetPassword">E-mail must not be empty or invalid !</string>
+    <string name="errorResetPasswordOK">OK</string>
 
 </resources>
