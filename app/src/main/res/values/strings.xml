@@ -81,10 +81,18 @@
     <string name="resetPasswordSentOK">OK</string>
     <string name="btnLogout">LOGOUT</string>
     <string name="txtLogin">You are already logged in as an administrator!</string>
+    
+    <!-- EDIT NAME ADMIN -->
+    <string name="editNameTitle">Edit name</string>
+    <string name="editNameCancel">Cancel</string>
+    <string name="editNameOK">OK</string>
+    <string name="editNameEmpty">Name is empty !</string>
+    <string name="editNameChangedTitle">Name changed</string>
+    <string name="editNameChanged">Device name has been changed successfully.</string>
 
 
     <!-- ERRORES -->
-    <string name="errorDateRangeTitle">DATE OUT OF RANGE</string>
+    <string name="errorDateRangeTitle">Date out of range</string>
     <string name="errorDateRange">Date range must be until today !</string>
     <string name="errorNoLocationGrantedTitle">PERMISSION NOT GRANTED</string>
     <string name="errorNoLocationGranted">Location is needed to display home screen !</string>
@@ -94,5 +102,7 @@
     <string name="errorResetPasswordTitle">Invalid e-mail</string>
     <string name="errorResetPassword">E-mail must not be empty or invalid !</string>
     <string name="errorResetPasswordOK">OK</string>
-
+    <string name="errorEditNameSame">Device has already this name</string>
+    <string name="errorEditNameFailTitle">Name error</string>
+    <string name="errorEditNameFail">An error occurred when editing device name.</string>
 </resources>

@@ -14,12 +14,14 @@ import androidx.preference.PreferenceManager;
 import com.android.tfg.R;
 import com.android.tfg.model.DeviceModel;
 import com.android.tfg.repository.SigfoxRepository;
+import com.android.tfg.repository.UserRepository;
 
 import java.util.LinkedList;
 
 public class MainViewModel extends AndroidViewModel {
 
     private SigfoxRepository sigfoxRepository;
+    private UserRepository userRepository;
     private MutableLiveData<LinkedList<DeviceModel>> devices, favDevices;
     private SharedPreferences sharedPreferencesFav;
     private MutableLiveData<DeviceModel> nearDevice;
@@ -62,6 +64,7 @@ public class MainViewModel extends AndroidViewModel {
     public MainViewModel(@NonNull Application application) {
         super(application);
         sigfoxRepository=SigfoxRepository.getInstance(getApplication().getApplicationContext());
+        userRepository=UserRepository.getInstance();
         devices=new MutableLiveData<>();
         favDevices=new MutableLiveData<>();
         sharedPreferencesFav=application.getApplicationContext().getSharedPreferences(application.getApplicationContext().getString(R.string.favoritesPreferences), Context.MODE_PRIVATE);
@@ -173,6 +176,13 @@ public class MainViewModel extends AndroidViewModel {
         }
 
         return nearDevice;
+    }
+
+    /*********
+     * ADMIN *
+     *********/
+    public boolean isLoggedIn(){
+        return userRepository.getCurrentUser()!=null;
     }
 
 }

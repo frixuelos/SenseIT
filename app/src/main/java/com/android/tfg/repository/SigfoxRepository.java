@@ -6,12 +6,15 @@ import android.location.Geocoder;
 import android.util.Log;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 
 import com.android.tfg.R;
 import com.android.tfg.model.DeviceModel;
 import com.android.tfg.model.MessageModel;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -101,6 +104,7 @@ public class SigfoxRepository {
         this.allDevices=new MutableLiveData<>();
         this.messages=new MutableLiveData<>();
         this.context=context;
+        this.editNameResult=new MutableLiveData<>();
     }
 
     /*************************************
@@ -200,5 +204,21 @@ public class SigfoxRepository {
         }
     }
 
+    /*************
+     * EDIT NAME *
+     *************/
+    private MutableLiveData<Task<Void>> editNameResult;
+
+    public void editName(DeviceModel device){
+        databaseReference.document(device.getId())
+                .update("name", device.getName())
+                .addOnCompleteListener(task -> {
+                    editNameResult.setValue(task);
+                });
+    }
+
+    public MutableLiveData<Task<Void>> getEditNameResult(){
+        return editNameResult;
+    }
 
 }
