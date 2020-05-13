@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -77,11 +78,8 @@ public class HomeFragment extends Fragment {
         binding.itemLastUpdate.setText(date);
         // load view gone
         binding.loadStub.setVisibility(View.GONE);
-        binding.cardViewTitle.setVisibility(View.VISIBLE);
-        binding.cardViewTemp.setVisibility(View.VISIBLE);
-        binding.cardViewHum.setVisibility(View.VISIBLE);
-        binding.cardViewPres.setVisibility(View.VISIBLE);
-        binding.cardViewUv.setVisibility(View.VISIBLE);
+        binding.itemTitle.setVisibility(View.VISIBLE);
+        binding.gridLayout.setVisibility(View.VISIBLE);
     }
 
     @Override

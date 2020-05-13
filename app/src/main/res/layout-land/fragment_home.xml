@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.main.HomeFragment"
-    android:background="@drawable/home_background">
+    android:background="@drawable/home_background"
+    tools:context=".view.main.HomeFragment">
 
     <TextView
         android:id="@+id/item_title"
@@ -15,10 +15,10 @@
         android:layout_marginTop="8dp"
         android:layout_marginRight="8dp"
         android:text="Localizacion"
-        android:visibility="gone"
         android:textAlignment="center"
         android:textColor="@color/titleColor"
         android:textSize="36sp"
+        android:visibility="visible"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -56,10 +56,11 @@
         android:id="@+id/gridLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:columnCount="2"
+        android:columnCount="4"
         android:padding="5dp"
-        android:visibility="gone"
-        android:rowCount="2"
+        android:rowCount="1"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/item_last_update">
@@ -69,9 +70,9 @@
             style="@style/CardView.Light"
             android:layout_width="140dp"
             android:layout_height="140dp"
-            android:layout_margin="20dp"
-            android:visibility="visible"
+            android:layout_margin="5dp"
             android:elevation="6dp"
+            android:visibility="visible"
             app:cardCornerRadius="20dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -109,7 +110,7 @@
             style="@style/CardView.Light"
             android:layout_width="140dp"
             android:layout_height="140dp"
-            android:layout_margin="20dp"
+            android:layout_margin="5dp"
             android:elevation="6dp"
             android:visibility="visible"
             app:cardCornerRadius="20dp">
@@ -148,9 +149,9 @@
             android:id="@+id/cardViewPres"
             style="@style/CardView.Light"
             android:layout_width="140dp"
-            android:elevation="6dp"
             android:layout_height="140dp"
-            android:layout_margin="20dp"
+            android:layout_margin="5dp"
+            android:elevation="6dp"
             android:visibility="visible"
             app:cardCornerRadius="20dp">
 
@@ -189,8 +190,8 @@
             style="@style/CardView.Light"
             android:layout_width="140dp"
             android:layout_height="140dp"
+            android:layout_margin="5dp"
             android:elevation="6dp"
-            android:layout_margin="20dp"
             android:visibility="visible"
             app:cardCornerRadius="20dp">
 
@@ -227,9 +228,9 @@
     </GridLayout>
 
     <ViewStub
+        android:id="@+id/loadStub"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout="@layout/loading"
-        android:id="@+id/loadStub" />
+        android:layout="@layout/loading" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

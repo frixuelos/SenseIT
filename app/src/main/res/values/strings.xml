@@ -79,6 +79,8 @@
     <string name="resetPasswordSentTitle">Done</string>
     <string name="resetPasswordSent">An email has been sent to reset your password.</string>
     <string name="resetPasswordSentOK">OK</string>
+    <string name="btnLogout">LOGOUT</string>
+    <string name="txtLogin">You are already logged in as an administrator!</string>
 
 
     <!-- ERRORES -->

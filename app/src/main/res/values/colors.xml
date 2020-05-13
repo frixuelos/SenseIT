@@ -13,4 +13,6 @@
     <color name="transparent">#00FFFFFF</color>
     <color name="favColor">#FF000E</color>
     <color name="darkColorDivider">#80FFFFFF</color>
+    <color name="colorTextPrimaryTitle">#000000</color>
+    <color name="colorTextPrimary">#4A4A4A</color>
 </resources>

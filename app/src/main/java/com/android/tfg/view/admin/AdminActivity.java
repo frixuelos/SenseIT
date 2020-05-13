@@ -22,7 +22,7 @@ public class AdminActivity extends AppCompatActivity {
         binding = ActivityAdminBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        binding.button.setOnClickListener(new View.OnClickListener() {
+        binding.logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
