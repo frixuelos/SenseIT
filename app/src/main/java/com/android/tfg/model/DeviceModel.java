@@ -13,6 +13,7 @@ public class DeviceModel {
     private String type, name;
     private ComputedLocationModel computedLocation;
     private MessageModel lastMessage;
+    private ConfigModel config;
 
     public DeviceModel(){}
 
@@ -58,6 +59,15 @@ public class DeviceModel {
 
     public void setLastMessage(MessageModel lastMessage) {
         this.lastMessage = lastMessage;
+    }
+
+
+    public ConfigModel getConfig() {
+        return config;
+    }
+
+    public void setConfig(ConfigModel config) {
+        this.config = config;
     }
 
 
