@@ -90,6 +90,16 @@
     <string name="editNameChangedTitle">Name changed</string>
     <string name="editNameChanged">Device name has been changed successfully.</string>
 
+    <!-- UPDATE SETTINGS ADMIN -->
+    <string name="editDeviceConfigTitle">Update settings</string>
+    <string name="sleepTimeTitle">Sleep time interval</string>
+    <string name="editDeviceConfigUpdate">Update</string>
+    <string name="editDeviceConfigCancel">Cancel</string>
+    <string name="sleepTimeDefaultText">11 min</string>
+    <string name="editDeviceConfigChangedTitle">Settings updated</string>
+    <string name="editDeviceConfigChanged">All device settings have been updated and they will be applied at the next device update event.</string>
+    <string name="editDeviceConfigOK">OK</string>
+
 
     <!-- ERRORES -->
     <string name="errorDateRangeTitle">Date out of range</string>
@@ -105,4 +115,6 @@
     <string name="errorEditNameSame">Device has already this name</string>
     <string name="errorEditNameFailTitle">Name error</string>
     <string name="errorEditNameFail">An error occurred when editing device name.</string>
+    <string name="errorEditDeviceConfigTitle">Update failed</string>
+    <string name="errorEditDeviceConfig">Device settings cannot be updated. Please, try again later.</string>
 </resources>

@@ -15,4 +15,12 @@
         style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
         android:text="@string/editNameTitle" />
 
+    <Button
+        android:id="@+id/editConfig"
+        android:layout_margin="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+        android:text="@string/editDeviceConfigTitle" />
+
 </androidx.appcompat.widget.LinearLayoutCompat>

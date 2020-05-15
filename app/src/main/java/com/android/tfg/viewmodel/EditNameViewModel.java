@@ -12,15 +12,25 @@ import com.android.tfg.model.DeviceModel;
 import com.android.tfg.repository.SigfoxRepository;
 import com.google.android.gms.tasks.Task;
 
-public class EditViewModel extends AndroidViewModel {
+public class EditNameViewModel extends AndroidViewModel {
 
     private SigfoxRepository sigfoxRepository;
     private MutableLiveData<Task<Void>> editNameResult;
+    private DeviceModel device;
 
-    public EditViewModel(Application application){
+    public EditNameViewModel(Application application){
         super(application);
         sigfoxRepository=SigfoxRepository.getInstance(application.getApplicationContext());
         editNameResult=new MutableLiveData<>();
+        device=new DeviceModel();
+    }
+
+    public void setDevice(DeviceModel device){
+        this.device=device;
+    }
+
+    public DeviceModel getDevice(){
+        return this.device;
     }
 
     public void editName(DeviceModel device){

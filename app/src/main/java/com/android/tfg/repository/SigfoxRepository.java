@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 
 import com.android.tfg.R;
+import com.android.tfg.model.ConfigModel;
 import com.android.tfg.model.DeviceModel;
 import com.android.tfg.model.MessageModel;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -105,6 +106,7 @@ public class SigfoxRepository {
         this.messages=new MutableLiveData<>();
         this.context=context;
         this.editNameResult=new MutableLiveData<>();
+        this.updateSettingsResult=new MutableLiveData<>();
     }
 
     /*************************************
@@ -219,6 +221,23 @@ public class SigfoxRepository {
 
     public MutableLiveData<Task<Void>> getEditNameResult(){
         return editNameResult;
+    }
+
+    /*******************
+     * UPDATE SETTINGS *
+     *******************/
+    private MutableLiveData<Task<Void>> updateSettingsResult;
+
+    public void updateSettings(DeviceModel device){
+        databaseReference.document(device.getId())
+                .update("config", device.getConfig())
+                .addOnCompleteListener(task -> {
+                    updateSettingsResult.setValue(task);
+                });
+    }
+
+    public MutableLiveData<Task<Void>> getUpdateSettingsResult(){
+        return this.updateSettingsResult;
     }
 
 }

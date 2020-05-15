@@ -1,6 +1,5 @@
 package com.android.tfg.view.admin;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,24 +13,26 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.android.tfg.R;
-import com.android.tfg.databinding.DialogEditBinding;
+import com.android.tfg.databinding.DialogEditNameBinding;
 import com.android.tfg.model.DeviceModel;
-import com.android.tfg.viewmodel.EditViewModel;
+import com.android.tfg.viewmodel.EditNameViewModel;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-public class EditDialogFragment extends DialogFragment {
+public class EditNameDialogFragment extends DialogFragment {
 
-    private DialogEditBinding binding;
-    private EditViewModel editViewModel;
+    private DialogEditNameBinding binding;
+    private EditNameViewModel editNameViewModel;
     private DeviceModel device;
 
-    public EditDialogFragment(DeviceModel device){
+    public EditNameDialogFragment(DeviceModel device){
         this.device=device;
     }
 
+    public EditNameDialogFragment(){}
+
     private void configViewModel(){
-        editViewModel=new ViewModelProvider(this).get(EditViewModel.class);
+        editNameViewModel =new ViewModelProvider(this).get(EditNameViewModel.class);
         final Observer<Task<Void>> editNameObserver = new Observer<Task<Void>>() {
             @Override
             public void onChanged(Task<Void> voidTask) {
@@ -40,29 +41,22 @@ public class EditDialogFragment extends DialogFragment {
                     new MaterialAlertDialogBuilder(binding.getRoot().getContext())
                             .setTitle(getString(R.string.editNameChangedTitle))
                             .setMessage(getString(R.string.editNameChanged))
-                            .setNeutralButton(getString(R.string.editNameOK), (dialog, which) -> EditDialogFragment.this.dismiss())
+                            .setNeutralButton(getString(R.string.editNameOK), (dialog, which) -> EditNameDialogFragment.this.dismiss())
                             .show();
                 }else{
                     // No ha tenido exito
                     new MaterialAlertDialogBuilder(binding.getRoot().getContext())
                             .setTitle(getString(R.string.errorEditNameFailTitle))
                             .setMessage(getString(R.string.errorEditNameFail))
-                            .setNeutralButton(getString(R.string.editNameOK), (dialog, which) -> EditDialogFragment.this.dismiss())
+                            .setNeutralButton(getString(R.string.editNameOK), (dialog, which) -> EditNameDialogFragment.this.dismiss())
                             .show();
                 }
             }
         };
-        editViewModel.getEditNameResult().observe(getViewLifecycleOwner(), editNameObserver);
+        editNameViewModel.getEditNameResult().observe(getViewLifecycleOwner(), editNameObserver);
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DialogEditBinding.inflate(inflater, container, false);
-
-        // Configurar viewmodel
-        configViewModel();
-
+    private void configView(){
         /*************
          * EDIT NAME *
          *************/
@@ -80,13 +74,25 @@ public class EditDialogFragment extends DialogFragment {
                 return;
             }
             // Cambiar nombre
-            device.setName(binding.editName.getText().toString());
-            editViewModel.editName(device);
+            editNameViewModel.getDevice().setName(device.toString());
+            editNameViewModel.editName(device);
         });
         // CANCEL BUTTON
         binding.cancel.setOnClickListener(v ->{
             dismiss();
         });
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        binding = DialogEditNameBinding.inflate(inflater, container, false);
+
+        setRetainInstance(true); // para sobrevivir a rotaciones de pantalla
+
+        configView();
+
+        configViewModel();
 
         return binding.getRoot();
     }
