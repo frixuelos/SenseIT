@@ -1,5 +1,6 @@
 package com.android.tfg.view.main;
 
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
@@ -10,6 +11,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,11 +37,23 @@ public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
     private FusedLocationProviderClient client;
     private MainViewModel mainViewModel;
+    private DeviceModel device;
+
+    // Listener para el cambio de preferencias (global, unidades)
+    private SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+            if(key.contains("units")){ // por si se trata de otra preferencia no actualizar innecesariamente
+                showDevice();
+            }
+        }
+    };
 
     // Necesario para mostrar nuevos datos en el dispositivo
-    final Observer<DeviceModel> obs = deviceModel -> {
+    private final Observer<DeviceModel> obs = deviceModel -> {
         if(deviceModel!=null){
-            showDevice(deviceModel);
+            device=deviceModel;
+            showDevice();
         }
     };
 
@@ -64,15 +78,14 @@ public class HomeFragment extends Fragment {
 
     /**********************^***************
      * MUESTRA EL DISPOSITIVO MAS CERCANO *
-     * @param device                      *
      **************************************/
-    private void showDevice(DeviceModel device){
+    private void showDevice(){
         binding.itemTitle.setText(device.getName());
         binding.itemId.setText(device.getId());
-        binding.itemTemp.setText(String.valueOf(device.getLastMessage().getTemp()));
+        binding.itemTemp.setText(String.valueOf(mainViewModel.convertTemp(device.getLastMessage().getTemp())));
         binding.itemHum.setText(String.valueOf(device.getLastMessage().getHum()));
-        binding.itemPres.setText(String.valueOf(device.getLastMessage().getPres()));
-        binding.itemUv.setText(String.valueOf(device.getLastMessage().getUv()));
+        binding.itemPres.setText(String.valueOf(mainViewModel.convertPres(device.getLastMessage().getPres())));
+        binding.itemUv.setText(String.valueOf(mainViewModel.convertUv(device.getLastMessage().getUv())));
         String date = new SimpleDateFormat("dd/MM/yyy @ HH:mm:ss", Locale.getDefault())
                         .format(new Date(device.getLastMessage().getDate().getSeconds()*1000L));
         binding.itemLastUpdate.setText(date);
@@ -128,6 +141,7 @@ public class HomeFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         checkPermissions(); // Cuando se inicia la app comprobamos los permisos
         configViewModel(); // Configurar ViewModel
+        PreferenceManager.getDefaultSharedPreferences(binding.getRoot().getContext()).registerOnSharedPreferenceChangeListener(preferenceChangeListener); // Preferencias
         super.onActivityCreated(savedInstanceState);
     }
 
