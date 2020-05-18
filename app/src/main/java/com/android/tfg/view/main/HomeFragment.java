@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +39,7 @@ public class HomeFragment extends Fragment {
     private FusedLocationProviderClient client;
     private MainViewModel mainViewModel;
     private DeviceModel device;
+    private final int REQUEST_CODE = 9632;
 
     // Listener para el cambio de preferencias (global, unidades)
     private SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
@@ -80,6 +82,7 @@ public class HomeFragment extends Fragment {
      * MUESTRA EL DISPOSITIVO MAS CERCANO *
      **************************************/
     private void showDevice(){
+        Log.e("SALTA", "SALTA");
         binding.itemTitle.setText(device.getName());
         binding.itemId.setText(device.getId());
         binding.itemTemp.setText(String.valueOf(mainViewModel.convertTemp(device.getLastMessage().getTemp())));
@@ -97,26 +100,22 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if(requestCode==1){
-            if(permissions[1].equals(ACCESS_COARSE_LOCATION) && grantResults.length>0){
-                if(grantResults[0]==PackageManager.PERMISSION_GRANTED || grantResults[1]==PackageManager.PERMISSION_GRANTED){
-                    // Permitido
-
-                    getLocation();
-                }else{
-                    // No permitido ERROR
-                    new MaterialAlertDialogBuilder(getContext())
-                            .setTitle(getString(R.string.errorNoLocationGrantedTitle))
-                            .setMessage(getString(R.string.errorNoLocationGranted))
-                            .show();
-                }
+        if(requestCode==REQUEST_CODE) {
+            if (grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permitido
+                getLocation();
+            } else {
+                // No permitido ERROR
+                new MaterialAlertDialogBuilder(binding.getRoot().getContext())
+                        .setTitle(getString(R.string.errorNoLocationGrantedTitle))
+                        .setMessage(getString(R.string.errorNoLocationGranted))
+                        .show();
             }
         }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate(inflater, container, false);
 
@@ -132,15 +131,17 @@ public class HomeFragment extends Fragment {
      **************************************/
     private void checkPermissions(){
         if(ActivityCompat.checkSelfPermission(getActivity(), ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(getActivity(), ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
-            requestPermissions(new String[]{ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION}, 1);
+                && ActivityCompat.checkSelfPermission(getActivity(), ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            requestPermissions(new String[]{ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION}, REQUEST_CODE);
+        }else{
+            getLocation();
         }
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        checkPermissions(); // Cuando se inicia la app comprobamos los permisos
         configViewModel(); // Configurar ViewModel
+        checkPermissions(); // comprobar permisos
         PreferenceManager.getDefaultSharedPreferences(binding.getRoot().getContext()).registerOnSharedPreferenceChangeListener(preferenceChangeListener); // Preferencias
         super.onActivityCreated(savedInstanceState);
     }

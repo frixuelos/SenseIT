@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.widget.Toast;
 
@@ -60,6 +61,9 @@ public class MoreActivity extends AppCompatActivity {
                 if(moreAdapter!=null){moreAdapter.clear();}
                 return; }
             configRecyclerView(messageModels);
+
+            // hide progress
+            showProgress(false);
         };
         moreViewModel.getMessages().observe(this, obs); // mensajes
     }
@@ -169,6 +173,10 @@ public class MoreActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         configToolbar();
         binding = ActivityMoreBinding.inflate(getLayoutInflater());
+
+        // show progress
+        showProgress(true);
+
         setContentView(binding.getRoot());
         configView();
         configViewModel();
@@ -262,6 +270,16 @@ public class MoreActivity extends AppCompatActivity {
         if(moreAdapter!=null){moreAdapter.clear();}
         finish();
         return true;
+    }
+
+    public void showProgress(boolean show){
+        if(show){
+            binding.loadStub.inflate();
+            binding.charts.setVisibility(View.INVISIBLE);
+        }else{
+            binding.loadStub.setVisibility(View.GONE);
+            binding.charts.setVisibility(View.VISIBLE);
+        }
     }
 
 }
