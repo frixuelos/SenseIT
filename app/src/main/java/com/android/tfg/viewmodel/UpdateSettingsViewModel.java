@@ -22,8 +22,9 @@ public class UpdateSettingsViewModel extends AndroidViewModel {
         updateSettingsResult=new MutableLiveData<>();
     }
 
-    public void updateSettings(DeviceModel device, int sleepTime){
+    public void updateSettings(DeviceModel device, int sleepTime, int downlinkFreq){
         device.getConfig().setSleepTime(sleepTime);
+        device.getConfig().setDownlinkFreq(downlinkFreq);
         sigfoxRepository.updateSettings(device);
         sigfoxRepository.getUpdateSettingsResult().observeForever(voidTask -> updateSettingsResult.setValue(voidTask));
     }

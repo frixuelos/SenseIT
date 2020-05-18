@@ -36,6 +36,9 @@ public class EditNameDialogFragment extends DialogFragment {
         final Observer<Task<Void>> editNameObserver = new Observer<Task<Void>>() {
             @Override
             public void onChanged(Task<Void> voidTask) {
+                // hide progress
+                binding.loadStub.setVisibility(View.GONE);
+
                 if(voidTask.isSuccessful()){
                     // Ha tenido exito
                     new MaterialAlertDialogBuilder(binding.getRoot().getContext())
@@ -73,8 +76,11 @@ public class EditNameDialogFragment extends DialogFragment {
                 binding.editName.requestFocus();
                 return;
             }
+            // show progress
+            binding.loadStub.inflate();
+
             // Cambiar nombre
-            editNameViewModel.getDevice().setName(device.toString());
+            device.setName(binding.editName.getText().toString());
             editNameViewModel.editName(device);
         });
         // CANCEL BUTTON

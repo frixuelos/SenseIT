@@ -92,13 +92,17 @@
 
     <!-- UPDATE SETTINGS ADMIN -->
     <string name="editDeviceConfigTitle">Update settings</string>
-    <string name="sleepTimeTitle">Sleep time interval</string>
+    <string name="sleepTimeTitle">Sleep time</string>
+    <string name="sleepTimeUnits">min</string>
     <string name="editDeviceConfigUpdate">Update</string>
     <string name="editDeviceConfigCancel">Cancel</string>
     <string name="sleepTimeDefaultText">11 min</string>
     <string name="editDeviceConfigChangedTitle">Settings updated</string>
     <string name="editDeviceConfigChanged">All device settings have been updated and they will be applied at the next device update event.</string>
     <string name="editDeviceConfigOK">OK</string>
+    <string name="downlinkFreqTitle">Downlink freq.</string>
+    <string name="downlinkFreqDefaultText">2 messages</string>
+    <string name="downlinkFreqUnits">messages</string>
 
 
     <!-- ERRORES -->
