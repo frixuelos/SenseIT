@@ -101,4 +101,7 @@ dependencies {
     // Lottie
     implementation 'com.airbnb.android:lottie:3.4.0'
 
+    // Marker clustering
+    implementation 'com.google.maps.android:android-maps-utils:1.2.1'
+
 }

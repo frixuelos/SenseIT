@@ -82,7 +82,6 @@ public class HomeFragment extends Fragment {
      * MUESTRA EL DISPOSITIVO MAS CERCANO *
      **************************************/
     private void showDevice(){
-        Log.e("SALTA", "SALTA");
         binding.itemTitle.setText(device.getName());
         binding.itemId.setText(device.getId());
         binding.itemTemp.setText(String.valueOf(mainViewModel.convertTemp(device.getLastMessage().getTemp())));

@@ -2,11 +2,13 @@ package com.android.tfg.view.main;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.android.tfg.R;
+import com.android.tfg.marker.MyMarker;
 import com.android.tfg.model.DeviceModel;
 import com.android.tfg.view.more.MoreActivity;
 import com.android.tfg.viewmodel.MainViewModel;
@@ -15,12 +17,16 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.clustering.Cluster;
+import com.google.maps.android.clustering.ClusterManager;
 
 import java.util.LinkedList;
+import java.util.Locale;
 
 public class MapFragment extends SupportMapFragment {
 
     private MainViewModel mainViewModel;
+    private ClusterManager<MyMarker> clusterManager;
 
     private void configViewModel(){
         if(getActivity()==null){
@@ -36,37 +42,43 @@ public class MapFragment extends SupportMapFragment {
                 getMapAsync(new OnMapReadyCallback() {
                     @Override
                     public void onMapReady(GoogleMap googleMap) {
+                        // clusterer
+                        clusterManager = new ClusterManager<MyMarker>(MapFragment.this.getActivity().getApplicationContext(), googleMap);
+                        googleMap.setOnCameraIdleListener(clusterManager);
+                        googleMap.setOnMarkerClickListener(clusterManager);
+
                         // añadir markers
                         for(DeviceModel device : deviceModels){
-                            MarkerOptions marker = new MarkerOptions().position(device.getSite()); // Crear marca
+                            MyMarker marker = new MyMarker(device.getSite().latitude,
+                                    device.getSite().longitude,
+                                    String.format(Locale.getDefault(),
+                                    getString(R.string.markerTitleFormat),
+                                    device.getName(),
+                                    device.getId()),
+                                    String.format(Locale.getDefault(),
+                                            getString(R.string.markerSnippetFormat),
+                                            getString(R.string.tempTitle),
+                                            device.getLastMessage().getTemp(),
+                                            getString(R.string.humTitle),
+                                            device.getLastMessage().getHum(),
+                                            getString(R.string.presTitle),
+                                            device.getLastMessage().getPres(),
+                                            getString(R.string.uvTitle),
+                                            device.getLastMessage().getUv()));
 
-                            //Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault()); // Obtener nombre de posicion
-                            marker.title(device.getId());
-                            googleMap.addMarker(marker);
+                            clusterManager.addItem(marker); // añadir marca
                         }
-
-                        // Click en el marker
-                        googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                            @Override
-                            public boolean onMarkerClick(Marker marker) {
-                                Intent i = new Intent(getContext(), MoreActivity.class);
-                                i.putExtra("device", marker.getTitle());
-                                startActivity(i);
-                                return false;
-                            }
-                        });
-
                     }
                 });
             }
         };
-        mainViewModel.getDevices().observe(getActivity(), obs); // Observar posicion dispositivos
+        mainViewModel.getDevices().observe(getViewLifecycleOwner(), obs); // Observar posicion dispositivos
     }
 
 
     @Override
-    public void onAttach(Activity activity) {
+    public void onActivityCreated(Bundle bundle) {
         configViewModel();
-        super.onAttach(activity);
+        super.onActivityCreated(bundle);
     }
 }

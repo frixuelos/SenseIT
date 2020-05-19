@@ -46,6 +46,10 @@
     <string name="moreNoData">No data.</string>
     <string name="titleDateRange">Select data range</string>
 
+    <!-- MAP -->
+    <string name="markerTitleFormat">%s [%s]</string>
+    <string name="markerSnippetFormat">%s: %.2f\n%s: %.2f\n%s: %.2f\n%s: %.2f\n</string>
+
     <!-- FAVORITES -->
     <string name="no_fav_text">Empty favorites list.</string>
     <string name="remove_fav">Remove favorites</string>
@@ -74,12 +78,12 @@
     <string name="adminLoginTitle">Login</string>
     <string name="hintEmail">E-mail</string>
     <string name="hintPasswd">Password</string>
-    <string name="btnLogin">LOGIN</string>
+    <string name="btnLogin">Login</string>
     <string name="lostPasswd">Password lost?</string>
     <string name="resetPasswordSentTitle">Done</string>
     <string name="resetPasswordSent">An email has been sent to reset your password.</string>
     <string name="resetPasswordSentOK">OK</string>
-    <string name="btnLogout">LOGOUT</string>
+    <string name="btnLogout">Logout</string>
     <string name="txtLogin">You are already logged in as an administrator!</string>
     
     <!-- EDIT NAME ADMIN -->
