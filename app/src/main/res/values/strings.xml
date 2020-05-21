@@ -47,8 +47,8 @@
     <string name="titleDateRange">Select data range</string>
 
     <!-- MAP -->
-    <string name="markerTitleFormat">%s [%s]</string>
-    <string name="markerSnippetFormat">%s: %.2f\n%s: %.2f\n%s: %.2f\n%s: %.2f\n</string>
+    <string name="markerTitleFormat">%s\n[%s]</string>
+    <string name="markerSnippetFormat">%.2f %s\t%.2f %s\t%.2f %s\t%.2f %s</string>
 
     <!-- FAVORITES -->
     <string name="no_fav_text">Empty favorites list.</string>
@@ -61,6 +61,7 @@
     <string name="sumUV">Set the units for UV</string>
     <string name="keyUnitTemp">units_temp</string>
     <string name="defUnitTemp">ºC</string>
+    <string name="defUnitHum">%</string>
     <string name="keyUnitPres">units_pres</string>
     <string name="defUnitPres">hPa</string>
     <string name="keyUnitUV">units_uv</string>

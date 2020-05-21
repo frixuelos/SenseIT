@@ -74,6 +74,7 @@ public class HomeFragment extends Fragment {
         client.getLastLocation().addOnSuccessListener(getActivity(), location -> {
             if(location!=null){
                 mainViewModel.getNear(location.getLatitude(), location.getLongitude()).observe(getViewLifecycleOwner(), obs);
+                mainViewModel.setLocation(location.getLatitude(), location.getLongitude()); // set user location
             }
         });
     }

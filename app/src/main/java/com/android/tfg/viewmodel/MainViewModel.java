@@ -9,17 +9,21 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
+import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceManager;
 
 import com.android.tfg.R;
 import com.android.tfg.model.DeviceModel;
 import com.android.tfg.repository.SigfoxRepository;
 import com.android.tfg.repository.UserRepository;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.maps.android.data.kml.KmlUtil;
 
 import java.util.LinkedList;
 
 public class MainViewModel extends AndroidViewModel {
 
+    private Context context;
     private SigfoxRepository sigfoxRepository;
     private UserRepository userRepository;
     private MutableLiveData<LinkedList<DeviceModel>> devices, favDevices;
@@ -63,12 +67,14 @@ public class MainViewModel extends AndroidViewModel {
 
     public MainViewModel(@NonNull Application application) {
         super(application);
+        context=getApplication().getApplicationContext();
         sigfoxRepository=SigfoxRepository.getInstance(getApplication().getApplicationContext());
         userRepository=UserRepository.getInstance();
         devices=new MutableLiveData<>();
         favDevices=new MutableLiveData<>();
         sharedPreferencesFav=application.getApplicationContext().getSharedPreferences(application.getApplicationContext().getString(R.string.favoritesPreferences), Context.MODE_PRIVATE);
         nearDevice=new MutableLiveData<>();
+        userLocation=new MutableLiveData<>();
     }
 
     /***************
@@ -135,25 +141,34 @@ public class MainViewModel extends AndroidViewModel {
     /************
      * UNIDADES *
      ************/
+    public String getTempUnits(){
+        return PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(R.string.keyUnitTemp), context.getString(R.string.defUnitTemp));
+    }
+
+    public String getPresUnits(){
+        return PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(R.string.keyUnitPres), context.getString(R.string.defUnitPres));
+    }
+
+    public String getUvUnits(){
+        return PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(R.string.keyUnitUV), context.getString(R.string.defUnitUV));
+    }
+
     public double convertTemp(double temp){
-        Context context = getApplication().getApplicationContext();
-        if(PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(R.string.keyUnitTemp), context.getString(R.string.defUnitTemp)).equals("ºF")){
+        if(getTempUnits().equals("ºF")){
             return Math.round((9*temp/5+32.0)*100)/100.0;
         }
         return temp;
     }
 
     public double convertPres(double pres){
-        Context context = getApplication().getApplicationContext();
-        if(PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(R.string.keyUnitPres), context.getString(R.string.defUnitPres)).equals("atm")){
+        if(getPresUnits().equals("atm")){
             return Math.round(0.000987*pres*100)/100.0;
         }
         return pres;
     }
 
     public double convertUv(double uv){
-        Context context = getApplication().getApplicationContext();
-        if(PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(R.string.keyUnitUV), context.getString(R.string.defUnitUV)).equals("W/m2")){
+        if(getUvUnits().equals("W/m2")){
             return Math.round(uv*10.0*100)/100.0;
         }
         return uv;
@@ -162,6 +177,7 @@ public class MainViewModel extends AndroidViewModel {
     /*****************
      * HOME FRAGMENT *
      *****************/
+    private MutableLiveData<LatLng> userLocation;
     public MutableLiveData<DeviceModel> getNear(double lat, double lng){
         if(nearDevice.getValue()!=null){return nearDevice;}
         if(devices.getValue()==null){nearDevice.setValue(new DeviceModel()); return nearDevice;}
@@ -176,6 +192,14 @@ public class MainViewModel extends AndroidViewModel {
         }
 
         return nearDevice;
+    }
+
+    public void setLocation(double lat, double lng){
+        this.userLocation.setValue(new LatLng(lat,lng));
+    }
+
+    public MutableLiveData<LatLng> getUserLocation(){
+        return this.userLocation;
     }
 
     /*********
