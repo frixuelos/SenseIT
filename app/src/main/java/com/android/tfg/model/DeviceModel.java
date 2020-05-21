@@ -10,6 +10,7 @@ public class DeviceModel {
     @Exclude // Excluir el ID para el update
     private String id;
 
+    private boolean alive;
     private String type, name;
     private ComputedLocationModel computedLocation;
     private MessageModel lastMessage;
@@ -70,5 +71,11 @@ public class DeviceModel {
         this.config = config;
     }
 
+    public boolean isAlive() {
+        return alive;
+    }
 
+    public void setAlive(boolean alive) {
+        this.alive = alive;
+    }
 }

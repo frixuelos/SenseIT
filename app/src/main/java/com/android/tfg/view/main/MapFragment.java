@@ -89,8 +89,13 @@ public class MapFragment extends SupportMapFragment {
                                     device.getLastMessage().getPres(),
                                     mainViewModel.getPresUnits(),
                                     device.getLastMessage().getUv(),
-                                    mainViewModel.getUvUnits()))
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                                    mainViewModel.getUvUnits()));
+
+                    if(device.isAlive()) {
+                        marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                    }else{
+                        marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                    }
 
                     googleMap.addMarker(marker);
                 }
@@ -120,8 +125,13 @@ public class MapFragment extends SupportMapFragment {
                             device.getLastMessage().getPres(),
                             mainViewModel.getPresUnits(),
                             device.getLastMessage().getUv(),
-                            mainViewModel.getUvUnits()))
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                            mainViewModel.getUvUnits()));
+
+            if(device.isAlive()) {
+                marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+            }else{
+                marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+            }
 
             googleMap.addMarker(marker);
         }
@@ -140,7 +150,11 @@ public class MapFragment extends SupportMapFragment {
         final Observer<LinkedList<DeviceModel>> obs = new Observer<LinkedList<DeviceModel>>() {
             @Override
             public void onChanged(LinkedList<DeviceModel> deviceModels) {
-                getMapAsync(deviceModels);
+                if(googleMap==null){
+                    getMapAsync(deviceModels);
+                }else{
+                    updateMap(deviceModels);
+                }
             }
         };
 
