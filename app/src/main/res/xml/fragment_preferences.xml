@@ -42,6 +42,27 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory app:title="Push notifications">
+        <SwitchPreference
+            app:key="@string/keyAlert"
+            app:title="@string/alertTitle"
+            app:icon="@drawable/ic_alert"
+            app:defaultValue="false"
+            app:summary="@string/sumAlert"/>
+
+        <Preference
+            app:key="@string/keyConfigAlert"
+            app:title="@string/configAlertTitle"
+            app:icon="@drawable/ic_config_alert"
+            app:summary="@string/sumConfigAlert">
+            <intent
+                android:action="andorid.intent.action.VIEW"
+                android:targetPackage="com.android.tfg"
+                android:targetClass="com.android.tfg.view.alert.AlertActivity" />
+        </Preference>
+
+    </PreferenceCategory>
+
     <PreferenceCategory app:title="@string/adminTitle">
         <Preference
             app:key="@string/keyAdmin"

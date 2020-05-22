@@ -74,6 +74,13 @@
     <string name="adminTitle2">Go to admin area</string>
     <string name="keyAdmin">admin</string>
     <string name="sumAdmin">Administration tasks</string>
+    <string name="keyAlert">alert</string>
+    <string name="alertTitle">Send device alerts</string>
+    <string name="sumAlert">Enable or disable alert messages</string>
+    <string name="keyConfigAlert">configAlert</string>
+    <string name="configAlertTitle">Alert management</string>
+    <string name="sumConfigAlert">Add, edit or remove alerts</string>
+    <string name="keyUserAlerts">user_alerts</string>
 
     <!-- LOGIN -->
     <string name="adminLoginTitle">Login</string>
@@ -108,6 +115,10 @@
     <string name="downlinkFreqTitle">Downlink freq.</string>
     <string name="downlinkFreqDefaultText">2 messages</string>
     <string name="downlinkFreqUnits">messages</string>
+
+    <!-- ALERT -->
+    <string name="alertNoData">Empty alert list.</string>
+    <string name="remove_from_alerts">Alert has been removed</string>
 
 
     <!-- ERRORES -->

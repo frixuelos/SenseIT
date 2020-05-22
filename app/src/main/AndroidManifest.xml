@@ -37,6 +37,8 @@
 
         <activity android:name=".view.admin.AdminActivity" />
 
+        <activity android:name=".view.alert.AlertActivity" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_api_key"/>

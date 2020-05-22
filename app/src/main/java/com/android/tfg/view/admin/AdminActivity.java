@@ -18,20 +18,22 @@ public class AdminActivity extends AppCompatActivity {
     private ActivityAdminBinding binding;
 
     public void configView(){
+        // title
+        setTitle(R.string.adminTitle);
+
+        // toolbar
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        // title
-        setTitle(R.string.adminTitle);
-
         // Binding
         binding = ActivityAdminBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         configView();
+
+        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -46,5 +48,11 @@ public class AdminActivity extends AppCompatActivity {
             }
         });
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() { // Back arrow button
+        onBackPressed();
+        return true;
     }
 }

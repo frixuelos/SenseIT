@@ -3,10 +3,13 @@ package com.android.tfg.viewholder;
 import android.content.Intent;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.tfg.databinding.ItemFavoritesBinding;
 import com.android.tfg.model.DeviceModel;
+import com.android.tfg.view.alert.AddAlertDialogFragment;
 import com.android.tfg.view.more.MoreActivity;
 import com.android.tfg.viewmodel.MainViewModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -65,6 +68,13 @@ public class FavoritesViewHolder extends RecyclerView.ViewHolder {
             Intent i = new Intent(v.getContext(), MoreActivity.class);
             i.putExtra("device", device.getId());
             v.getContext().startActivity(i);
+        });
+
+        /***********************
+         * CARD VIEW ADD ALERT *
+         ***********************/
+        binding.itemAlert.setOnClickListener(v -> {
+            new AddAlertDialogFragment().show(((AppCompatActivity)binding.getRoot().getContext()).getSupportFragmentManager(), "add_alert");
         });
     }
 

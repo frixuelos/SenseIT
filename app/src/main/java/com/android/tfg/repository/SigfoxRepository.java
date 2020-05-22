@@ -3,17 +3,23 @@ package com.android.tfg.repository;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
 
 import com.android.tfg.R;
+import com.android.tfg.model.AlertModel;
 import com.android.tfg.model.ConfigModel;
 import com.android.tfg.model.DeviceModel;
 import com.android.tfg.model.MessageModel;
+import com.android.tfg.room.AlertDatabase;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
@@ -107,6 +113,7 @@ public class SigfoxRepository {
         this.context=context;
         this.editNameResult=new MutableLiveData<>();
         this.updateSettingsResult=new MutableLiveData<>();
+        this.userAlerts=new MutableLiveData<>();
     }
 
     /*************************************
@@ -238,6 +245,82 @@ public class SigfoxRepository {
 
     public MutableLiveData<Task<Void>> getUpdateSettingsResult(){
         return this.updateSettingsResult;
+    }
+
+    /***************
+     * USER ALERTS *
+     ***************/
+    private MutableLiveData<List<AlertModel>> userAlerts;
+    private final Observer<List<AlertModel>> obsUserAlerts = new Observer<List<AlertModel>>() {
+        @Override
+        public void onChanged(List<AlertModel> alertModels) {
+            if (alertModels != null) {
+                userAlerts.setValue(alertModels);
+            }
+        }
+    };
+
+    public void registerUserAlerts(){
+        Room.databaseBuilder(context, AlertDatabase.class, "alerts.db")
+                .fallbackToDestructiveMigration()
+                .build()
+                .alertDAO()
+                .getUserAlerts()
+                .observeForever(obsUserAlerts);
+    }
+
+    public void unregisterUserAlerts(){
+        Room.databaseBuilder(context, AlertDatabase.class, "alerts.db")
+                .fallbackToDestructiveMigration()
+                .build()
+                .alertDAO()
+                .getUserAlerts()
+                .removeObserver(obsUserAlerts);
+    }
+
+    public MutableLiveData<List<AlertModel>> getUserAlerts(){
+        return this.userAlerts;
+    }
+
+    public void addUserAlert(AlertModel alert){
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                Room.databaseBuilder(context, AlertDatabase.class, "alerts.db")
+                        .fallbackToDestructiveMigration()
+                        .build()
+                        .alertDAO()
+                        .insert(alert);
+            }
+        });
+    }
+
+    public void removeUserAlert(AlertModel alert){
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                Room.databaseBuilder(context, AlertDatabase.class, "alerts.db")
+                        .fallbackToDestructiveMigration()
+                        .allowMainThreadQueries()
+                        .build()
+                        .alertDAO()
+                        .delete(alert);
+            }
+        });
+    }
+
+    public void clearUserAlerts(){
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                Room.databaseBuilder(context, AlertDatabase.class, "alerts.db")
+                        .fallbackToDestructiveMigration()
+                        .allowMainThreadQueries()
+                        .build()
+                        .alertDAO()
+                        .clear();
+            }
+        });
     }
 
 }
