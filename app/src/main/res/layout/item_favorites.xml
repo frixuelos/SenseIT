@@ -1,176 +1,223 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardViewFav"
+    style="@style/CardView.Light"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:layout_margin="5dp"
-    app:cardCornerRadius="5dp"
-    android:elevation="4dp"
-    style="@style/CardView.Light"
     android:clickable="true"
-    android:id="@+id/cardViewFav"
+    android:elevation="4dp"
     android:focusable="true"
-    android:foreground="?android:attr/selectableItemBackground">
+    android:foreground="?android:attr/selectableItemBackground"
+    android:orientation="vertical"
+    app:cardCornerRadius="5dp">
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_margin="5dp">
 
-    <com.google.android.gms.maps.MapView
-        xmlns:map="http://schemas.android.com/apk/res-auto"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:id="@+id/item_map_fav"
-        android:layout_margin="5dp"
-        map:cameraZoom="14"
-        map:mapType="hybrid"
-        map:liteMode="true"/>
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.20" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout"
-            android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:layout_margin="5dp"
-            android:gravity="left"
-            android:orientation="vertical">
+        <ImageView
+            android:id="@+id/ic_device"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:src="@drawable/ic_device"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/guideline6"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/item_location_fav"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Aviles (Asturias)"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toTopOf="@id/item_title_fav"
-                app:layout_constraintRight_toLeftOf="@+id/itemAlert"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+        <ImageView
+            android:id="@+id/item_circle"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:elevation="-1dp"
+            android:scaleX="0.9"
+            android:scaleY="0.9"
+            android:src="@drawable/shape_circle"
+            android:tint="@color/colorAccent"
+            app:layout_constraintBottom_toBottomOf="@id/ic_device"
+            app:layout_constraintLeft_toLeftOf="@id/ic_device"
+            app:layout_constraintRight_toRightOf="@id/ic_device"
+            app:layout_constraintTop_toTopOf="@id/ic_device" />
+
+        <TextView
+            android:id="@+id/item_location_fav"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="8dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="Aviles (Asturias)"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@id/item_title_fav"
+            app:layout_constraintLeft_toRightOf="@id/guideline6"
+            app:layout_constraintRight_toLeftOf="@+id/guideline7"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/item_title_fav"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="8dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="18AF23"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@id/item_last_update_fav"
+            app:layout_constraintEnd_toStartOf="@+id/guideline7"
+            app:layout_constraintStart_toEndOf="@+id/guideline6"
+            app:layout_constraintTop_toBottomOf="@id/item_location_fav" />
+
+
+        <TextView
+            android:id="@+id/item_last_update_fav"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="8dp"
+            android:alpha="0.65"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="24/04/2020 @ 11:00:00"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@+id/info"
+            app:layout_constraintEnd_toStartOf="@+id/guideline7"
+            app:layout_constraintStart_toEndOf="@id/guideline6"
+            app:layout_constraintTop_toBottomOf="@id/item_title_fav" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.85" />
+
+        <View
+            android:id="@+id/divider6"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/guideline7"
+            app:layout_constraintStart_toStartOf="@id/guideline7"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+            android:id="@+id/itemAlert"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:src="@drawable/ic_add_alert"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/guideline7"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/info"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/guideline7"
+            app:layout_constraintStart_toEndOf="@id/guideline6"
+            app:layout_constraintTop_toBottomOf="@id/item_last_update_fav">
 
             <ImageView
-                android:id="@+id/itemAlert"
+                android:id="@+id/icon_temp_fav"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_temp" />
+
+            <TextView
+                android:id="@+id/item_temp_fav"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="3dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:scaleType="center"
-                android:padding="20dp"
-                android:scaleX="1.5"
-                android:scaleY="1.5"
-                android:src="@drawable/ic_add_alert"
-                android:tint="@color/colorAccent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_gravity="center_vertical"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="21.6"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:id="@+id/icon_hum_fav"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="5dp"
+                android:src="@drawable/ic_hum" />
 
             <TextView
-                android:id="@+id/item_title_fav"
-                android:layout_width="0dp"
+                android:id="@+id/item_hum_fav"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="18AF23"
-                android:textSize="12sp"
-                app:layout_constraintBottom_toTopOf="@id/item_last_update_fav"
-                app:layout_constraintEnd_toStartOf="@+id/itemAlert"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/item_location_fav" />
+                android:layout_gravity="center_vertical"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="59"
+                android:textSize="16sp" />
 
+
+            <ImageView
+                android:id="@+id/icon_pres_fav"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="5dp"
+                android:src="@drawable/ic_pres" />
 
             <TextView
-                android:id="@+id/item_last_update_fav"
-                android:layout_width="match_parent"
+                android:id="@+id/item_pres_fav"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:alpha="0.65"
-                android:text="24/04/2020 @ 11:00:00"
-                android:textSize="12sp"
-                app:layout_constraintBottom_toTopOf="@id/info"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/item_title_fav" />
+                android:layout_gravity="center_vertical"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="1018.23"
+                android:textSize="16sp" />
 
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/item_last_update_fav"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:id="@+id/info">
+            <ImageView
+                android:id="@+id/icon_uv_fav"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="5dp"
+                android:src="@drawable/ic_uv" />
 
-                    <ImageView
-                        android:id="@+id/icon_temp_fav"
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:layout_gravity="center_vertical"
-                        android:src="@drawable/ic_temp" />
+            <TextView
+                android:id="@+id/item_uv_fav"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="0,14"
+                android:textSize="16sp" />
 
-                    <TextView
-                        android:id="@+id/item_temp_fav"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="21.6"
-                        android:textSize="16sp" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
-                    <ImageView
-                        android:id="@+id/icon_hum_fav"
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginStart="5dp"
-                        android:src="@drawable/ic_hum" />
-
-                    <TextView
-                        android:id="@+id/item_hum_fav"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="59"
-                        android:textSize="16sp" />
-
-
-                    <ImageView
-                        android:id="@+id/icon_pres_fav"
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginStart="5dp"
-                        android:src="@drawable/ic_pres" />
-
-                    <TextView
-                        android:id="@+id/item_pres_fav"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="1018,23"
-                        android:textSize="16sp" />
-
-                    <ImageView
-                        android:id="@+id/icon_uv_fav"
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginStart="5dp"
-                        android:src="@drawable/ic_uv" />
-
-                    <TextView
-                        android:id="@+id/item_uv_fav"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="0,14"
-                        android:textSize="16sp" />
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
-
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </androidx.cardview.widget.CardView>

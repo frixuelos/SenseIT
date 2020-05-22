@@ -48,22 +48,11 @@ public class SearchViewHolder extends RecyclerView.ViewHolder {
         Date lastUpdated = new Date(device.getLastMessage().getDate().getSeconds()*1000L);
         SimpleDateFormat mFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
         binding.itemLastUpdate.setText(mFormat.format(lastUpdated));
-
-        /**************
-         * DEVICE MAP *
-         **************/
-        binding.itemMap.onCreate(null);
-        binding.itemMap.onResume();
-        binding.itemMap.onLowMemory();
-        binding.itemMap.getMapAsync(googleMap -> {
-            googleMap.getUiSettings().setMapToolbarEnabled(false);
-            googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-            MarkerOptions markerOptions = new MarkerOptions();
-            markerOptions.position(device.getSite());
-            googleMap.addMarker(markerOptions);
-            googleMap.moveCamera(CameraUpdateFactory.newLatLng(device.getSite()));
-            //googleMap.setMinZoomPreference(15);
-        });
+        if(!device.isAlive()){
+            binding.itemCircle.setColorFilter(binding.getRoot().getContext().getResources().getColor(R.color.colorError));
+        }else{
+            binding.itemCircle.setColorFilter(binding.getRoot().getContext().getResources().getColor(R.color.colorAccent));
+        }
 
         /**************
          * DEVICE FAV *
