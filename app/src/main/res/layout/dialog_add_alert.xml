@@ -1,18 +1,333 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+<androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_margin="10dp">
+    android:layout_margin="10dp"
+    android:scrollbars="vertical">
 
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Device"
-        android:textAlignment="center"
-        app:layout_constraintTop_toTopOf="parent"
+    <ViewStub
+        android:id="@+id/loadStub"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout="@layout/loading"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:id="@+id/deviceTitle" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineVertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <TextView
+        android:id="@+id/tempTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/tempTitle"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Switch
+        android:id="@+id/switchMinTemp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/minTemp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guidelineVertical"
+        app:layout_constraintTop_toTopOf="@+id/minTemp" />
+
+    <Switch
+        android:id="@+id/switchMaxTemp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/maxTemp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guidelineVertical"
+        app:layout_constraintTop_toTopOf="@+id/maxTemp" />
+
+    <EditText
+        android:id="@+id/minTemp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:enabled="false"
+        android:hint="Min. temp"
+        android:inputType="numberDecimal"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineVertical"
+        app:layout_constraintStart_toStartOf="@+id/tempTitle"
+        app:layout_constraintTop_toBottomOf="@+id/tempTitle" />
+
+
+    <EditText
+        android:id="@+id/maxTemp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:enabled="false"
+        android:hint="Max. temp"
+        android:inputType="numberDecimal"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineVertical"
+        app:layout_constraintStart_toStartOf="@+id/tempTitle"
+        app:layout_constraintTop_toBottomOf="@+id/minTemp" />
+
+
+    <View
+        android:id="@+id/divider5"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="@id/tempTitle"
+        app:layout_constraintStart_toStartOf="@+id/tempTitle"
+        app:layout_constraintTop_toBottomOf="@+id/maxTemp" />
+
+    <TextView
+        android:id="@+id/humTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/humTitle"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="@+id/tempTitle"
+        app:layout_constraintStart_toStartOf="@+id/divider5"
+        app:layout_constraintTop_toBottomOf="@+id/divider5" />
+
+    <Switch
+        android:id="@+id/switchMinHum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/minHum"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guidelineVertical"
+        app:layout_constraintTop_toTopOf="@+id/minHum" />
+
+    <Switch
+        android:id="@+id/switchMaxHum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/maxHum"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guidelineVertical"
+        app:layout_constraintTop_toTopOf="@+id/maxHum" />
+
+    <EditText
+        android:id="@+id/minHum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:enabled="false"
+        android:hint="Min. hum"
+        android:inputType="numberDecimal"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineVertical"
+        app:layout_constraintStart_toStartOf="@+id/humTitle"
+        app:layout_constraintTop_toBottomOf="@+id/humTitle" />
+
+
+    <EditText
+        android:id="@+id/maxHum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:enabled="false"
+        android:hint="Max. hum"
+        android:inputType="numberDecimal"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineVertical"
+        app:layout_constraintStart_toStartOf="@+id/humTitle"
+        app:layout_constraintTop_toBottomOf="@+id/minHum" />
+
+    <View
+        android:id="@+id/divider6"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="@id/humTitle"
+        app:layout_constraintStart_toStartOf="@+id/humTitle"
+        app:layout_constraintTop_toBottomOf="@+id/maxHum" />
+
+    <TextView
+        android:id="@+id/presTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/presTitle"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="@+id/divider6"
+        app:layout_constraintStart_toStartOf="@+id/divider6"
+        app:layout_constraintTop_toBottomOf="@+id/divider6" />
+
+    <Switch
+        android:id="@+id/switchMinPres"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/minPres"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guidelineVertical"
+        app:layout_constraintTop_toTopOf="@+id/minPres" />
+
+    <Switch
+        android:id="@+id/switchMaxPres"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/maxPres"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guidelineVertical"
+        app:layout_constraintTop_toTopOf="@+id/maxPres" />
+
+    <EditText
+        android:id="@+id/minPres"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:enabled="false"
+        android:hint="Min. pres"
+        android:inputType="numberDecimal"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineVertical"
+        app:layout_constraintStart_toStartOf="@+id/presTitle"
+        app:layout_constraintTop_toBottomOf="@+id/presTitle" />
+
+
+    <EditText
+        android:id="@+id/maxPres"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:enabled="false"
+        android:hint="Max. pres"
+        android:inputType="numberDecimal"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineVertical"
+        app:layout_constraintStart_toStartOf="@+id/presTitle"
+        app:layout_constraintTop_toBottomOf="@+id/minPres" />
+
+    <View
+        android:id="@+id/divider7"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="@id/presTitle"
+        app:layout_constraintStart_toStartOf="@+id/presTitle"
+        app:layout_constraintTop_toBottomOf="@+id/maxPres" />
+
+    <TextView
+        android:id="@+id/uvTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/uvTitle"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="@id/divider7"
+        app:layout_constraintStart_toStartOf="@id/divider7"
+        app:layout_constraintTop_toBottomOf="@+id/divider7" />
+
+    <Switch
+        android:id="@+id/switchMinUV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/minUV"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guidelineVertical"
+        app:layout_constraintTop_toTopOf="@+id/minUV" />
+
+    <Switch
+        android:id="@+id/switchMaxUV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/maxUV"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guidelineVertical"
+        app:layout_constraintTop_toTopOf="@+id/maxUV" />
+
+    <EditText
+        android:id="@+id/minUV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:enabled="false"
+        android:hint="Min. uv"
+        android:inputType="numberDecimal"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineVertical"
+        app:layout_constraintStart_toStartOf="@+id/uvTitle"
+        app:layout_constraintTop_toBottomOf="@+id/uvTitle" />
+
+
+    <EditText
+        android:id="@+id/maxUV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:enabled="false"
+        android:hint="Max. uv"
+        android:inputType="numberDecimal"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineVertical"
+        app:layout_constraintStart_toStartOf="@+id/uvTitle"
+        app:layout_constraintTop_toBottomOf="@+id/minUV" />
+
+    <View
+        android:id="@+id/divider8"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="@+id/uvTitle"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/uvTitle"
+        app:layout_constraintTop_toBottomOf="@+id/maxUV" />
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        android:background="@color/darkColorDivider"
+        app:layout_constraintBottom_toBottomOf="@+id/cancel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider8" />
+
+    <Button
+        android:id="@+id/cancel"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/editNameCancel"
+        android:textColor="@color/colorError"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/divider2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/divider8" />
+
+    <Button
+        android:id="@+id/ok"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/createButton"
+        android:textColor="@color/colorAccent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/divider2"
+        app:layout_constraintTop_toTopOf="@+id/divider2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

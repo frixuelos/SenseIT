@@ -31,7 +31,6 @@ public class AlertViewModel extends AndroidViewModel {
     }
 
     public void registerUserAlerts(){
-        this.sigfoxRepository.addUserAlert(new AlertModel("TEST", "TEST", false, false, false, false, 0,0,0,0,0,0,0,0));
         this.sigfoxRepository.registerUserAlerts();
         this.sigfoxRepository.getUserAlerts().observeForever(obsUserAlerts);
     }

@@ -15,17 +15,12 @@ public class AlertModel implements Serializable {
     @NonNull
     private String deviceID;
     private String deviceName;
-    private boolean temp, hum, pres, uv;
-    private double minTemp, minHum, minPres, minUv;
-    private double maxTemp, maxHum, maxPres, maxUv;
+    private boolean minTemp, minHum, minPres, minUv, maxTemp, maxHum, maxPres, maxUv;
+    private double minTempValue, maxTempValue, minHumValue, maxHumValue, minPresValue, maxPresValue, minUuValue, maxUuValue;
 
-    public AlertModel(@NotNull String deviceID, String deviceName, boolean temp, boolean hum, boolean pres, boolean uv, double minTemp, double minHum, double minPres, double minUv, double maxTemp, double maxHum, double maxPres, double maxUv) {
+    public AlertModel(@NonNull String deviceID, String deviceName, boolean minTemp, boolean minHum, boolean minPres, boolean minUv, boolean maxTemp, boolean maxHum, boolean maxPres, boolean maxUv, double minTempValue, double maxTempValue, double minHumValue, double maxHumValue, double minPresValue, double maxPresValue, double minUuValue, double maxUuValue) {
         this.deviceID = deviceID;
         this.deviceName = deviceName;
-        this.temp = temp;
-        this.hum = hum;
-        this.pres = pres;
-        this.uv = uv;
         this.minTemp = minTemp;
         this.minHum = minHum;
         this.minPres = minPres;
@@ -34,13 +29,22 @@ public class AlertModel implements Serializable {
         this.maxHum = maxHum;
         this.maxPres = maxPres;
         this.maxUv = maxUv;
+        this.minTempValue = minTempValue;
+        this.maxTempValue = maxTempValue;
+        this.minHumValue = minHumValue;
+        this.maxHumValue = maxHumValue;
+        this.minPresValue = minPresValue;
+        this.maxPresValue = maxPresValue;
+        this.minUuValue = minUuValue;
+        this.maxUuValue = maxUuValue;
     }
 
+    @NonNull
     public String getDeviceID() {
         return deviceID;
     }
 
-    public void setDeviceID(String deviceID) {
+    public void setDeviceID(@NonNull String deviceID) {
         this.deviceID = deviceID;
     }
 
@@ -52,99 +56,131 @@ public class AlertModel implements Serializable {
         this.deviceName = deviceName;
     }
 
-    public boolean isTemp() {
-        return temp;
-    }
-
-    public void setTemp(boolean temp) {
-        this.temp = temp;
-    }
-
-    public boolean isHum() {
-        return hum;
-    }
-
-    public void setHum(boolean hum) {
-        this.hum = hum;
-    }
-
-    public boolean isPres() {
-        return pres;
-    }
-
-    public void setPres(boolean pres) {
-        this.pres = pres;
-    }
-
-    public boolean isUv() {
-        return uv;
-    }
-
-    public void setUv(boolean uv) {
-        this.uv = uv;
-    }
-
-    public double getMinTemp() {
+    public boolean isMinTemp() {
         return minTemp;
     }
 
-    public void setMinTemp(double minTemp) {
+    public void setMinTemp(boolean minTemp) {
         this.minTemp = minTemp;
     }
 
-    public double getMinHum() {
+    public boolean isMinHum() {
         return minHum;
     }
 
-    public void setMinHum(double minHum) {
+    public void setMinHum(boolean minHum) {
         this.minHum = minHum;
     }
 
-    public double getMinPres() {
+    public boolean isMinPres() {
         return minPres;
     }
 
-    public void setMinPres(double minPres) {
+    public void setMinPres(boolean minPres) {
         this.minPres = minPres;
     }
 
-    public double getMinUv() {
+    public boolean isMinUv() {
         return minUv;
     }
 
-    public void setMinUv(double minUv) {
+    public void setMinUv(boolean minUv) {
         this.minUv = minUv;
     }
 
-    public double getMaxTemp() {
+    public boolean isMaxTemp() {
         return maxTemp;
     }
 
-    public void setMaxTemp(double maxTemp) {
+    public void setMaxTemp(boolean maxTemp) {
         this.maxTemp = maxTemp;
     }
 
-    public double getMaxHum() {
+    public boolean isMaxHum() {
         return maxHum;
     }
 
-    public void setMaxHum(double maxHum) {
+    public void setMaxHum(boolean maxHum) {
         this.maxHum = maxHum;
     }
 
-    public double getMaxPres() {
+    public boolean isMaxPres() {
         return maxPres;
     }
 
-    public void setMaxPres(double maxPres) {
+    public void setMaxPres(boolean maxPres) {
         this.maxPres = maxPres;
     }
 
-    public double getMaxUv() {
+    public boolean isMaxUv() {
         return maxUv;
     }
 
-    public void setMaxUv(double maxUv) {
+    public void setMaxUv(boolean maxUv) {
         this.maxUv = maxUv;
+    }
+
+    public double getMinTempValue() {
+        return minTempValue;
+    }
+
+    public void setMinTempValue(double minTempValue) {
+        this.minTempValue = minTempValue;
+    }
+
+    public double getMaxTempValue() {
+        return maxTempValue;
+    }
+
+    public void setMaxTempValue(double maxTempValue) {
+        this.maxTempValue = maxTempValue;
+    }
+
+    public double getMinHumValue() {
+        return minHumValue;
+    }
+
+    public void setMinHumValue(double minHumValue) {
+        this.minHumValue = minHumValue;
+    }
+
+    public double getMaxHumValue() {
+        return maxHumValue;
+    }
+
+    public void setMaxHumValue(double maxHumValue) {
+        this.maxHumValue = maxHumValue;
+    }
+
+    public double getMinPresValue() {
+        return minPresValue;
+    }
+
+    public void setMinPresValue(double minPresValue) {
+        this.minPresValue = minPresValue;
+    }
+
+    public double getMaxPresValue() {
+        return maxPresValue;
+    }
+
+    public void setMaxPresValue(double maxPresValue) {
+        this.maxPresValue = maxPresValue;
+    }
+
+    public double getMinUuValue() {
+        return minUuValue;
+    }
+
+    public void setMinUuValue(double minUuValue) {
+        this.minUuValue = minUuValue;
+    }
+
+    public double getMaxUuValue() {
+        return maxUuValue;
+    }
+
+    public void setMaxUuValue(double maxUuValue) {
+        this.maxUuValue = maxUuValue;
     }
 }

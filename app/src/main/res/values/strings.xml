@@ -61,15 +61,20 @@
     <string name="sumUV">Set the units for UV</string>
     <string name="keyUnitTemp">units_temp</string>
     <string name="defUnitTemp">ºC</string>
+    <string name="KUnitTemp">ºF</string>
     <string name="defUnitHum">%</string>
     <string name="keyUnitPres">units_pres</string>
     <string name="defUnitPres">hPa</string>
+    <string name="ATMUnitPres">atm</string>
     <string name="keyUnitUV">units_uv</string>
     <string name="defUnitUV">mW/cm2</string>
+    <string name="WM2UnitUV">W/m2</string>
     <string name="setLocTitle">Location</string>
     <string name="setLangTitle">Language</string>
     <string name="sumLang">Change the language</string>
     <string name="keyLang">lang</string>
+    <string name="enLang">English</string>
+    <string name="esLang">Español</string>
     <string name="adminTitle">Administration</string>
     <string name="adminTitle2">Go to admin area</string>
     <string name="keyAdmin">admin</string>
@@ -79,7 +84,7 @@
     <string name="sumAlert">Enable or disable alert messages</string>
     <string name="keyConfigAlert">configAlert</string>
     <string name="configAlertTitle">Alert management</string>
-    <string name="sumConfigAlert">Add, edit or remove alerts</string>
+    <string name="sumConfigAlert">Edit or remove alerts</string>
     <string name="keyUserAlerts">user_alerts</string>
 
     <!-- LOGIN -->
@@ -120,6 +125,20 @@
     <string name="alertNoData">Empty alert list.</string>
     <string name="remove_from_alerts">Alert has been removed</string>
 
+    <!-- ADD ALERT -->
+    <string name="maxHint">Max.</string>
+    <string name="minHint">Min</string>
+    <string name="createButton">Create</string>
+    <string name="updateButton">Update</string>
+    <string name="removeDialogTitle">Empty fields</string>
+    <string name="removeDialog">You are overwriting an alert with empty values. Do you want to remove it?</string>
+    <string name="removeDialogPositive">Remove</string>
+    <string name="removeDialogNegative">Cancel</string>
+    <string name="createEmptyDialogTitle">Empty fields</string>
+    <string name="createEmptyDialog">At least one field must be specified</string>
+    <string name="addAlertSuccessTitle">Success</string>
+    <string name="addAlertSuccess">Alert has been created</string>
+
 
     <!-- ERRORES -->
     <string name="errorDateRangeTitle">Date out of range</string>
@@ -137,4 +156,7 @@
     <string name="errorEditNameFail">An error occurred when editing device name.</string>
     <string name="errorEditDeviceConfigTitle">Update failed</string>
     <string name="errorEditDeviceConfig">Device settings cannot be updated. Please, try again later.</string>
+    <string name="errorAddAlertInvalidRange">Invalid range</string>
+    <string name="errorAddAlertInvalidNumber">Invalid number, must be greater than zero</string>
+
 </resources>

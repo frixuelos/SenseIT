@@ -16,6 +16,7 @@ import com.android.tfg.R;
 import com.android.tfg.model.DeviceModel;
 import com.android.tfg.repository.SigfoxRepository;
 import com.android.tfg.repository.UserRepository;
+import com.android.tfg.view.math.Converter;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.data.kml.KmlUtil;
 
@@ -154,22 +155,22 @@ public class MainViewModel extends AndroidViewModel {
     }
 
     public double convertTemp(double temp){
-        if(getTempUnits().equals("ºF")){
-            return Math.round((9*temp/5+32.0)*100)/100.0;
+        if(getTempUnits().equals(context.getString(R.string.KUnitTemp))){
+            return Converter.toFarenheit(temp);
         }
         return temp;
     }
 
     public double convertPres(double pres){
-        if(getPresUnits().equals("atm")){
-            return Math.round(0.000987*pres*100)/100.0;
+        if(getPresUnits().equals(context.getString(R.string.ATMUnitPres))){
+            return Converter.toATM(pres);
         }
         return pres;
     }
 
     public double convertUv(double uv){
-        if(getUvUnits().equals("W/m2")){
-            return Math.round(uv*10.0*100)/100.0;
+        if(getUvUnits().equals(context.getString(R.string.WM2UnitUV))){
+            return Converter.toW(uv);
         }
         return uv;
     }

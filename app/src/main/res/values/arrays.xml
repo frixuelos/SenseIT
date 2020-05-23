@@ -3,22 +3,22 @@
 
     <array name="unit_temp">
         <item>@string/defUnitTemp</item>
-        <item>ºF</item>
+        <item>@string/KUnitTemp</item>
     </array>
 
     <array name="unit_pres">
-        <item>atm</item>
+        <item>@string/ATMUnitPres</item>
         <item>@string/defUnitPres</item>
     </array>
 
     <array name="unit_uv">
         <item>@string/defUnitUV</item>
-        <item>W/m2</item>
+        <item>@string/WM2UnitUV</item>
     </array>
 
     <array name="lang">
-        <item>English</item>
-        <item>Español</item>
+        <item>@string/enLang</item>
+        <item>@string/esLang</item>
     </array>
 
 </resources>

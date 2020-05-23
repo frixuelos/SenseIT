@@ -68,7 +68,7 @@ public class FavoritesViewHolder extends RecyclerView.ViewHolder {
          * CARD VIEW ADD ALERT *
          ***********************/
         binding.itemAlert.setOnClickListener(v -> {
-            new AddAlertDialogFragment().show(((AppCompatActivity)binding.getRoot().getContext()).getSupportFragmentManager(), "add_alert");
+            new AddAlertDialogFragment(device.getId(), device.getName()).show(((AppCompatActivity)binding.getRoot().getContext()).getSupportFragmentManager(), "add_alert");
         });
     }
 

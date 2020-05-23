@@ -27,6 +27,9 @@ public interface AlertDAO {
     @Query("SELECT * FROM alerts")
     LiveData<List<AlertModel>> getUserAlerts();
 
+    @Query("SELECT * FROM alerts WHERE deviceID = :deviceID")
+    LiveData<AlertModel> getDeviceAlert(String deviceID);
+
     @Query("DELETE FROM alerts")
     void clear();
 
