@@ -133,10 +133,10 @@ public class AddAlertDialogFragment extends DialogFragment {
         /********
          * TEMP *
          ********/
-        if(binding.switchMinTemp.isChecked()){
+        if(binding.switchMinTemp.isChecked() && binding.minTemp.getText().length()!=0){
             minTemp=Double.parseDouble(binding.minTemp.getText().toString());
         }
-        if(binding.switchMaxTemp.isChecked()){
+        if(binding.switchMaxTemp.isChecked() && binding.maxTemp.getText().length()!=0){
             maxTemp=Double.parseDouble(binding.maxTemp.getText().toString());
         }
 
@@ -150,7 +150,7 @@ public class AddAlertDialogFragment extends DialogFragment {
         /************
          * HUMIDITY *
          ************/
-        if(binding.switchMinHum.isChecked()) {
+        if(binding.switchMinHum.isChecked() && binding.minHum.getText().length()!=0) {
             minHum = Double.parseDouble(binding.minHum.getText().toString());
             if (minHum < 0) {
                 binding.minHum.setError(getString(R.string.errorAddAlertInvalidNumber));
@@ -159,7 +159,7 @@ public class AddAlertDialogFragment extends DialogFragment {
             }
         }
 
-        if(binding.switchMaxHum.isChecked()){
+        if(binding.switchMaxHum.isChecked() && binding.maxHum.getText().length()!=0){
             maxHum=Double.parseDouble(binding.maxHum.getText().toString());
         }
 
@@ -174,7 +174,7 @@ public class AddAlertDialogFragment extends DialogFragment {
         /************
          * PRESSURE *
          ************/
-        if(binding.switchMinPres.isChecked()){
+        if(binding.switchMinPres.isChecked() && binding.minPres.getText().length()!=0){
             minPres=Double.parseDouble(binding.minPres.getText().toString());
             if(minPres<0){
                 binding.minPres.setError(getString(R.string.errorAddAlertInvalidNumber));
@@ -183,7 +183,7 @@ public class AddAlertDialogFragment extends DialogFragment {
             }
         }
 
-        if(binding.switchMaxPres.isChecked()) {
+        if(binding.switchMaxPres.isChecked() && binding.maxPres.getText().length()!=0) {
             maxPres = Double.parseDouble(binding.maxPres.getText().toString());
         }
 
@@ -197,7 +197,7 @@ public class AddAlertDialogFragment extends DialogFragment {
         /******
          * UV *
          ******/
-        if(binding.switchMinUV.isChecked()) {
+        if(binding.switchMinUV.isChecked() && binding.minUV.getText().length()!=0) {
             minUV = Double.parseDouble(binding.minUV.getText().toString());
             if (minUV < 0) {
                 binding.minUV.setError(getString(R.string.errorAddAlertInvalidNumber));
@@ -206,7 +206,7 @@ public class AddAlertDialogFragment extends DialogFragment {
             }
         }
 
-        if(binding.switchMaxUV.isChecked()){
+        if(binding.switchMaxUV.isChecked() && binding.maxUV.getText().length()!=0){
             maxUV=Double.parseDouble(binding.maxUV.getText().toString());
         }
 
@@ -250,6 +250,14 @@ public class AddAlertDialogFragment extends DialogFragment {
             }
             return;
         }
+
+        // Convert units
+        minTemp=addAlertViewModel.convertTemp2Def(minTemp);
+        maxTemp=addAlertViewModel.convertTemp2Def(maxTemp);
+        minPres=addAlertViewModel.convertPres2Def(minPres);
+        maxPres=addAlertViewModel.convertPres2Def(maxPres);
+        minUV=addAlertViewModel.convertUv2Def(minUV);
+        maxUV=addAlertViewModel.convertUv2Def(maxUV);
 
         // ADD ALERT
         addAlertViewModel.addUserAlert(new AlertModel(deviceID,
@@ -314,14 +322,81 @@ public class AddAlertDialogFragment extends DialogFragment {
         binding.switchMaxUV.setChecked(alert.isMaxUv());
 
         // VALUES
-        if(alert.isMinTemp()){binding.minTemp.setText(String.valueOf(alert.getMinTempValue()));}
-        if(alert.isMaxTemp()){binding.maxTemp.setText(String.valueOf(alert.getMaxTempValue()));}
-        if(alert.isMinHum()){binding.minHum.setText(String.valueOf(alert.getMinHumValue()));}
-        if(alert.isMaxHum()){binding.maxHum.setText(String.valueOf(alert.getMaxHumValue()));}
-        if(alert.isMinPres()){binding.minPres.setText(String.valueOf(alert.getMinPresValue()));}
-        if(alert.isMaxPres()){binding.maxPres.setText(String.valueOf(alert.getMaxPresValue()));}
-        if(alert.isMinUv()){binding.minUV.setText(String.valueOf(alert.getMinUuValue()));}
-        if(alert.isMaxUv()){binding.maxUV.setText(String.valueOf(alert.getMaxUuValue()));}
+        if(alert.isMinTemp()){
+            binding.minTemp.setText(
+                    String.valueOf(
+                            addAlertViewModel.convertTempFromDef(
+                                    alert.getMinTempValue()
+                            )
+                    )
+            );
+        }
+
+        if(alert.isMaxTemp()){
+            binding.maxTemp.setText(
+                    String.valueOf(
+                            addAlertViewModel.convertTempFromDef(
+                                    alert.getMaxTempValue()
+                            )
+                    )
+            );
+        }
+
+        if(alert.isMinHum()){
+            binding.minHum.setText(
+                    String.valueOf(
+                            alert.getMinHumValue()
+                    )
+            );
+        }
+
+        if(alert.isMaxHum()){
+            binding.maxHum.setText(
+                    String.valueOf(
+                            alert.getMaxHumValue()
+                    )
+            );
+        }
+
+        if(alert.isMinPres()){
+            binding.minPres.setText(
+                    String.valueOf(
+                            addAlertViewModel.convertPresFromDef(
+                                    alert.getMinPresValue()
+                            )
+                    )
+            );
+        }
+
+        if(alert.isMaxPres()){
+            binding.maxPres.setText(
+                    String.valueOf(
+                            addAlertViewModel.convertPresFromDef(
+                                    alert.getMaxPresValue()
+                            )
+                    )
+            );
+        }
+
+        if(alert.isMinUv()){
+            binding.minUV.setText(
+                    String.valueOf(
+                            addAlertViewModel.convertUvFromDef(
+                                    alert.getMinUuValue()
+                            )
+                    )
+            );
+        }
+
+        if(alert.isMaxUv()){
+            binding.maxUV.setText(
+                    String.valueOf(
+                            addAlertViewModel.convertUvFromDef(
+                                    alert.getMaxUuValue()
+                            )
+                    )
+            );
+        }
 
         // BUTTON
         binding.ok.setText(getString(R.string.updateButton));
@@ -368,5 +443,11 @@ public class AddAlertDialogFragment extends DialogFragment {
             }
         };
         addAlertViewModel.getDeviceAlert().observe(this, obsDeviceAlert);
+    }
+
+    @Override
+    public void onDestroy() {
+        addAlertViewModel.unregisterDeviceAlert(deviceID);
+        super.onDestroy();
     }
 }
