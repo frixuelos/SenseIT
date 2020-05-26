@@ -3,22 +3,19 @@ package com.android.tfg.viewmodel;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.location.Location;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
-import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceManager;
 
 import com.android.tfg.R;
 import com.android.tfg.model.DeviceModel;
 import com.android.tfg.repository.SigfoxRepository;
 import com.android.tfg.repository.UserRepository;
-import com.android.tfg.view.math.Converter;
+import com.android.tfg.math.Converter;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.maps.android.data.kml.KmlUtil;
 
 import java.util.LinkedList;
 

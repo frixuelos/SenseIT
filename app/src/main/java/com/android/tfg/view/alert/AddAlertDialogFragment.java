@@ -1,36 +1,28 @@
 package com.android.tfg.view.alert;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.PatternMatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.android.tfg.R;
 import com.android.tfg.databinding.DialogAddAlertBinding;
 import com.android.tfg.model.AlertModel;
-import com.android.tfg.view.math.Converter;
 import com.android.tfg.viewmodel.AddAlertViewModel;
-import com.android.tfg.viewmodel.AlertViewModel;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-
-import java.util.regex.Pattern;
 
 public class AddAlertDialogFragment extends DialogFragment {
 
     private DialogAddAlertBinding binding;
     private AddAlertViewModel addAlertViewModel;
     private String deviceID, deviceName;
+    private AlertModel alert;
 
     public AddAlertDialogFragment(String deviceID, String deviceName){
         this.deviceID=deviceID;
@@ -228,12 +220,12 @@ public class AddAlertDialogFragment extends DialogFragment {
                 !binding.switchMaxUV.isChecked()){
 
             // Aqui se eliminará si existen alertas
-            if(addAlertViewModel.getDeviceAlert().getValue()!=null) { // Existe la alerta
+            if(addAlertViewModel.getDeviceAlert(deviceID)!=null) { // Existe la alerta
                 new MaterialAlertDialogBuilder(binding.getRoot().getContext())
                         .setTitle(getString(R.string.removeDialogTitle))
                         .setMessage(getString(R.string.removeDialog))
                         .setPositiveButton(getString(R.string.removeDialogPositive), (dialog, which) -> {
-                            addAlertViewModel.removeDeviceAlert(addAlertViewModel.getDeviceAlert().getValue());
+                            addAlertViewModel.removeDeviceAlert(addAlertViewModel.getDeviceAlert(deviceID));
                             dismiss();
                             AddAlertDialogFragment.this.dismiss();
                         }) // Se eliminará
@@ -323,6 +315,7 @@ public class AddAlertDialogFragment extends DialogFragment {
 
         // VALUES
         if(alert.isMinTemp()){
+            binding.minTemp.setEnabled(true);
             binding.minTemp.setText(
                     String.valueOf(
                             addAlertViewModel.convertTempFromDef(
@@ -333,6 +326,7 @@ public class AddAlertDialogFragment extends DialogFragment {
         }
 
         if(alert.isMaxTemp()){
+            binding.maxTemp.setEnabled(true);
             binding.maxTemp.setText(
                     String.valueOf(
                             addAlertViewModel.convertTempFromDef(
@@ -343,6 +337,7 @@ public class AddAlertDialogFragment extends DialogFragment {
         }
 
         if(alert.isMinHum()){
+            binding.minHum.setEnabled(true);
             binding.minHum.setText(
                     String.valueOf(
                             alert.getMinHumValue()
@@ -351,6 +346,7 @@ public class AddAlertDialogFragment extends DialogFragment {
         }
 
         if(alert.isMaxHum()){
+            binding.maxHum.setEnabled(true);
             binding.maxHum.setText(
                     String.valueOf(
                             alert.getMaxHumValue()
@@ -359,6 +355,7 @@ public class AddAlertDialogFragment extends DialogFragment {
         }
 
         if(alert.isMinPres()){
+            binding.minPres.setEnabled(true);
             binding.minPres.setText(
                     String.valueOf(
                             addAlertViewModel.convertPresFromDef(
@@ -369,6 +366,7 @@ public class AddAlertDialogFragment extends DialogFragment {
         }
 
         if(alert.isMaxPres()){
+            binding.maxPres.setEnabled(true);
             binding.maxPres.setText(
                     String.valueOf(
                             addAlertViewModel.convertPresFromDef(
@@ -379,6 +377,7 @@ public class AddAlertDialogFragment extends DialogFragment {
         }
 
         if(alert.isMinUv()){
+            binding.minUV.setEnabled(true);
             binding.minUV.setText(
                     String.valueOf(
                             addAlertViewModel.convertUvFromDef(
@@ -389,6 +388,7 @@ public class AddAlertDialogFragment extends DialogFragment {
         }
 
         if(alert.isMaxUv()){
+            binding.maxUV.setEnabled(true);
             binding.maxUV.setText(
                     String.valueOf(
                             addAlertViewModel.convertUvFromDef(
@@ -435,19 +435,7 @@ public class AddAlertDialogFragment extends DialogFragment {
 
     private void configViewModel(){
         addAlertViewModel=new ViewModelProvider(this).get(AddAlertViewModel.class);
-        addAlertViewModel.registerDeviceAlert(deviceID);
-        final Observer<AlertModel> obsDeviceAlert = new Observer<AlertModel>() {
-            @Override
-            public void onChanged(AlertModel alertModel) {
-                loadDefaults(alertModel);
-            }
-        };
-        addAlertViewModel.getDeviceAlert().observe(this, obsDeviceAlert);
-    }
-
-    @Override
-    public void onDestroy() {
-        addAlertViewModel.unregisterDeviceAlert(deviceID);
-        super.onDestroy();
+        alert=addAlertViewModel.getDeviceAlert(deviceID);
+        loadDefaults(alert);
     }
 }

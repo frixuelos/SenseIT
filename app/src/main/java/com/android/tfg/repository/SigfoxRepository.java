@@ -114,7 +114,6 @@ public class SigfoxRepository {
         this.editNameResult=new MutableLiveData<>();
         this.updateSettingsResult=new MutableLiveData<>();
         this.userAlerts=new MutableLiveData<>();
-        this.deviceAlert=new MutableLiveData<>();
     }
 
     /*************************************
@@ -324,33 +323,13 @@ public class SigfoxRepository {
         });
     }
 
-    private MutableLiveData<AlertModel> deviceAlert;
-    private final Observer<AlertModel> deviceAlertListener = new Observer<AlertModel>() {
-        @Override
-        public void onChanged(AlertModel alertModel) {
-            deviceAlert.setValue(alertModel);
-        }
-    };
-    public void registerDeviceAlert(String deviceID){
-        Room.databaseBuilder(context, AlertDatabase.class, "alerts.db")
+    public AlertModel getDeviceAlert(String id){
+        return Room.databaseBuilder(context, AlertDatabase.class, "alerts.db")
                 .fallbackToDestructiveMigration()
+                .allowMainThreadQueries()
                 .build()
                 .alertDAO()
-                .getDeviceAlert(deviceID)
-                .observeForever(deviceAlertListener);
-    }
-
-    public void unregisterDeviceAlert(String deviceID){
-        Room.databaseBuilder(context, AlertDatabase.class, "alerts.db")
-                .fallbackToDestructiveMigration()
-                .build()
-                .alertDAO()
-                .getDeviceAlert(deviceID)
-                .removeObserver(deviceAlertListener);
-    }
-
-    public MutableLiveData<AlertModel> getDeviceAlert(){
-        return this.deviceAlert;
+                .getDeviceAlert(id);
     }
 
 }

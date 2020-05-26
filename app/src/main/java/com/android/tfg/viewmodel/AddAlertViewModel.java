@@ -5,31 +5,21 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 import androidx.preference.PreferenceManager;
 
 import com.android.tfg.R;
 import com.android.tfg.model.AlertModel;
 import com.android.tfg.repository.SigfoxRepository;
-import com.android.tfg.view.math.Converter;
+import com.android.tfg.math.Converter;
 
 public class AddAlertViewModel extends AndroidViewModel {
 
     private SigfoxRepository sigfoxRepository;
     private Context context;
-    private MutableLiveData<AlertModel> deviceAlert;
-    private Observer<AlertModel> deviceAlertListener = new Observer<AlertModel>() {
-        @Override
-        public void onChanged(AlertModel alertModel) {
-            deviceAlert.setValue(alertModel);
-        }
-    };
 
     public AddAlertViewModel(@NonNull Application application){
         super(application);
         sigfoxRepository=SigfoxRepository.getInstance(application.getApplicationContext());
-        deviceAlert=new MutableLiveData<>();
         context=application.getApplicationContext();
     }
 
@@ -37,17 +27,8 @@ public class AddAlertViewModel extends AndroidViewModel {
         this.sigfoxRepository.addUserAlert(alert);
     }
 
-    public void registerDeviceAlert(String deviceID){
-        this.sigfoxRepository.registerDeviceAlert(deviceID);
-        this.sigfoxRepository.getDeviceAlert().observeForever(deviceAlertListener);
-    }
-
-    public void unregisterDeviceAlert(String deviceID){
-        this.sigfoxRepository.unregisterDeviceAlert(deviceID);
-    }
-
-    public MutableLiveData<AlertModel> getDeviceAlert(){
-        return this.deviceAlert;
+    public AlertModel getDeviceAlert(String id){
+        return sigfoxRepository.getDeviceAlert(id);
     }
 
     public void removeDeviceAlert(AlertModel alert){
@@ -57,15 +38,15 @@ public class AddAlertViewModel extends AndroidViewModel {
     /************
      * UNIDADES *
      ************/
-    public String getTempUnits(){
+    private String getTempUnits(){
         return PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(R.string.keyUnitTemp), context.getString(R.string.defUnitTemp));
     }
 
-    public String getPresUnits(){
+    private String getPresUnits(){
         return PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(R.string.keyUnitPres), context.getString(R.string.defUnitPres));
     }
 
-    public String getUvUnits(){
+    private String getUvUnits(){
         return PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(R.string.keyUnitUV), context.getString(R.string.defUnitUV));
     }
 

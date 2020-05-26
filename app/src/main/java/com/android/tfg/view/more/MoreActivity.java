@@ -59,6 +59,8 @@ public class MoreActivity extends AppCompatActivity {
         final Observer<LinkedList<MessageModel>> obs = messageModels -> {
             if(messageModels.isEmpty()){
                 if(moreAdapter!=null){moreAdapter.clear();}
+                // hide progress
+                showProgress(false);
                 return; }
             configRecyclerView(messageModels);
 

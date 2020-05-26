@@ -3,8 +3,11 @@ package com.android.tfg.view.main;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 
@@ -13,6 +16,7 @@ import android.view.Window;
 import com.android.tfg.databinding.ActivityMainBinding;
 import com.android.tfg.R;
 import com.android.tfg.adapter.MainPagerAdapter;
+import com.android.tfg.service.AlertService;
 import com.android.tfg.viewmodel.MainViewModel;
 import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 
@@ -21,6 +25,26 @@ public class MainActivity extends AppCompatActivity {
 
     private MainViewModel mainViewModel;
     private ActivityMainBinding binding;
+    private Intent alertIntent;
+
+    // Listener para el cambio de preferencias (activar o desactivar notificaciones)
+    private SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+            if(key.contains(getString(R.string.keyAlert))){ // por si se trata de otra preferencia no actualizar innecesariamente
+                if(!sharedPreferences.getBoolean(key, false)){ // Si es falso (desactivadas)
+                    if(alertIntent!=null){
+                        stopService(alertIntent);
+                    }
+                }else{
+                    if(alertIntent==null){
+                        alertIntent=new Intent(MainActivity.this, AlertService.class);
+                    }
+                    startService(alertIntent);
+                }
+            }
+        }
+    };
 
     private void configViewModel(){
         /**************
@@ -40,6 +64,11 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setTitle(getString(R.string.nav_home));
+
+        /*****************
+         * ALERT SERVICE *
+         *****************/
+        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(preferenceChangeListener); // Preferencias (alerts)
 
         /**************
          * VIEW MODEL *

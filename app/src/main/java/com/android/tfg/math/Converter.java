@@ -1,4 +1,4 @@
-package com.android.tfg.view.math;
+package com.android.tfg.math;
 
 public class Converter {
 
