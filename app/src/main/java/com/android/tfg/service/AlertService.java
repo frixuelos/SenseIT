@@ -122,6 +122,10 @@ public class AlertService extends Service {
     }
 
 
+    /**********************************
+     * SENDS THE ALERT (NOTIFICAITON) *
+     * @param content                 *
+     **********************************/
     private void sendAlert(String content){
         builder = new NotificationCompat.Builder(this, null);
 
