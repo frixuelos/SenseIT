@@ -12,11 +12,37 @@ public class DeviceModel {
 
     private boolean alive;
     private String type, name;
+    private double fixedLat, fixedLng;
+    private int countryCode;
     private ComputedLocationModel computedLocation;
     private MessageModel lastMessage;
     private ConfigModel config;
 
     public DeviceModel(){}
+
+    public int getCountryCode() {
+        return countryCode;
+    }
+
+    public void setCountryCode(int countryCode) {
+        this.countryCode = countryCode;
+    }
+
+    public double getFixedLat() {
+        return fixedLat;
+    }
+
+    public void setFixedLat(double fixedLat) {
+        this.fixedLat = fixedLat;
+    }
+
+    public double getFixedLng() {
+        return fixedLng;
+    }
+
+    public void setFixedLng(double fixedLng) {
+        this.fixedLng = fixedLng;
+    }
 
     public String getId() {
         return id;

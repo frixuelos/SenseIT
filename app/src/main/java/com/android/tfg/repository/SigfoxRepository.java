@@ -62,37 +62,14 @@ public class SigfoxRepository {
             LinkedList<DeviceModel> query = new LinkedList<>();
             for(DocumentSnapshot doc : value.getDocuments()){
                 String deviceID = doc.getId();
-                /* si se ha establecido un nombre
-                String name = null;
-                if(doc.contains("name")){
-                    name=doc.getString("name");
-                }
-                DeviceModel device = new DeviceModel(deviceID, doc.getString("type"), name, lastMessage);*/
+
                 DeviceModel device = doc.toObject(DeviceModel.class);
+
                 if(device==null){ // Si es nulo mostramos error
                     Log.e("DATABASE", "allDevicesListener (SigfoxRepository) can't get device");
                     return;
                 }
                 device.setId(deviceID);
-
-                if(device.getName()==null) {
-                    // Se trata de descubrir el nombre de la posicion si no tiene nombre
-                    Geocoder geocoder = new Geocoder(context, Locale.getDefault());
-                    try {
-                        List<Address> addresses = geocoder.getFromLocation(device.getSite().latitude, device.getSite().longitude, 1);
-                        Log.w("ADDRESSES", addresses.toString());
-                        if (addresses.isEmpty()) {
-                            device.setName(deviceID);
-                        } else {
-                            device.setName(String.format(context.getString(R.string.locationFormat), addresses.get(0).getLocality(), addresses.get(0).getSubAdminArea()));
-                            // Tambien lo guardamos en la BBDD
-                            doc.getReference().update("name", device.getName());
-                        }
-                    } catch (IOException exc) {
-                        // No se pudo encontrar una dirección se establece nulo
-                        Log.w("DATABASE", "allDevicesListener (SigfoxRepository) can't get device location-based name");
-                    }
-                }
 
                 query.add(device);
             }
