@@ -50,9 +50,9 @@ public class SearchViewHolder extends RecyclerView.ViewHolder {
         SimpleDateFormat mFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
         binding.itemLastUpdate.setText(mFormat.format(lastUpdated));
         if(!device.isAlive()){
-            binding.itemCircle.setColorFilter(binding.getRoot().getContext().getResources().getColor(R.color.colorError));
+            binding.icDevice.setColorFilter(binding.getRoot().getContext().getResources().getColor(R.color.colorError));
         }else{
-            binding.itemCircle.setColorFilter(binding.getRoot().getContext().getResources().getColor(R.color.colorAccent));
+            binding.icDevice.setColorFilter(binding.getRoot().getContext().getResources().getColor(R.color.colorAccent));
         }
 
         /**************
