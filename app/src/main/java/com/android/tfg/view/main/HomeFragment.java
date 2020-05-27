@@ -85,10 +85,39 @@ public class HomeFragment extends Fragment {
     private void showDevice(){
         binding.itemTitle.setText(device.getName());
         binding.itemId.setText(device.getId());
-        binding.itemTemp.setText(String.valueOf(mainViewModel.convertTemp(device.getLastMessage().getTemp())));
-        binding.itemHum.setText(String.valueOf(device.getLastMessage().getHum()));
-        binding.itemPres.setText(String.valueOf(mainViewModel.convertPres(device.getLastMessage().getPres())));
-        binding.itemUv.setText(String.valueOf(mainViewModel.convertUv(device.getLastMessage().getUv())));
+
+        binding.itemTemp.setText(
+                String.format(
+                        getString(R.string.homeValuesFormat),
+                        mainViewModel.convertTemp(device.getLastMessage().getTemp()),
+                        mainViewModel.getTempUnits()
+                )
+        );
+
+        binding.itemHum.setText(
+                String.format(
+                        getString(R.string.homeValuesFormat),
+                        device.getLastMessage().getHum(),
+                        getString(R.string.defUnitHum)
+                )
+        );
+
+        binding.itemPres.setText(
+                String.format(
+                        getString(R.string.homeValuesFormat),
+                        mainViewModel.convertPres(device.getLastMessage().getPres()),
+                        mainViewModel.getPresUnits()
+                )
+        );
+
+        binding.itemUv.setText(
+                String.format(
+                        getString(R.string.homeValuesFormat),
+                        mainViewModel.convertUv(device.getLastMessage().getUv()),
+                        mainViewModel.getUvUnits()
+                )
+        );
+
         String date = new SimpleDateFormat("dd/MM/yyy @ HH:mm:ss", Locale.getDefault())
                         .format(new Date(device.getLastMessage().getDate().getSeconds()*1000L));
         binding.itemLastUpdate.setText(date);

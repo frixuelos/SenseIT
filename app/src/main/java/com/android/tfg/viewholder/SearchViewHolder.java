@@ -42,12 +42,7 @@ public class SearchViewHolder extends RecyclerView.ViewHolder {
          ***************/
         binding.itemTitle.setText(device.getId());
         binding.itemLocation.setText(device.getName());
-        binding.itemTemp.setText(String.format(
-                                        binding.getRoot().getContext().getString(R.string.homeValuesFormat),
-                                        mainViewModel.convertTemp(device.getLastMessage().getTemp()),
-                                        mainViewModel.getTempUnits()
-                                            )
-                                );
+        binding.itemTemp.setText(String.valueOf(mainViewModel.convertTemp(device.getLastMessage().getTemp())));
         binding.itemHum.setText(String.valueOf(device.getLastMessage().getHum()));
         binding.itemPres.setText(String.valueOf(mainViewModel.convertPres(device.getLastMessage().getPres())));
         binding.itemUv.setText(String.valueOf(mainViewModel.convertUv(device.getLastMessage().getUv())));

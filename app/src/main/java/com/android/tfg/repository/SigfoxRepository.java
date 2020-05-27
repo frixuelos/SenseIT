@@ -296,6 +296,7 @@ public class SigfoxRepository {
     }
 
     public void removeUserAlert(AlertModel alert){
+        if(alert==null){return;}
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {

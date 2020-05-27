@@ -97,13 +97,24 @@
                 android:layout_height="match_parent"
                 android:padding="10dp">
 
-                <ImageView
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guidelineTemp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_percent="0.75" />
+
+                <com.airbnb.lottie.LottieAnimationView
                     android:id="@+id/ic_temp"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:layout_marginBottom="8dp"
-                    android:src="@drawable/ic_temp"
-                    app:layout_constraintBottom_toTopOf="@+id/item_temp"
+                    app:lottie_rawRes="@raw/temp_anim"
+                    app:lottie_loop="true"
+                    app:lottie_autoPlay="true"
+                    app:lottie_repeatMode="reverse"
+                    app:lottie_colorFilter="#D50000"
+                    app:lottie_speed="0.5"
+                    app:layout_constraintBottom_toTopOf="@+id/guidelineTemp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -114,7 +125,10 @@
                     android:layout_height="wrap_content"
                     android:text="25.24"
                     android:textAlignment="center"
-                    android:textSize="28sp"
+                    android:textSize="22sp"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    app:layout_constraintTop_toBottomOf="@id/guidelineTemp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent" />
@@ -142,13 +156,23 @@
                 android:layout_height="match_parent"
                 android:padding="10dp">
 
-                <ImageView
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guidelineHum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_percent="0.75" />
+
+                <com.airbnb.lottie.LottieAnimationView
                     android:id="@+id/ic_hum"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:layout_marginBottom="8dp"
-                    android:src="@drawable/ic_hum"
-                    app:layout_constraintBottom_toTopOf="@+id/item_hum"
+                    app:lottie_rawRes="@raw/hum_anim"
+                    app:lottie_autoPlay="true"
+                    app:lottie_loop="true"
+                    app:lottie_repeatMode="reverse"
+                    app:lottie_colorFilter="#0091EA"
+                    app:layout_constraintBottom_toTopOf="@+id/guidelineHum"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -159,7 +183,10 @@
                     android:layout_height="wrap_content"
                     android:text="64.85"
                     android:textAlignment="center"
-                    android:textSize="28sp"
+                    android:textSize="22sp"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    app:layout_constraintTop_toBottomOf="@id/guidelineHum"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent" />
@@ -187,13 +214,23 @@
                 android:layout_height="match_parent"
                 android:padding="10dp">
 
-                <ImageView
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guidelinePres"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_percent="0.75" />
+
+                <com.airbnb.lottie.LottieAnimationView
                     android:id="@+id/ic_pres"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:layout_marginBottom="8dp"
-                    android:src="@drawable/ic_pres"
-                    app:layout_constraintBottom_toTopOf="@+id/item_pres"
+                    app:lottie_rawRes="@raw/pres_anim"
+                    app:lottie_loop="true"
+                    app:lottie_repeatMode="reverse"
+                    app:lottie_autoPlay="true"
+                    app:lottie_speed="0.1"
+                    app:layout_constraintBottom_toTopOf="@+id/guidelinePres"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -204,7 +241,10 @@
                     android:layout_height="wrap_content"
                     android:text="1024.25"
                     android:textAlignment="center"
-                    android:textSize="28sp"
+                    android:textSize="22sp"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    app:layout_constraintTop_toBottomOf="@id/guidelinePres"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"/>
@@ -232,13 +272,23 @@
                 android:layout_height="match_parent"
                 android:padding="10dp">
 
-                <ImageView
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guidelineUv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_percent="0.75" />
+
+                <com.airbnb.lottie.LottieAnimationView
                     android:id="@+id/ic_uv"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:layout_marginBottom="8dp"
-                    android:src="@drawable/ic_uv"
-                    app:layout_constraintBottom_toTopOf="@+id/item_uv"
+                    app:lottie_rawRes="@raw/uv_anim"
+                    app:lottie_autoPlay="true"
+                    app:lottie_loop="true"
+                    app:lottie_repeatMode="reverse"
+                    app:lottie_colorFilter="#FFAB00"
+                    app:layout_constraintBottom_toTopOf="@+id/guidelineUv"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -249,7 +299,10 @@
                     android:layout_height="wrap_content"
                     android:text="4.25"
                     android:textAlignment="center"
-                    android:textSize="28sp"
+                    android:textSize="22sp"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    app:layout_constraintTop_toBottomOf="@id/guidelineUv"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent" />
