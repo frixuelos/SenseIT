@@ -273,11 +273,19 @@ public class AddAlertDialogFragment extends DialogFragment {
                 minUV,
                 maxUV));
 
-        new MaterialAlertDialogBuilder(binding.getRoot().getContext())
-                .setTitle(getString(R.string.addAlertSuccessTitle))
-                .setMessage(getString(R.string.addAlertSuccess))
-                .setNeutralButton(getString(R.string.ok), null)
-                .show();
+        if(addAlertViewModel.getDeviceAlert(deviceID)!=null) {// Si ya existia la alerta mensaje de actualizado
+            new MaterialAlertDialogBuilder(binding.getRoot().getContext())
+                    .setTitle(getString(R.string.addAlertSuccessUpdateTitle))
+                    .setMessage(getString(R.string.addAlertSuccessUpdate))
+                    .setNeutralButton(getString(R.string.ok), null);
+
+        }else{// Si no existia mensaje de creado
+            new MaterialAlertDialogBuilder(binding.getRoot().getContext())
+                    .setTitle(getString(R.string.addAlertSuccessTitle))
+                    .setMessage(getString(R.string.addAlertSuccess))
+                    .setNeutralButton(getString(R.string.ok), null)
+                    .show();
+        }
 
         dismiss();
     }

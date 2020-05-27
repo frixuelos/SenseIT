@@ -145,6 +145,8 @@
     <string name="createEmptyDialog">At least one field must be specified</string>
     <string name="addAlertSuccessTitle">Success</string>
     <string name="addAlertSuccess">Alert has been created</string>
+    <string name="addAlertSuccessUpdateTitle">Updated</string>
+    <string name="addAlertSuccessUpdate">Alert has been updated</string>
 
 
     <!-- ERRORES -->
