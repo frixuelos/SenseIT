@@ -1,6 +1,7 @@
 package com.android.tfg.view.alert;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -130,6 +131,7 @@ public class AddAlertDialogFragment extends DialogFragment {
         }
         if(binding.switchMaxTemp.isChecked() && binding.maxTemp.getText().length()!=0){
             maxTemp=Double.parseDouble(binding.maxTemp.getText().toString());
+            Log.e("MaxTemp -> ", String.valueOf(maxTemp));
         }
 
         if(binding.switchMinTemp.isChecked() && binding.switchMaxTemp.isChecked() && minTemp>maxTemp){
@@ -255,12 +257,12 @@ public class AddAlertDialogFragment extends DialogFragment {
         addAlertViewModel.addUserAlert(new AlertModel(deviceID,
                 deviceName,
                 binding.switchMinTemp.isChecked(),
-                binding.switchMaxTemp.isChecked(),
                 binding.switchMinHum.isChecked(),
-                binding.switchMaxHum.isChecked(),
                 binding.switchMinPres.isChecked(),
-                binding.switchMaxPres.isChecked(),
                 binding.switchMinUV.isChecked(),
+                binding.switchMaxTemp.isChecked(),
+                binding.switchMaxHum.isChecked(),
+                binding.switchMaxPres.isChecked(),
                 binding.switchMaxUV.isChecked(),
                 minTemp,
                 maxTemp,
