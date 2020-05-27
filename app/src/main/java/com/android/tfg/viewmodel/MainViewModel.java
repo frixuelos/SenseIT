@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer;
 import androidx.preference.PreferenceManager;
 
 import com.android.tfg.R;
+import com.android.tfg.model.AlertModel;
 import com.android.tfg.model.DeviceModel;
 import com.android.tfg.repository.SigfoxRepository;
 import com.android.tfg.repository.UserRepository;
@@ -205,6 +206,21 @@ public class MainViewModel extends AndroidViewModel {
      *********/
     public boolean isLoggedIn(){
         return userRepository.getCurrentUser()!=null;
+    }
+
+    /**********
+     * ALERTS *
+     **********/
+    public AlertModel getAlertFromFavorites(String id){
+        return sigfoxRepository.getDeviceAlert(id);
+    }
+
+    public void removeAlertFromFavorites(String id){
+        sigfoxRepository.removeUserAlert(sigfoxRepository.getDeviceAlert(id));
+    }
+
+    public void addAlertFromFavorites(AlertModel alert){
+        sigfoxRepository.addUserAlert(alert);
     }
 
 }

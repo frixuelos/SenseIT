@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.tfg.R;
 import com.android.tfg.adapter.FavoritesAdapter;
 import com.android.tfg.databinding.FragmentFavoritesBinding;
+import com.android.tfg.model.AlertModel;
 import com.android.tfg.model.DeviceModel;
 import com.android.tfg.swipe.SwipeRemoveCallback;
 import com.android.tfg.viewmodel.MainViewModel;
@@ -64,11 +65,19 @@ public class FavoritesFragment extends Fragment {
                 DeviceModel removed = favoritesAdapter.removeItem(pos);
                 mainViewModel.removeFromFavorites(removed.getId());
 
+                // Removed alert
+                AlertModel alertRemoved = mainViewModel.getAlertFromFavorites(removed.getId());
+                mainViewModel.removeAlertFromFavorites(removed.getId());
+
                 Snackbar snackbar = Snackbar.make(binding.coordinator, getString(R.string.remove_from_favorites), Snackbar.LENGTH_LONG).setActionTextColor(getResources().getColor(R.color.colorAccent));
                 snackbar.setAction(getString(R.string.undo), v -> {
                     favoritesAdapter.insertItem(removed, pos);
                     binding.favoriteRecyclerView.scrollToPosition(pos);
                     mainViewModel.add2Favorites(removed.getId());
+
+                    // Re-insert removed alert
+                    mainViewModel.addAlertFromFavorites(alertRemoved);
+
                     binding.noFavText.setVisibility(View.GONE); // Ocultar el texto de favoritos vacio
                 });
                 snackbar.show();
