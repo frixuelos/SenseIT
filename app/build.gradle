@@ -15,8 +15,8 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    viewBinding{
-        enabled = true
+    buildFeatures{
+        viewBinding = true
     }
 
     apply plugin: "androidx.navigation.safeargs" // Safe Args
@@ -50,7 +50,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     // UI
-    def nav_version = "2.3.0-alpha06"
+    def nav_version = "2.3.0-beta01"
 
     // Java language implementation
     implementation "androidx.navigation:navigation-fragment:$nav_version"
@@ -90,7 +90,7 @@ dependencies {
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
     // Material
-    implementation 'com.google.android.material:material:1.2.0-alpha06'
+    implementation 'com.google.android.material:material:1.2.0-beta01'
 
     // Preference
     implementation 'androidx.preference:preference:1.1.1'

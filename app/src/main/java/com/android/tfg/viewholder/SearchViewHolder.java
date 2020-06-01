@@ -21,6 +21,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
+import java.text.BreakIterator;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -51,8 +52,30 @@ public class SearchViewHolder extends RecyclerView.ViewHolder {
         binding.itemLastUpdate.setText(mFormat.format(lastUpdated));
         if(!device.isAlive()){
             binding.icDevice.setColorFilter(binding.getRoot().getContext().getResources().getColor(R.color.colorError));
+            binding.itemTitle.setTextColor(Color.GRAY);
+            binding.itemLocation.setTextColor(Color.GRAY);
+            binding.itemLastUpdate.setTextColor(Color.GRAY);
+            binding.itemTemp.setTextColor(Color.GRAY);
+            binding.itemHum.setTextColor(Color.GRAY);
+            binding.itemPres.setTextColor(Color.GRAY);
+            binding.itemUv.setTextColor(Color.GRAY);
+            binding.iconTemp.setColorFilter(Color.GRAY);
+            binding.iconHum.setColorFilter(Color.GRAY);
+            binding.iconPres.setColorFilter(Color.GRAY);
+            binding.iconUv.setColorFilter(Color.GRAY);
         }else{
             binding.icDevice.setColorFilter(binding.getRoot().getContext().getResources().getColor(R.color.colorAccent));
+            binding.itemTitle.setTextColor(Color.BLACK);
+            binding.itemLocation.setTextColor(Color.BLACK);
+            binding.itemLastUpdate.setTextColor(Color.BLACK);
+            binding.itemTemp.setTextColor(Color.BLACK);
+            binding.itemHum.setTextColor(Color.BLACK);
+            binding.itemPres.setTextColor(Color.BLACK);
+            binding.itemUv.setTextColor(Color.BLACK);
+            binding.iconTemp.setColorFilter(null);
+            binding.iconHum.setColorFilter(null);
+            binding.iconPres.setColorFilter(null);
+            binding.iconUv.setColorFilter(null);
         }
 
         /**************

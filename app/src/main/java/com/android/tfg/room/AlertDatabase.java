@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase;
 
 import com.android.tfg.model.AlertModel;
 
-@Database(entities = {AlertModel.class}, version = 1)
+@Database(entities = {AlertModel.class}, version = 1, exportSchema = false)
 public abstract class AlertDatabase extends RoomDatabase {
 
     public abstract AlertDAO alertDAO();

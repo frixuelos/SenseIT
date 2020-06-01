@@ -51,8 +51,30 @@ public class FavoritesViewHolder extends RecyclerView.ViewHolder {
         binding.itemLastUpdateFav.setText(mFormat.format(lastUpdated));
         if(!device.isAlive()){
             binding.icDevice.setColorFilter(binding.getRoot().getContext().getResources().getColor(R.color.colorError));
+            binding.itemTitleFav.setTextColor(Color.GRAY);
+            binding.itemLocationFav.setTextColor(Color.GRAY);
+            binding.itemLastUpdateFav.setTextColor(Color.GRAY);
+            binding.itemTempFav.setTextColor(Color.GRAY);
+            binding.itemHumFav.setTextColor(Color.GRAY);
+            binding.itemPresFav.setTextColor(Color.GRAY);
+            binding.itemUvFav.setTextColor(Color.GRAY);
+            binding.iconTempFav.setColorFilter(Color.GRAY);
+            binding.iconHumFav.setColorFilter(Color.GRAY);
+            binding.iconPresFav.setColorFilter(Color.GRAY);
+            binding.iconUvFav.setColorFilter(Color.GRAY);
         }else{
             binding.icDevice.setColorFilter(binding.getRoot().getContext().getResources().getColor(R.color.colorAccent));
+            binding.itemTitleFav.setTextColor(Color.BLACK);
+            binding.itemLocationFav.setTextColor(Color.BLACK);
+            binding.itemLastUpdateFav.setTextColor(Color.BLACK);
+            binding.itemTempFav.setTextColor(Color.BLACK);
+            binding.itemHumFav.setTextColor(Color.BLACK);
+            binding.itemPresFav.setTextColor(Color.BLACK);
+            binding.itemUvFav.setTextColor(Color.BLACK);
+            binding.iconTempFav.setColorFilter(null);
+            binding.iconHumFav.setColorFilter(null);
+            binding.iconPresFav.setColorFilter(null);
+            binding.iconUvFav.setColorFilter(null);
         }
 
         /**********************
