@@ -239,7 +239,7 @@ public class AddAlertDialogFragment extends DialogFragment {
                 new MaterialAlertDialogBuilder(binding.getRoot().getContext())
                         .setTitle(getString(R.string.createEmptyDialogTitle))
                         .setMessage(getString(R.string.createEmptyDialog))
-                        .setNeutralButton(getString(R.string.ok), null)
+                        .setNeutralButton(getString(R.string.addAlertOK), null)
                         .show();
             }
             return;

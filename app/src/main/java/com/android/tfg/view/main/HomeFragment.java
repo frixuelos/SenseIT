@@ -1,5 +1,6 @@
 package com.android.tfg.view.main;
 
+import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +25,9 @@ import com.android.tfg.databinding.FragmentHomeBinding;
 import com.android.tfg.model.DeviceModel;
 import com.android.tfg.viewmodel.MainViewModel;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -70,11 +75,33 @@ public class HomeFragment extends Fragment {
     /************************
      * OBTIENE LOCALIZACION *
      ************************/
+    @SuppressLint("MissingPermission")
     private void getLocation(){
         client.getLastLocation().addOnSuccessListener(getActivity(), location -> {
             if(location!=null){
+                Log.e("NO", "NULL");
                 mainViewModel.getNear(location.getLatitude(), location.getLongitude()).observe(getViewLifecycleOwner(), obs);
                 mainViewModel.setLocation(location.getLatitude(), location.getLongitude()); // set user location
+            }else{
+                // Location null se llama para requerir localizacion
+                Log.e("ES", "NULL");
+                LocationCallback locationCallback;
+                LocationRequest locationRequest;
+
+                locationRequest = LocationRequest.create();
+                locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+                locationRequest.setInterval(20 * 1000);
+
+                locationCallback = new LocationCallback(){
+                    @Override
+                    public void onLocationResult(LocationResult locationResult) {
+                        mainViewModel.getNear(locationResult.getLastLocation().getLatitude(), locationResult.getLastLocation().getLongitude()).observe(getViewLifecycleOwner(), obs);
+                        mainViewModel.setLocation(locationResult.getLastLocation().getLatitude(), locationResult.getLastLocation().getLongitude()); // set user location
+                    }
+                };
+
+                client.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
+
             }
         });
     }

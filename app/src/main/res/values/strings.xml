@@ -147,6 +147,7 @@
     <string name="addAlertSuccess">Alert has been created</string>
     <string name="addAlertSuccessUpdateTitle">Updated</string>
     <string name="addAlertSuccessUpdate">Alert has been updated</string>
+    <string name="addAlertOK">OK</string>
 
 
     <!-- ERRORES -->
